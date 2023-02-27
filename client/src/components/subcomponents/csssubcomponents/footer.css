@@ -1,0 +1,12 @@
+footer{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+    border-radius: 3px;
+    justify-content: space-between;
+    max-width: 15   50px;
+    margin: auto;
+    background: rgb(0, 0, 0);
+    align-items: center;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,.2);
+}
