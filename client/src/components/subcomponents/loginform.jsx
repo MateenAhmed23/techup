@@ -13,10 +13,12 @@ class LoginForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = this.state;
+    console.log(username)
     this.props.onSubmit({ username, password });
   };
 
   handleUsernameChange = (e) => {
+    console.log(e.target.value)
     this.setState({ username: e.target.value });
   };
 
@@ -27,7 +29,7 @@ class LoginForm extends Component {
   render() {
     const { username, password } = this.state;
     return (
-      <section class="vh-100">
+      <section className="vh-100">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col col-xl-10">
@@ -92,7 +94,7 @@ class LoginForm extends Component {
                           <Button
                             className="btn btn-dark btn-lg btn-block"
                             type="button"
-                            onClick={this.state.onClick}
+                            onClick={this.handleSubmit}
                           >
                             Login
                           </Button>

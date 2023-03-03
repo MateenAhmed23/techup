@@ -17,40 +17,40 @@ class Signup extends Component {
         //Please enter login logic here @Mateen @Ahsan
 
 
-        if (password !== confirmPassword) {
-          setError(true);
-          setErrorMsg("Passwords do not match");
-          setTimeout(() => {
-            setErrorMsg("");
-            setError(false);
-          }, 5000);
-          return;
-        } else {
-          const response = await fetch("http://localhost:5000/api/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username,
-              email,
-              password,
-            }),
-          });
+        // if (password !== confirmPassword) {
+        //   setError(true);
+        //   setErrorMsg("Passwords do not match");
+        //   setTimeout(() => {
+        //     setErrorMsg("");
+        //     setError(false);
+        //   }, 5000);
+        //   return;
+        // } else {
+        //   const response = await fetch("http://localhost:5000/api/register", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //       username,
+        //       email,
+        //       password,
+        //     }),
+        //   });
     
-          const data = await response.json();
-          if (data.status === "error"){
-            setError(true);
-            setErrorMsg(data.message);
-            setTimeout(() => {
-              setErrorMsg("");
-              setError(false);
-            }, 5000);
-            return;
-          }else{
-            history.push("/login");
-          }
-        }
+        //   const data = await response.json();
+        //   if (data.status === "error"){
+        //     setError(true);
+        //     setErrorMsg(data.message);
+        //     setTimeout(() => {
+        //       setErrorMsg("");
+        //       setError(false);
+        //     }, 5000);
+        //     return;
+        //   }else{
+        //     history.push("/login");
+        //   }
+        // }
         console.log(username);
       };
     
