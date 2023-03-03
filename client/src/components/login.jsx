@@ -71,8 +71,36 @@ function Login(){
   const [password, setPassword] = useState('')
 
 
-  function handleLogin(username, password){
-      console.log("LOGIN SUBMI CLICKED")
+  async function handleLogin(email, password){
+      console.log(email)
+
+
+
+      const response = await fetch("http://127.0.0.1:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.status === "error"){
+        // setError(true);
+        alert(data.message);
+        // setTimeout(() => {
+        //   setErrorMsg("");
+        //   setError(false);
+        // }, 5000);
+        return;
+      }else{
+        console.log('USER LOGINNED SUCCESSFULLY')
+        localStorage.setItem("token", data.token);
+        // history.push("/");
+      }
   }
 
   function handleclick(){

@@ -29,10 +29,11 @@ app.use(express.json());
 
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
-mongoose.connect("mongodb://localhost:27017/techup");
+mongoose.connect("mongodb://127.0.0.1:27017/techup");
 
 
 app.post("/api/register", (req, res) => {
+  console.log('Inside Register')
   try {
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       if (err) {
@@ -85,6 +86,8 @@ app.post("/api/login", async (req, res) => {
   } else {
     return res.json({ status: "error", message: "Email or password incorrect" });
   }
+
+  // console.log(req.body.email)
 });
 
 

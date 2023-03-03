@@ -79,7 +79,42 @@ function Signup(){
   }
 
 
-  function handleSignup(username,email,password,confirmPassword){
+  async function handleSignup(username,email,password,confirmPassword){
+    if (password !== confirmPassword) {
+      // setError(true);
+      alert("Passwords do not match");
+      // setTimeout(() => {
+      //   setErrorMsg("");
+      //   setError(false);
+      // }, 5000);
+      return;
+    } else {
+      const response = await fetch("http://127.0.0.1:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.status === "error"){
+        // setError(true);
+        alert(data.message);
+        // setTimeout(() => {
+        //   setErrorMsg("");
+        //   setError(false);
+        // }, 5000);
+        return;
+      }else{
+        console.log('USER MADE SUCCESSFULLY');
+        // history.push("/login");
+      }
+    }
     console.log('Inside Signup Handle Function',username)
   }
   return (
