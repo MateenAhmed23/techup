@@ -18,6 +18,12 @@ function SignupForm({onSubmit}){
   const [confirmPassword,setConfirmPassword] = useState('')
 
 
+  function onClickRegister(){
+    console.log('HIII')
+    onSubmit(username,email,password,confirmPassword)
+  }
+
+
   function handleUsernameChange (e) {
     setUsername(e.target.value)
   };
@@ -128,7 +134,7 @@ function SignupForm({onSubmit}){
                           <Button
                             className="btn btn-dark btn-lg btn-block"
                             type="button"
-                            onClick={this.state.onClick}
+                            onClick={onClickRegister}
                           >
                             Register
                           </Button>
