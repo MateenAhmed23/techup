@@ -73,12 +73,18 @@ import SignupForm from './subcomponents/signupform';
 
 function Signup(){
 
+
+  function handleclick(){
+    // IDHER KIA DAALNA HA MUQAY????
+  }
+
+
   function handleSignup(username,email,password,confirmPassword){
-    console.log('Inside Signup Handle Function')
+    console.log('Inside Signup Handle Function',username)
   }
   return (
     <div className="loginpage">
-            <Navbar onnavclick={this.handleclick} className="navbar"></Navbar>
+            <Navbar onnavclick={handleclick} className="navbar"></Navbar>
     
             <div className="LogForm">
               <SignupForm onSubmit={handleSignup} />

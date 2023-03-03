@@ -10,8 +10,8 @@ function App() {
   return (
     <React.Fragment>
       {/* <Landingpage></Landingpage> */}
-      <Login></Login>
-      {/* <Signup></Signup> */}
+      {/* <Login></Login> */}
+      <Signup></Signup>
     </React.Fragment>
   );
 }
