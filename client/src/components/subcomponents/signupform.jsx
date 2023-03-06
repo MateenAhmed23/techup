@@ -6,11 +6,7 @@ import google from "./csssubcomponents/google.png";
 import linkedin from "./csssubcomponents/linkedin.png";
 
 
-
-
-
 function SignupForm({onSubmit}){
-
 
   const [username,setUsername] = useState('')
   const [email,setEmail] = useState('')

@@ -5,9 +5,6 @@ import Navbar from "./subcomponents/navbar";
 import LoginForm from "./subcomponents/loginform";
 
 
-
-
-
 // ERROR:
 
 
@@ -70,11 +67,8 @@ function Login(){
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-
   async function handleLogin(email, password){
       console.log(email)
-
-
 
       const response = await fetch("http://127.0.0.1:5000/api/login", {
         method: "POST",
