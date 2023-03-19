@@ -13,6 +13,7 @@ function CompanyDetails() {
   const [designation, setDesignation] = useState("");
   const [email, setEmail] = useState("");
   const [personNumber, setPersonNumber] = useState();
+  
   return (
     <div className="alldetails">
       <Navbar className="navbar"></Navbar>

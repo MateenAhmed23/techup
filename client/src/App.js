@@ -12,6 +12,7 @@ import Landingpage from "./components/landingpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import CompanyDetails from "./components/companyDetails";
+import CreateNewJob from "./components/createNewJob";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/compdetails",
     element: <CompanyDetails />,
+  },
+  {
+    path: "/createjob",
+    element: <CreateNewJob />,
   },
 ]);
 
