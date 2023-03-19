@@ -1,0 +1,46 @@
+nav {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+    border-radius: 3px;
+    justify-content: space-between;
+    /* max-width: 15   50px; */
+    height: 12%;
+    margin: auto;
+    background: rgba(0, 0, 0,0.8);
+    align-items: center;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,.2);
+    min-width: 100%;
+    margin-top: 0px;
+   padding-top: 0px;
+   position: absolute;
+}
+.companyname{
+    margin-left: -58%;
+    color: aliceblue;
+    font-size: larger;
+    font-weight: bolder;
+    background-color: grey;
+    border: 3px solid black;
+    padding: 0.4%;
+    border-radius: 20%;
+    margin-top: 1%;
+
+}
+
+.avatar {
+    margin-top: 1%;
+    border: black solid;
+    margin-right: 55px;
+    border-radius: 50%;
+    text-decoration: none;
+    margin-bottom: 1%;
+    
+}
+
+.bellicon {
+    text-decoration: none;
+    margin-right: -58%;
+    border-radius: 20px;
+
+}

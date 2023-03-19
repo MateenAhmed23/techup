@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import "./App.css";
-
+import CompNav from "./components/subcomponents/companyNav";
 import React from "react";
 
 // For routing
@@ -16,7 +16,7 @@ import CompanyDetails from "./components/companyDetails";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landingpage />,
+    element: <Landingpage/>,
   },
   {
     path: "/login",
