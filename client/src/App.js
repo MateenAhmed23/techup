@@ -6,17 +6,12 @@ import React from "react";
 // For routing
 // import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Landingpage from "./components/landingpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
-import CompDetails from "./components/companyDetails";
-
-
+import CompanyDetails from "./components/companyDetails";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +25,11 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Signup />,
-  }
+  },
+  {
+    path: "/compdetails",
+    element: <CompanyDetails />,
+  },
 ]);
 
 function App() {
