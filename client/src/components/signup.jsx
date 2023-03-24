@@ -104,7 +104,7 @@ function Signup(){
       const data = await response.json();
       if (data.status === "error"){
         // setError(true);
-        alert(data.message);
+        alert('Credentials not correct');
         // setTimeout(() => {
         //   setErrorMsg("");
         //   setError(false);
@@ -113,6 +113,12 @@ function Signup(){
       }else{
         console.log('USER MADE SUCCESSFULLY');
         console.log(data);
+
+        localStorage.setItem('token', data.token);
+
+        // Accessing token from local storage
+        // const myData = JSON.parse(localStorage.getItem('myData'));
+        console.log('MY USER TOKEN',localStorage.getItem('token'))
         // history.push("/login");
       }
     }
