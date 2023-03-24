@@ -32,10 +32,24 @@ const saltRounds = parseInt(process.env.SALT_ROUNDS);
 mongoose.connect("mongodb://127.0.0.1:27017/techup");
 
 
-app.post("/api/register", (req, res) => {
+function generateToken(user) {
+  const payload = {
+    userId: user._id,
+    email: user.email
+  };
+  const options = {
+    expiresIn: '1h'
+  };
+  const secret = 'makingacoolATS';
+
+  return jwt.sign(payload, secret, options);
+}
+
+
+app.post("/api/register", async (req, res) => {
   console.log('Inside Register')
   try {
-    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -43,13 +57,25 @@ app.post("/api/register", (req, res) => {
           message: "Error while Saving",
         });
       } else {
-        User.create({
+        const user = await User.create({
           name: req.body.username,
           email: req.body.email,
           password: hash,
           role: req.body.role
         });
-        return res.json({ status: "ok" });
+        
+        
+        
+        const token = generateToken(user);
+
+        user.tokens.push(token);
+        await user.save();
+
+        return res.json({
+          status: "ok",
+          token: token,
+          role: user.role
+        });
       }
     });
   } catch (err) {

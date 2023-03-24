@@ -112,10 +112,11 @@ function Signup(){
         return;
       }else{
         console.log('USER MADE SUCCESSFULLY');
+        console.log(data);
         // history.push("/login");
       }
     }
-    console.log('Inside Signup Handle Function',username)
+    // console.log('Inside Signup Handle Function',username)
   }
   return (
     <div className="loginpage">
