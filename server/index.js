@@ -31,6 +31,7 @@ const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 mongoose.connect("mongodb://127.0.0.1:27017/techup");
 
+const secret = 'makingacoolATS';
 
 function generateToken(user) {
   const payload = {
@@ -38,9 +39,8 @@ function generateToken(user) {
     email: user.email
   };
   const options = {
-    expiresIn: '1h'
+    expiresIn: '5h'
   };
-  const secret = 'makingacoolATS';
 
   return jwt.sign(payload, secret, options);
 }
@@ -122,6 +122,26 @@ app.post("/api/login", async (req, res) => {
   }
 
   // console.log(req.body.email)
+});
+
+
+// Needs token in req to verify and returns payload
+app.post('/api/verify-token', (req, res) => {
+
+  console.log(req.headers.authorization)
+
+  const token = req.headers.authorization;
+
+
+  // Verify the token and return a response
+  try {
+    const payload = jwt.verify(token, secret);
+    console.log(payload)
+    res.status(200).json({ valid: true, payload });
+  } catch (err) {
+    console.log(err)
+    res.status(401).json({ valid: false, error: 'Invalid token' });
+  }
 });
 
 
