@@ -76,7 +76,7 @@ class LoginForm extends Component {
                             onChange={this.handleUsernameChange}
                             placeholdr="Enter your Email Address"
                           />
-                        </div>
+                        </div>  
 
                         <div className="form-outline mb-4">
                           <Inputfield

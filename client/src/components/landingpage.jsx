@@ -416,9 +416,9 @@ class Landingpage extends Component {
           </div>
         </div>
 
-        <div className="footer">
+        {/* <div className="footer">
           <h1 className="heading">Footer</h1>
-        </div>
+        </div> */}
       </div>
     );
   }

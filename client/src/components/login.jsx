@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import LoginForm from "./subcomponents/loginform";
+
+import { useNavigate  } from 'react-router-dom';
+
 
 
 // ERROR:
@@ -64,8 +67,84 @@ import LoginForm from "./subcomponents/loginform";
 
 function Login(){
 
+  const navigate = useNavigate();
+
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const [userData,setUserData] = useState(null);
+  
+
+  useEffect(()=>{
+
+    async function verifyToken(token){
+
+      // console.log('Inside VERIFY')
+
+      try{
+        const res = await fetch('http://127.0.0.1:5000/api/verify-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token // Include the token in the Authorization header
+          }
+        })
+        // console.log('HAHA')
+        const r = await res.json()
+
+        // console.log(r)
+        // console.log(r.payload.userId)
+
+        setUserData({
+          valid: r.valid,
+          _id: r.payload.userId
+        })
+        // console.log(r)
+      }catch(e){
+        setUserData({
+          valid: false
+        })
+      }
+
+      
+
+    }
+
+    
+
+    const token = localStorage.getItem('token')
+    console.log(token, 'Inside useEffect')
+
+    if (token)
+    {
+
+      console.log('token exists')
+
+      
+      verifyToken(token)
+    }
+    else{
+      setUserData({
+        valid: false
+      })
+      console.log('Token does not exist')
+    }
+   
+
+
+  },[])
+
+  useEffect(()=>{
+
+    console.log(userData, 'THIS IS USER DATA IN LOGIN')
+
+
+    if (userData && userData.valid){
+      console.log('YOU ARE ALREADY LOOGED IN')
+      navigate('/')
+    }
+  },[userData])
 
   async function handleLogin(email, password){
       console.log(email)
@@ -93,7 +172,7 @@ function Login(){
       }else{
         console.log('USER LOGINNED SUCCESSFULLY')
         localStorage.setItem("token", data.token);
-        // history.push("/");
+        navigate('/');
       }
   }
 
