@@ -1,15 +1,11 @@
 // import logo from './logo.svg';
 import "./App.css";
-
 import React from "react";
 
 // For routing
 // import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
 
@@ -17,14 +13,14 @@ import {
 import Landingpage from "./components/landingpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
-import CompDetails from "./components/companyDetails";
-
-
-
+import CompanyDetails from "./components/companyDetails";
+import CreateNewJob from "./components/createNewJob";
+import JobDescSmall from "./components/subcomponents/jobDescSmall";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landingpage />,
+    element: <CreateNewJob/>,
+    // element: <Landingpage/>,
   },
   {
     path: "/login",
@@ -35,6 +31,9 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
+    path: "/createnewjob",
+    element: <CreateNewJob />,
+  },
     path: "/companyDetails",
     element: <CompDetails />,
   }
