@@ -1,6 +1,5 @@
 // import logo from './logo.svg';
 import "./App.css";
-import CompNav from "./components/subcomponents/companyNav";
 import React from "react";
 
 // For routing
@@ -13,11 +12,12 @@ import Login from "./components/login";
 import Signup from "./components/signup";
 import CompanyDetails from "./components/companyDetails";
 import CreateNewJob from "./components/createNewJob";
-
+import JobDescSmall from "./components/subcomponents/jobDescSmall";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landingpage/>,
+    element: <CreateNewJob/>,
+    // element: <Landingpage/>,
   },
   {
     path: "/login",
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <CompanyDetails />,
   },
   {
-    path: "/createjob",
+    path: "/createnewjob",
     element: <CreateNewJob />,
   },
 ]);

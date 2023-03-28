@@ -1,7 +1,7 @@
 .landingpage {
   margin-top: 0px;
   padding-top: 0px;
-  height: 3950px;
+  height: 8950px;
   width: 100%;
   background-color: rgb(223, 217, 217);
   display: grid;
@@ -62,8 +62,8 @@
 
 .footer {
   margin-top: 10%;
-  grid-row-start: 6;
-  grid-row-end: 7;
+  grid-row-start: 7;
+  grid-row-end: 8;
   grid-column-start: 1;
   grid-column-end: 3;
 }

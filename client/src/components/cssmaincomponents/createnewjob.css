@@ -1,87 +1,138 @@
-.jobform {
+.h1h {
+  position: relative;
+  color: #282726;
+  font-family: 'Droid serif', serif;
+  font-size: 49px;
+  font-weight: bolder;
+  font-style: italic;
+  line-height: 44px;
+  margin: 0 0 12px;
+  text-align: center;
+  z-index: 1;
+}
+
+.h1h::before,
+.h1h::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  /* change the top property to bottom */
+  left: 0;
+  /* set left to 0 to start the line at the left edge of the container */
+  right: 0;
+  /* set right to 0 to end the line at the right edge of the container */
+  margin: 0 auto;
+  /* center the line horizontally */
+  width: 50%;
+  height: 2px;
+  background-color: #353433;
+}
+
+.h1h::before {
+  left: 0;
+}
+
+.h1h::after {
+  right: 0;
+}
+
+.newjobpage {
   margin-top: 0px;
   padding-top: 0px;
   height: auto;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: rgb(223, 217, 217);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 7% 8% auto auto 500px;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 12% 8% 600px 500px;
   grid-gap: 0%;
 }
 
-.compcol1 {
-  grid-column: 1;
-  grid-row-start: 3;
-  /* position: fixed; */
+.job-desc-cell {
+  padding-bottom: 6px;
+  /* padding-left: 100px; */
 }
 
-.requirement {
-  grid-row: 4;
-  height: 600px;
+.navbar {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
 }
 
-.inputlabel {
+.mainhead {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.details {
+  margin-top: 0px;
   grid-column-start: 1;
   grid-column-end: 2;
-  padding: 5px;
-  background-color: #38b8d4;
-  color: white;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: 12% 8% 500px 8% 500px;
+  grid-gap: 0%;
 }
 
-.next {
-  text-decoration: none;
-  margin-left: 40%;
-  margin-right: -20px;
-  border-radius: 20px;
-  color: rgb(3, 3, 3);
-  background-color: #38b8d4;
-  padding-bottom: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 45px;
-  display: inline-block;
-  line-height: 40px;
-  vertical-align: middle;
-  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+.descriptions {
+  margin-top: 0px;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  z-index: 1;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.buttonsss {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 4;
+  grid-row-end: 5;
+
 }
 
 .back {
-  text-decoration: none;
-  margin-left: 40%;
-  margin-right: -20px;
-  border: 3px solid black;
-  border-radius: 20px;
-  color: rgb (3, 3, 3);
-  background-color: rgb(26, 94, 154);
-  padding-bottom: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 45px;
-  display: inline-block;
-  line-height: 40px;
-  vertical-align: middle;
-  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+  background-color: #d1d1d1;
+  color: #282726;
+  border-radius: 30%;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 2%;
+  height: 50px;
+  width: 150px;
 }
 
-.jobinputfield {
-  margin-top: 10px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+.create {
+  background-color: #007bff;
+  color: #101010;
+
+  border-radius: 30%;
+  font-size: 20px;
+  font-weight: bold;
+  height: 50px;
+  width: 150px;
 }
 
-.jobinputfield {
-  margin: 20px;
-  width: 80%;
-  background-color: white;
+.back:hover {
+  background-color: #282726;
+  color: #d1d1d1;
 }
 
-.maninhead {
-  margin-top: 2%;
-  margin-left: 42%;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
-  text-decoration: underline;
+.create:hover {
+  background-color: #101010;
+  color: #007bff;
+  size: ;
+}
+
+.footer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
+  grid-row-end: 6;
+  background: rgba(209, 28, 28, 0.9);
 }
