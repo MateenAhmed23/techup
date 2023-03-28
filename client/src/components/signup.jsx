@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import SignupForm from './subcomponents/signupform';
+
+
+
+// import verifyToken from './helperFunction/verifyToken';
+
+
+// import {useHistory} from 'react-router-dom'
+
+import { useNavigate  } from 'react-router-dom';
+
 
 
 
@@ -73,11 +83,91 @@ import SignupForm from './subcomponents/signupform';
 
 function Signup(){
 
+  const navigate = useNavigate();
+
+
+  const [userData,setUserData] = useState(null);
 
   function handleclick(){
     // IDHER KIA DAALNA HA MUQAY????
   }
 
+
+
+  useEffect(()=>{
+
+    async function verifyToken(token){
+
+      // console.log('Inside VERIFY')
+
+      try{
+        const res = await fetch('http://127.0.0.1:5000/api/verify-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token // Include the token in the Authorization header
+          }
+        })
+        // console.log('HAHA')
+        const r = await res.json()
+
+        // console.log(r)
+        // console.log(r.payload.userId)
+
+        setUserData({
+          valid: r.valid,
+          _id: r.payload.userId
+        })
+        // console.log(r)
+      }catch(e){
+        setUserData({
+          valid: false
+        })
+      }
+
+      
+
+    }
+
+    
+
+    const token = localStorage.getItem('token')
+    console.log(token, 'Inside useEffect')
+
+    if (token)
+    {
+
+      console.log('token exists')
+
+      
+      verifyToken(token)
+
+      // if (validToken){
+      //     console.log('You are already logged in, log out to come to this page');
+      //     navigate('/home');
+      // }
+    }
+    else{
+      setUserData({
+        valid: false
+      })
+      console.log('Token does not exist')
+    }
+   
+
+
+  },[])
+
+  useEffect(()=>{
+
+    console.log(userData, 'THIS IS USER DATA IN SIGNUP')
+
+
+    if (userData && userData.valid){
+      console.log('YOU ARE ALREADY LOOGED IN')
+      navigate('/')
+    }
+  },[userData])
 
   async function handleSignup(username,email,password,confirmPassword){
     if (password !== confirmPassword) {
@@ -104,7 +194,7 @@ function Signup(){
       const data = await response.json();
       if (data.status === "error"){
         // setError(true);
-        alert(data.message);
+        alert('Credentials not correct');
         // setTimeout(() => {
         //   setErrorMsg("");
         //   setError(false);
@@ -112,7 +202,15 @@ function Signup(){
         return;
       }else{
         console.log('USER MADE SUCCESSFULLY');
-        console.log(data);
+        // console.log(data);
+
+        localStorage.setItem('token', data.token);
+
+        navigate('/')
+
+        // Accessing token from local storage
+        // const myData = JSON.parse(localStorage.getItem('myData'));
+        // console.log('MY USER TOKEN',localStorage.getItem('token'))
         // history.push("/login");
       }
     }
