@@ -11,7 +11,7 @@ function Provider({children}){
 
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userRole, setUserRole] = useState('')
+    // const [userRole, setUserRole] = useState('')
     const [userID, setUserID] = useState('')
     const [userEmail, setUserEmail] = useState('')
 
@@ -32,7 +32,7 @@ function Provider({children}){
             // console.log('HAHA')
             const r = await res.json()
     
-            console.log(r)
+            // console.log(r)
             // console.log(r.payload.userId)
     
             return r
@@ -44,36 +44,54 @@ function Provider({children}){
     }
 
     const loginStatus = async ()=>{
+
+
+        // console.log('I am here')
+
+        setIsLoading(true)
         if (isLoggedIn){
+
+            setIsLoading(false)
             return true
         }
 
         const token = localStorage.getItem('token')
 
+        // console.log(' Token is ', token)
+
+
+
         // token exists
         if (token)
         {
             const res = await verifyToken(token)
-            console.log('Inside loginStatus', res.valid)
+            // console.log('Inside loginStatus', res.valid)
             if (res.valid){
+                // console.log('I am returning valid')
                 setIsLoggedIn(true)
                 setUserID(res.userId)
                 setUserEmail(res.email)
+                setIsLoading(false)
+
                 return true
             }
         }
 
-
+        setIsLoading(false)
         return false
+    }
+
+    const userInfo = {
+        userEmail,
+        userID,
+        // userRole
     }
 
     const valueToShare=  {
         isLoading,
-        // isLoggedIn,
+        isLoggedIn,
         loginStatus,
-        userRole,
-        userID,
-        userEmail,
+        userInfo
         // count: count,
         // incrementCount: hehe
     }
