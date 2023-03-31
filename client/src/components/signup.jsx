@@ -88,7 +88,7 @@ function Signup(){
 
   const navigate = useNavigate();
 
-  const {count, incrementCount} = useContext(UserContext);
+  const {loginStatus} = useContext(UserContext);
 
 
   const [userData,setUserData] = useState(null);
@@ -225,8 +225,8 @@ function Signup(){
     <div className="loginpage">
             <Navbar onnavclick={handleclick} className="navbar"></Navbar>
 
-            <h1>{count}</h1>
-            <button onClick={incrementCount} >Add</button>
+            {/* <h1>{count}</h1> */}
+            <button onClick={loginStatus} >Login Status</button>
     
             <div className="LogForm">
               <SignupForm onSubmit={handleSignup} />
