@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
@@ -12,6 +12,9 @@ import SignupForm from './subcomponents/signupform';
 // import {useHistory} from 'react-router-dom'
 
 import { useNavigate  } from 'react-router-dom';
+
+
+import UserContext from '../context/user';
 
 
 
@@ -84,6 +87,8 @@ import { useNavigate  } from 'react-router-dom';
 function Signup(){
 
   const navigate = useNavigate();
+
+  const {count, incrementCount} = useContext(UserContext);
 
 
   const [userData,setUserData] = useState(null);
@@ -219,6 +224,9 @@ function Signup(){
   return (
     <div className="loginpage">
             <Navbar onnavclick={handleclick} className="navbar"></Navbar>
+
+            <h1>{count}</h1>
+            <button onClick={incrementCount} >Add</button>
     
             <div className="LogForm">
               <SignupForm onSubmit={handleSignup} />
