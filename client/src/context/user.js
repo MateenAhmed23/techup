@@ -92,6 +92,14 @@ function Provider({children}){
     }
 
 
+    const userClientLogin = async (naviagteIncaseFailed)=>{
+        const res = await loginStatus()
+        if (!res){
+            
+        }
+    }
+
+
 
     const userInfo = {
         userEmail,
@@ -104,7 +112,6 @@ function Provider({children}){
         isLoggedIn,
         loginStatus,
         userInfo,
-        userID,
         // updateCount,
         // count: count,
         // incrementCount: hehe

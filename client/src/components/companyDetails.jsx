@@ -7,6 +7,8 @@ import "./cssmaincomponents/companydetails.css";
 
 import UserContext from "../context/user";
 
+import { useNavigate } from "react-router-dom";
+
 function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
@@ -17,21 +19,33 @@ function CompanyDetails() {
   const [email, setEmail] = useState("");
   const [personNumber, setPersonNumber] = useState();
 
-  const {isLoading, loginStatus, userInfo, userID, updateCount, count} = useContext(UserContext)
+
+  const navigate = useNavigate()
+
+  const {isLoading, loginStatus, userInfo, isLoggedIn} = useContext(UserContext)
   
   useEffect(()=>{
-    console.log(userID)
-  },[userID])
+    loginStatus()
+  },[])
 
   return (
     <div className="alldetails">
-      <Navbar className="navbar"></Navbar>
-      <h1 className="maninhead">Profile SetUp {console.log(userID)}</h1>
+      {!isLoggedIn ? 
+      (  
+      <>
+      <h1>You cannot access this page without logging in</h1>
+      <button onClick={()=>navigate('/')}>Go to Home Page</button>
+      </>
+      ):
+      (
+        <>
+          <Navbar className="navbar"></Navbar>
+          <h1 className="maninhead">Profile SetUp</h1>
       
       <div className="col1">
         {" "}
         <h1 className="headingcomp">Company Details</h1>
-        <button onClick={()=>console.log(userInfo.userId, userInfo)}>Update Count</button>
+        {/* <button onClick={()=>console.log(userInfo.userId, userInfo)}>Update Count</button> */}
         <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
@@ -156,6 +170,14 @@ function CompanyDetails() {
       <div className="footer">
         <h1 className="heading">Footer</h1>
       </div>
+        </>
+      )}
+    </div>
+    
+  )
+  return (
+    <div className="alldetails">
+      
     </div>
   );
 }
