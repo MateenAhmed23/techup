@@ -19,8 +19,8 @@ import JobDescSmall from "./components/subcomponents/jobDescSmall";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <CreateNewJob/>,
-    // element: <Landingpage/>,
+    // element: <CreateNewJob/>,
+    element: <Landingpage/>,
   },
   {
     path: "/login",

@@ -43,10 +43,16 @@ function Provider({children}){
           }
     }
 
+    // const updateCount = async ()=>{
+    //     // setUserID(`Mateen${count}`)
+    //     // console.log(count)
+    //     // setCount(count+1)
+    // }
+
     const loginStatus = async ()=>{
 
 
-        // console.log('I am here')
+        console.log('I am here')
 
         setIsLoading(true)
         if (isLoggedIn){
@@ -68,9 +74,13 @@ function Provider({children}){
             // console.log('Inside loginStatus', res.valid)
             if (res.valid){
                 // console.log('I am returning valid')
+                console.log(res.payload)
+
+                setUserID(res.payload.userId)
+                console.log(userID)
+                console.log(res.payload.userId)
                 setIsLoggedIn(true)
-                setUserID(res.userId)
-                setUserEmail(res.email)
+                setUserEmail(res.payload.email)
                 setIsLoading(false)
 
                 return true
@@ -81,9 +91,11 @@ function Provider({children}){
         return false
     }
 
+
+
     const userInfo = {
         userEmail,
-        userID,
+        userId: userID,
         // userRole
     }
 
@@ -91,7 +103,9 @@ function Provider({children}){
         isLoading,
         isLoggedIn,
         loginStatus,
-        userInfo
+        userInfo,
+        userID,
+        // updateCount,
         // count: count,
         // incrementCount: hehe
     }

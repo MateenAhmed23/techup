@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
@@ -37,7 +37,7 @@ function Signup(){
 
 
     if (isLoggedIn){
-      navigate('/')
+      navigate('/companyDetails')
     }
     else{
       loginStatus()
@@ -49,6 +49,12 @@ function Signup(){
     //   navigate('/')
     // }
   },[isLoggedIn])
+
+  // useEffect(()=>{
+  //   console.log('Called inside signup')
+  //   // console.log(count)
+  //   updateCount()
+  // },[])
 
   async function handleSignup(username,email,password,confirmPassword){
     if (password !== confirmPassword) {
@@ -87,7 +93,7 @@ function Signup(){
 
         localStorage.setItem('token', data.token);
 
-        navigate('/')
+        navigate('/companyDetails')
 
         // Accessing token from local storage
         // const myData = JSON.parse(localStorage.getItem('myData'));
