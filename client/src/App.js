@@ -1,19 +1,49 @@
 // import logo from './logo.svg';
 import "./App.css";
+import React from "react";
 
-import React, { Component } from "react";
+// For routing
+// import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+
+
+
 import Landingpage from "./components/landingpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
-import CompDetails from "./components/companyDetails";
+import CompanyDetails from "./components/companyDetails";
+import CreateNewJob from "./components/createNewJob";
+import JobDescSmall from "./components/subcomponents/jobDescSmall";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    // element: <CreateNewJob/>,
+    element: <Landingpage/>,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Signup />,
+  },
+  {
+    path: "/createnewjob",
+    element: <CreateNewJob />,
+  },
+  {
+    path: "/companyDetails",
+    element: <CompanyDetails />,
+  }
+]);
 
 function App() {
   return (
     <React.Fragment>
-      {/* <Landingpage></Landingpage> */}
-      {/* <Login></Login> */}
-      {/* <Signup></Signup> */}
-        <CompDetails></CompDetails>
+      <RouterProvider router={router} />
     </React.Fragment>
   );
 }

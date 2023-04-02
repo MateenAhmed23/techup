@@ -1,0 +1,116 @@
+.alldetails {
+  margin-top: 0px;
+  padding-top: 0px;
+  height: auto;
+  width: 100%;
+  background-color: rgb(223, 217, 217);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 7% 8% 500px 8% 500px;
+  grid-gap: 0%;
+}
+
+.navbar {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  /* position: fixed; */
+}
+.maninhead {
+  margin-top: 2%;
+margin-left: 41%;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  text-decoration: underline;
+}
+.headingcomp {
+  margin-left: 30%;
+  text-decoration: underline;
+  font-size: 190%;
+  color: rgb(74, 69, 69);
+  font-weight: bolder;
+}
+
+.col1 {
+  margin-left: 10%;
+  /* margin-top: %; */
+  margin-right: 10%;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  /* position: fixed; */
+}
+.col2 {
+  z-index: 2;
+  box-shadow: 0 10px 20px rgba(245, 240, 240, 0.2);
+  margin-left: 10%;
+  margin-right: 10%;
+  /* margin-top: 10%; */
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  /* position: fixed; */
+}
+
+a {
+  font-weight: bolder;
+  color: red;
+}
+
+.register {
+  margin-right: 55px;
+  border: 3px solid black;
+  border-radius: 20px;
+  color: rgb(0, 0, 0);
+  background-color: rgb(162, 172, 181);
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 45px;
+  display: inline-block;
+  line-height: 40px;
+  text-decoration: none;
+  /* outline-offset: 54px; */
+  vertical-align: middle;
+  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+  margin-left: 10%;
+}
+
+.back {
+  text-decoration: none;
+  margin-left: 40%;
+  margin-right: -20px;
+  border: 3px solid black;
+  border-radius: 20px;
+  color: rgb(3, 3, 3);
+  background-color: rgb(26, 94, 154);
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 45px;
+  display: inline-block;
+  line-height: 40px;
+  vertical-align: middle;
+  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+}
+
+.buttondet {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 4;
+  grid-row-end: 5;
+}
+
+.footer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
+  grid-row-end: 6;
+  background: rgba(209, 28, 28, 0.9);
+}

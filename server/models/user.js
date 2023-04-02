@@ -4,7 +4,8 @@ const User = new mongoose.Schema({
   name: {type: String,required: true},
   email: {type: String,required: true,unique: true},
   password: {type: String,required: true},
-  role: {type: String, default: 'candidate'},
+  role: {type: String, default: 'client'},
+  tokens: [String]
 }, {collection: 'user-data'});
 
 const model = mongoose.model("UserData", User);
