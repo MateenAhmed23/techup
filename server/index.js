@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const Company = require("./models/company");
+const Company = require("./models/company"); // Added company model
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const app = express();
@@ -14,11 +14,7 @@ app.use(express.json());
 
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
-mongoose.connect(
-  process.env.MONGODB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Connected to MongoDB")
-);
+mongoose.connect(process.env.MONGODB_URI);
 
 const secret = "makingacoolATS";
 
@@ -34,7 +30,8 @@ function generateToken(user) {
   return jwt.sign(payload, secret, options);
 }
 
-app.post("api/companies", async (req, res) => {
+// Ahsan added a route API which i can hit on postman to run this code
+app.post("/api/companies", async (req, res) => {
   try {
     const company = new Company(req.body);
     await company.save();
@@ -43,6 +40,7 @@ app.post("api/companies", async (req, res) => {
     res.status(500).json({ message: "Error adding company", error });
   }
 });
+//////
 
 app.post("/api/register", async (req, res) => {
   // console.log(req.body);
