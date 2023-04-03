@@ -7,6 +7,9 @@ import React from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+
+
+
 import Landingpage from "./components/landingpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
@@ -30,10 +33,6 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/compdetails",
-    element: <CompanyDetails />,
-  },
-  {
     path: "/createnewjob",
     element: <CreateNewJob />,
   },
@@ -41,6 +40,10 @@ const router = createBrowserRouter([
     path: "/jobdisplaycell",
     element: < CompanyDashboard/>,
   },
+  {
+    path: "/companyDetails",
+    element: <CompDetails />,
+  }
 ]);
 
 function App() {

@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import logo from "./csssubcomponents/logowhite .png";
 import "./csssubcomponents/navbar.css";
+
+
+import { Link } from "react-router-dom";
+
+
+
 class Navbar extends Component {
   state = {
     
@@ -34,9 +40,10 @@ class Navbar extends Component {
           <a onClick={() => this.props.onnavclick("contractus")} className="contractus" href="#">
             Contract Us
           </a>
-          <a onClick={() => this.props.onnavclick("signup")} className="signup" href="#">
+          <Link to='/register'  className="signup">Signup</Link>
+          {/* <a onClick={() => this.props.onnavclick("signup")} className="signup" href="#">
             SignUp
-          </a>
+          </a> */}
         </nav>
     );
   }
