@@ -39,25 +39,23 @@
 .newjobpage {
   margin-top: 0px;
   padding-top: 0px;
+
   height: auto;
   width: 100%;
   background-color: rgb(223, 217, 217);
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 12% 8% 600px 500px;
-  grid-gap: 0%;
-}
-
-.job-desc-cell {
-  padding-bottom: 6px;
-  /* padding-left: 100px; */
+  grid-template-rows: 12% 8% 700px 500px;
+  grid-gap: 0%
 }
 
 .navbar {
+
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+
 }
 
 .mainhead {
@@ -73,10 +71,9 @@
   grid-column-end: 2;
   grid-row-start: 3;
   grid-row-end: 4;
-  display: grid;
-  grid-template-columns: 30% 70%;
-  grid-template-rows: 12% 8% 500px 8% 500px;
-  grid-gap: 0%;
+}
+.job-desc-cell{
+  padding: 2px;
 }
 
 .descriptions {
@@ -88,51 +85,11 @@
   grid-row-end: 4;
 }
 
-.buttonsss {
+.footer {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 4;
   grid-row-end: 5;
-
-}
-
-.back {
-  background-color: #d1d1d1;
-  color: #282726;
-  border-radius: 30%;
-  font-size: 20px;
-  font-weight: bold;
-  margin-right: 2%;
-  height: 50px;
-  width: 150px;
-}
-
-.create {
-  background-color: #007bff;
-  color: #101010;
-
-  border-radius: 30%;
-  font-size: 20px;
-  font-weight: bold;
-  height: 50px;
-  width: 150px;
-}
-
-.back:hover {
-  background-color: #282726;
-  color: #d1d1d1;
-}
-
-.create:hover {
-  background-color: #101010;
-  color: #007bff;
-  size: ;
-}
-
-.footer {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 5;
-  grid-row-end: 6;
   background: rgba(209, 28, 28, 0.9);
 }
+

@@ -1,0 +1,82 @@
+  .dashboardcompany {
+      margin-top: 0px;
+      padding-top: 0px;
+      height: auto;
+      width: 100%;
+      background-color: rgb(223, 217, 217);
+      display: grid;
+      grid-template-columns: 26% 74%;
+      grid-template-rows: 6.3% 9% 700px 500px;
+      grid-gap: 0%
+  }
+
+  .navbar {
+
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 1;
+      grid-row-end: 2;
+
+  }
+
+  .head {
+      font-size: 4vh;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bolder;
+      padding-top: 1%;
+      margin-left: 3%;
+
+      /* padding-left: 10%; */
+      /* margin-bottom: 20px; */
+    
+  }
+
+  
+  .searchbar {
+      grid-column-start: 2;
+      grid-column-end: 3;
+      grid-row-start: 2;
+      grid-row-end: 3;
+      display: flex;
+      margin-top: 2%;
+      width: 100vw  ;
+      /* justify-content: space-evenly; */
+      flex-direction: row;
+      gap:20%;
+
+  }
+
+  .Sidebar {
+    margin-top: 0%;
+    padding-top: 0%;
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 4;
+
+  }
+
+  .jobs {
+      margin-top: 0px;
+      grid-column-start: 2;
+      grid-column-end: 3;
+      z-index: 1;
+      grid-row-start: 3;
+      grid-row-end: 4;
+      background-color: rgb(223, 217, 217);;
+
+  }
+
+  .footer {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 4;
+      grid-row-end: 5;
+      background: rgba(0, 0, 0, 0.8);
+  }
+  tbody{
+    margin-top: 2%;
+  }
+  .job__desc {
+    padding-bottom: 10px;
+  }
