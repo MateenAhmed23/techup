@@ -4,7 +4,7 @@ class JobDescSmall extends Component {
   state = {};
   render() {
     return (
-      <div class="field field_v1">
+      <div className="field field_v1">
         
         <label className="ha-screen-reader" htmlFor={this.props.id}>
           Label
@@ -17,8 +17,8 @@ class JobDescSmall extends Component {
           placeholder={this.props.placeholder}
           style={{ height: this.props.height }}
    />
-        <span class="field__label-wrap" aria-hidden="true">
-          <span class="field__label">{this.props.label}</span>
+        <span className="field__label-wrap" aria-hidden="true">
+          <span className="field__label">{this.props.label}</span>
         </span>
       </div>
     );
