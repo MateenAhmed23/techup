@@ -1,0 +1,103 @@
+.cell {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+    border-radius: 3px;
+    justify-content: space-between;
+    /* max-width: 15   50px; */
+    height: 10%;
+    margin: auto;
+    background: rgba(136, 128, 128, 0.959);
+    align-items: center;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2);
+    min-width: 60%;
+    /* margin-top: 0px; */
+   /* padding-top: 0px; */
+   /* position: absolute; */
+   border-radius: 40px;
+}
+
+.cell ul {
+
+    margin-top: 20px;
+    margin-right: 350px;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    /* border: 2px solid red; */
+    justify-content: space-between;
+    gap: 40px;
+    
+}
+.cell ul li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+  }
+
+a{
+    font-weight: bolder;
+    color: red;
+}
+
+.editt{
+
+    text-align-last: center;
+    border: 3px solid black;
+    border-radius: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(162, 172, 181);
+    padding-bottom: 15px;
+    padding-left: 0px;
+    padding-right: 00px;
+    height: 45px;
+    display: inline-block;
+    line-height: 40px;
+    width: 14vw;
+    text-decoration: none;
+    /* outline-offset: 54px; */
+    vertical-align: middle;
+    box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+}
+
+.viewdetails{   
+    text-align-last: center;    
+    text-decoration: none;
+    width: 10vw;
+    margin-right: 20px;
+    border: 3px solid black;
+    border-radius: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(26, 94, 154);
+    padding-bottom: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 45px;
+    display: inline-block;
+    line-height: 40px;
+    vertical-align: middle;
+    box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+    
+
+}
+.viewdetails:hover{
+    color: black;
+    transition: 0.35s;
+}
+.editt:hover{
+    color: black;
+    transition: 0.35s;
+}
+.cell ul li {
+    flex: 1;
+  }
+  
+  .cell ul li:first-child {
+    flex: 1;
+  }
+  
+  .cell ul li:last-child {
+    flex: 2;
+  }
