@@ -5,9 +5,11 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const Company = require("./models/company"); // Added company model
+const companiesRoute = require("./routes/companies");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const app = express();
+const JobDetails = require("./models/jobDetails"); // Added jobdetails model by Sufian
 
 app.use(cors());
 app.use(express.json());
@@ -29,6 +31,47 @@ function generateToken(user) {
 
   return jwt.sign(payload, secret, options);
 }
+
+app.post("/api/companies_url", (req, res) => {
+  const { name, address, email, password, website, phoneNumber } = req.body;
+
+  // First create the company
+  const company = new Company({ name, address, website, phoneNumber });
+  company.save((err, savedCompany) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    // Then create the user with the newly created company as the foreign key
+    const user = new User({
+      name,
+      email,
+      password,
+      company: savedCompany._id,
+    });
+    user.save((err, savedUser) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      res.status(201).send({ company: savedCompany, user: savedUser });
+    });
+  });
+});
+
+// Sufian added this
+app.post("/api/jobDetails", async (req, res) => {
+  try {
+    const jobDetails = new JobDetails(req.body);
+    await jobDetails.save();
+    res
+      .status(201)
+      .json({ message: "Job details added successfully", jobDetails });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding job details", error });
+  }
+});
+///
 
 // Ahsan added a route API which i can hit on postman to run this code
 app.post("/api/companies", async (req, res) => {
@@ -94,6 +137,7 @@ app.post("/api/login", async (req, res) => {
     bcrypt.compare(
       req.body.password,
       user.password,
+
       async function (err, result) {
         if (result) {
           const token = generateToken(user);
