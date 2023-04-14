@@ -9,7 +9,7 @@ import UserContext from "../context/user";
 
 import { useNavigate } from "react-router-dom";
 
-function CompanyDetails() {
+function CompanyDetails(props) {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
   const [website, setWebsite] = useState("");
@@ -27,6 +27,10 @@ function CompanyDetails() {
   useEffect(()=>{
     loginStatus()
   },[])
+
+  function handleRegister(){
+    console.log('Lets register the company here')
+  }
 
   return (
     <div className="alldetails">
@@ -158,13 +162,7 @@ function CompanyDetails() {
         >
            &nbsp; &nbsp;Back  &nbsp; &nbsp;
         </a>
-        <a
-          onClick={() => this.props.onnavclick("signup")}
-          className="register"
-          href="#"
-        >
-          Register
-        </a>
+        <button className="register" onClick={()=>handleRegister()}>Register</button>
       </div>
 
       <div className="footer">
