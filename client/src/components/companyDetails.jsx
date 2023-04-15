@@ -173,11 +173,6 @@ function CompanyDetails(props) {
     </div>
     
   )
-  return (
-    <div className="alldetails">
-      
-    </div>
-  );
 }
 
 
