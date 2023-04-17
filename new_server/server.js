@@ -118,7 +118,7 @@ app.post("/verify-token", (req, res) => {
 
   // Verify the token and return a response
   try {
-    const payload = jwt.verify(token, secret);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     console.log(payload);
     res.status(200).json({ valid: true, payload });
   } catch (err) {
