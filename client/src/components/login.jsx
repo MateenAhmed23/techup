@@ -60,19 +60,21 @@ function Login(){
       });
 
       const data = await response.json();
-      if (data.status === "error"){
-        // setError(true);
-        alert(data.message);
-        // setTimeout(() => {
-        //   setErrorMsg("");
-        //   setError(false);
-        // }, 5000);
-        return;
-      }else{
-        console.log('USER LOGINNED SUCCESSFULLY')
-        localStorage.setItem("token", data.token);
-        navigate('/');
-      }
+
+      console.log(data)
+      // if (data.status === "error"){
+      //   // setError(true);
+      //   alert(data.message);
+      //   // setTimeout(() => {
+      //   //   setErrorMsg("");
+      //   //   setError(false);
+      //   // }, 5000);
+      //   return;
+      // }else{
+      //   console.log('USER LOGINNED SUCCESSFULLY')
+      //   localStorage.setItem("token", data.token);
+      //   navigate('/');
+      // }
   }
 
   function handleclick(){

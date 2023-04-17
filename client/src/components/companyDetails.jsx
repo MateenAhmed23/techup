@@ -40,14 +40,41 @@ function CompanyDetails() {
 
   const navigate = useNavigate()
 
-  const {isLoading, loginStatus, userInfo, isLoggedIn} = useContext(UserContext)
+  const isLoggedIn = true
+  const {isLoading, loginStatus, userInfo } = useContext(UserContext)
   
   useEffect(()=>{
-    loginStatus()
+    // loginStatus()
   },[])
 
-  function handleRegister(){
+  async function handleRegister(){
     console.log('Lets register the company here')
+
+    const companyAddress = address
+
+    const companyWebsite = website
+
+    const companyPhoneNumber = number
+
+
+     const response = await fetch("http://127.0.0.1:5000/api/company_signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          companyName,
+          companyAddress,
+          companyWebsite,
+          companyPhoneNumber,
+        }),
+      });
+
+      const res= await response.json()
+
+      console.log(res)
   }
 
   return (
