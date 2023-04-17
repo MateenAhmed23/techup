@@ -9,7 +9,7 @@ import linkedin from "./csssubcomponents/linkedin.png";
 function SignupForm({onSubmit}){
 
 
-  const [username,setUsername] = useState('')
+  // const [username,setUsername] = useState('')
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
@@ -17,13 +17,13 @@ function SignupForm({onSubmit}){
 
   function onClickRegister(){
     console.log('HIII')
-    onSubmit(username,email,password,confirmPassword)
+    onSubmit(email,password,confirmPassword)
   }
 
 
-  function handleUsernameChange (e) {
-    setUsername(e.target.value)
-  };
+  // function handleUsernameChange (e) {
+  //   setUsername(e.target.value)
+  // };
 
   function handleEmailChange (e) {
     setEmail(e.target.value)
@@ -76,7 +76,7 @@ function SignupForm({onSubmit}){
                           Register your account
                         </h5>
 
-                        <div className="form-outline mb-3">
+                        {/* <div className="form-outline mb-3">
                           <Inputfield
                             claslabel="form-label"
                             label="Username"
@@ -87,7 +87,7 @@ function SignupForm({onSubmit}){
                             onChange={handleUsernameChange}
                             placeholdr="Enter your Username"
                           />
-                        </div>
+                        </div> */}
 
                         <div className="form-outline mb-3">
                           <Inputfield

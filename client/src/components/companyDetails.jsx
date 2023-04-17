@@ -12,19 +12,30 @@ import UserContext from "../context/user";
 
 import { useNavigate } from "react-router-dom";
 
-function CompanyDetails(props) {
+function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
   const [website, setWebsite] = useState("");
   const [number, setNumber] = useState();
-  const [personName, setPersonName] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [email, setEmail] = useState("");
-  const [personNumber, setPersonNumber] = useState();
+  // const [personName, setPersonName] = useState("");
+  // const [designation, setDesignation] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [personNumber, setPersonNumber] = useState();
 
   const location = useLocation();
 
-  console.log(location.state.username)
+  // email, password received from registration
+
+  const {email, password} = location.state
+
+  // companyName,
+  //     companyAddress,
+  //     companyWebsite,
+  //     companyPhoneNumber,
+  //     email,
+  //     password,
+
+  // console.log(location.state.username)
 
 
   const navigate = useNavigate()
@@ -109,7 +120,7 @@ function CompanyDetails(props) {
       <div className="col2">
         <h1 className="headingcomp">Person Details</h1>
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Name"
@@ -120,9 +131,9 @@ function CompanyDetails(props) {
             onChange={(e) => setPersonName(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Designation"
@@ -133,9 +144,9 @@ function CompanyDetails(props) {
             onChange={(e) => setDesignation(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Email Address"
@@ -146,9 +157,9 @@ function CompanyDetails(props) {
             onChange={(e) => setEmail(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Contact Number"
@@ -159,7 +170,7 @@ function CompanyDetails(props) {
             onChange={(e) => setPersonNumber(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
       </div>
       <div className="buttondet">
         <a

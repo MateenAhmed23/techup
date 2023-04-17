@@ -56,7 +56,7 @@ function Signup(){
   //   updateCount()
   // },[])
 
-  async function handleSignup(username,email,password,confirmPassword){
+  async function handleSignup(email,password,confirmPassword){
     if (password !== confirmPassword) {
       // setError(true);
       alert("Passwords do not match");
@@ -102,7 +102,6 @@ function Signup(){
       // }
 
       navigate('/companyDetails', {state:{
-        username,
         email,
         password
       }})
