@@ -27,6 +27,20 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
+// {
+//   companyName,
+//   companyAddress,
+//   companyWebsite,
+//   companyPhoneNumber,
+//   email,
+//   password,
+// }
+// {
+//   status 200
+//   client
+//   token
+// }
+
 app.post("/company_signup", async (req, res) => {
   try {
     const {
@@ -83,6 +97,20 @@ app.post("/company_signup", async (req, res) => {
   }
 });
 
+// {
+//   email,
+//   password
+// }
+// {
+//   res={
+//     status 201
+//     id: client
+//     token
+//     message: "Logged in successfully"
+//   }
+//   cookie token
+// }
+
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -104,13 +132,25 @@ app.post("/login", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token, { httpOnly: true }); // 1 hour
-    res.status(200).json({ message: "Logged in successfully", client, token });
+    res
+      .status(201)
+      .json({ message: "Logged in successfully", id: client._id, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// {
+//   headers.authorization
+// }
+// {
+//   status 201
+//   valid: true
+//   payload -> {clientId: client._id,
+//     email: client.email,
+// }
+// }
 app.post("/verify-token", (req, res) => {
   console.log(req.headers.authorization);
 
@@ -120,12 +160,27 @@ app.post("/verify-token", (req, res) => {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     console.log(payload);
-    res.status(200).json({ valid: true, payload });
+    res.status(201).json({ valid: true, payload });
   } catch (err) {
     console.log(err);
     res.status(401).json({ valid: false, error: "Invalid token" });
   }
 });
+
+// {
+//   title,
+//   department,
+//   type,
+//   stack,
+//   description,
+//   yearsOfExperience (number),
+//   companyId,
+// }
+
+// {
+//   status 201
+//   { jobId: job._id }
+// }
 
 app.post("/create_jobs", async (req, res) => {
   try {
@@ -156,15 +211,33 @@ app.post("/create_jobs", async (req, res) => {
       company: companyId,
     });
 
-    res.status(201).json({ job });
+    res.status(201).json({ jobId: job._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// Middleware to verify JWT tokens
+const verifyTokenMiddleWare = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.clientId = decoded.clientId;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/create_client", verifyToken, async (req, res) => {
+app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.clientId);
@@ -202,7 +275,7 @@ app.post("/create_client", verifyToken, async (req, res) => {
       company: company._id,
     });
 
-    res.status(201).json(newClient);
+    res.status(201).json({ clientId: newClient._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
