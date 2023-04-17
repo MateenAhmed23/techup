@@ -7,8 +7,10 @@ const cookieParser = require("cookie-parser");
 const Company = require("./models/company");
 const Client = require("./models/client");
 const Job = require("./models/job");
+const cors = require("cors");
 
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use(cookieParser());
 
@@ -27,7 +29,22 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-app.post("/company_signup", async (req, res) => {
+
+// {
+//   companyName,
+//   companyAddress,
+//   companyWebsite,
+//   companyPhoneNumber,
+//   email,
+//   password,
+// }
+// {
+//   status 200
+//   client
+//   token
+// }
+
+app.post("/api/company_signup", async (req, res) => {
   try {
     const {
       companyName,
@@ -83,7 +100,25 @@ app.post("/company_signup", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+// {
+//   email,
+//   password
+// }
+// {
+//   res={
+//     status 201
+//     id: client
+//     token
+//     message: "Logged in successfully"
+//   }
+//   cookie token
+//   send companyID
+// }
+
+
+
+
+app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -104,13 +139,25 @@ app.post("/login", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token, { httpOnly: true }); // 1 hour
-    res.status(200).json({ message: "Logged in successfully", client, token });
+    res
+      .status(201)
+      .json({ message: "Logged in successfully", clientId: client._id, token, companyId: client.company });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// {
+//   headers.authorization -> token
+// }
+// {
+//   status 201
+//   valid: true
+//   payload -> {clientId: client._id,
+//     email: client.email,
+// }
+// }
 app.post("/verify-token", (req, res) => {
   console.log(req.headers.authorization);
 
@@ -118,14 +165,29 @@ app.post("/verify-token", (req, res) => {
 
   // Verify the token and return a response
   try {
-    const payload = jwt.verify(token, secret);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     console.log(payload);
-    res.status(200).json({ valid: true, payload });
+    res.status(201).json({ valid: true, payload });
   } catch (err) {
     console.log(err);
     res.status(401).json({ valid: false, error: "Invalid token" });
   }
 });
+
+// {
+//   title,
+//   department,
+//   type,
+//   stack,
+//   description,
+//   yearsOfExperience (number),
+//   companyId,
+// }
+
+// {
+//   status 201
+//   { jobId: job._id }
+// }
 
 app.post("/create_jobs", async (req, res) => {
   try {
@@ -156,18 +218,52 @@ app.post("/create_jobs", async (req, res) => {
       company: companyId,
     });
 
-    res.status(201).json({ job });
+    res.status(201).json({ jobId: job._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// {
+//   headers.authorization -> token
+// }
+// Middleware to verify JWT tokens
+const verifyTokenMiddleWare = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.clientId = decoded.clientId;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+// {
+//   headers.authorization -> token,
+//   clientId
+//   name,
+//   email,
+//   password
+// }
+
+// {
+//   status 201
+//   { clientId: newClient._id }
+// }
+
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/create_client", verifyToken, async (req, res) => {
+app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
-    const client = await Client.findById(req.clientId);
+    const client = await Client.findById(req.body.clientId);
 
     if (client.role !== "superuser") {
       return res.status(401).json({ message: "Unauthorized" });
@@ -202,7 +298,7 @@ app.post("/create_client", verifyToken, async (req, res) => {
       company: company._id,
     });
 
-    res.status(201).json(newClient);
+    res.status(201).json({ clientId: newClient._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

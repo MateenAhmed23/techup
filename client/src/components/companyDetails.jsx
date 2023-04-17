@@ -5,31 +5,76 @@ import Inputfield from "./subcomponents/inputfield";
 import "./cssmaincomponents/companydetails.css";
 
 
+import {useLocation} from 'react-router-dom';
+
+
 import UserContext from "../context/user";
 
 import { useNavigate } from "react-router-dom";
 
-function CompanyDetails(props) {
+function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
   const [website, setWebsite] = useState("");
   const [number, setNumber] = useState();
-  const [personName, setPersonName] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [email, setEmail] = useState("");
-  const [personNumber, setPersonNumber] = useState();
+  // const [personName, setPersonName] = useState("");
+  // const [designation, setDesignation] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [personNumber, setPersonNumber] = useState();
+
+  const location = useLocation();
+
+  // email, password received from registration
+
+  const {email, password} = location.state
+
+  // companyName,
+  //     companyAddress,
+  //     companyWebsite,
+  //     companyPhoneNumber,
+  //     email,
+  //     password,
+
+  // console.log(location.state.username)
 
 
   const navigate = useNavigate()
 
-  const {isLoading, loginStatus, userInfo, isLoggedIn} = useContext(UserContext)
+  const isLoggedIn = true
+  const {isLoading, loginStatus, userInfo } = useContext(UserContext)
   
   useEffect(()=>{
-    loginStatus()
+    // loginStatus()
   },[])
 
-  function handleRegister(){
+  async function handleRegister(){
     console.log('Lets register the company here')
+
+    const companyAddress = address
+
+    const companyWebsite = website
+
+    const companyPhoneNumber = number
+
+
+     const response = await fetch("http://127.0.0.1:5000/api/company_signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          companyName,
+          companyAddress,
+          companyWebsite,
+          companyPhoneNumber,
+        }),
+      });
+
+      const res= await response.json()
+
+      console.log(res)
   }
 
   return (
@@ -102,7 +147,7 @@ function CompanyDetails(props) {
       <div className="col2">
         <h1 className="headingcomp">Person Details</h1>
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Name"
@@ -113,9 +158,9 @@ function CompanyDetails(props) {
             onChange={(e) => setPersonName(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Designation"
@@ -126,9 +171,9 @@ function CompanyDetails(props) {
             onChange={(e) => setDesignation(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Email Address"
@@ -139,9 +184,9 @@ function CompanyDetails(props) {
             onChange={(e) => setEmail(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Contact Number"
@@ -152,7 +197,7 @@ function CompanyDetails(props) {
             onChange={(e) => setPersonNumber(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
       </div>
       <div className="buttondet">
         <a
@@ -173,11 +218,6 @@ function CompanyDetails(props) {
     </div>
     
   )
-  return (
-    <div className="alldetails">
-      
-    </div>
-  );
 }
 
 
