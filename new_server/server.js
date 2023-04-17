@@ -142,7 +142,7 @@ app.post("/login", async (req, res) => {
 });
 
 // {
-//   headers.authorization
+//   headers.authorization -> token
 // }
 // {
 //   status 201
@@ -218,9 +218,12 @@ app.post("/create_jobs", async (req, res) => {
   }
 });
 
+// {
+//   headers.authorization -> token
+// }
 // Middleware to verify JWT tokens
 const verifyTokenMiddleWare = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -236,11 +239,24 @@ const verifyTokenMiddleWare = (req, res, next) => {
   }
 };
 
+// {
+//   headers.authorization -> token,
+//   clientId
+//   name,
+//   email,
+//   password
+// }
+
+// {
+//   status 201
+//   { clientId: newClient._id }
+// }
+
 // API endpoint for a superuser client to create new regular clients for its own company
 app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
-    const client = await Client.findById(req.clientId);
+    const client = await Client.findById(req.body.clientId);
 
     if (client.role !== "superuser") {
       return res.status(401).json({ message: "Unauthorized" });
