@@ -15,16 +15,16 @@ app.use(cookieParser());
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
 
-function generateToken(user) {
+function generateToken(client) {
   const payload = {
-    userId: user._id,
-    email: user.email,
+    clientId: client._id,
+    email: client.email,
   };
   const options = {
     expiresIn: "5h",
   };
 
-  return jwt.sign(payload, secret, options);
+  return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
 app.post("/company_signup", async (req, res) => {
@@ -62,6 +62,7 @@ app.post("/company_signup", async (req, res) => {
 
     // Create a new client (super user)
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const client = await Client.create({
       name: companyName,
       email: email,
@@ -75,7 +76,7 @@ app.post("/company_signup", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token); // 1 hour
-    res.status(201).json({ company, client, token });
+    res.status(201).json({ client, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -99,19 +100,30 @@ app.post("/login", async (req, res) => {
     }
 
     // Create and sign JWT
-    const token = jwt.sign(
-      { id: client._id, role: client.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = generateToken(client);
 
     // Set JWT as a cookie
-    res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
-
-    res.status(200).json({ message: "Logged in successfully", client });
+    res.cookie("token", token, { httpOnly: true }); // 1 hour
+    res.status(200).json({ message: "Logged in successfully", client, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/verify-token", (req, res) => {
+  console.log(req.headers.authorization);
+
+  const token = req.headers.authorization;
+
+  // Verify the token and return a response
+  try {
+    const payload = jwt.verify(token, secret);
+    console.log(payload);
+    res.status(200).json({ valid: true, payload });
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ valid: false, error: "Invalid token" });
   }
 });
 
