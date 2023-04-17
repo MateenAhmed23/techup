@@ -5,6 +5,9 @@ import Inputfield from "./subcomponents/inputfield";
 import "./cssmaincomponents/companydetails.css";
 
 
+import {useLocation} from 'react-router-dom';
+
+
 import UserContext from "../context/user";
 
 import { useNavigate } from "react-router-dom";
@@ -18,6 +21,10 @@ function CompanyDetails(props) {
   const [designation, setDesignation] = useState("");
   const [email, setEmail] = useState("");
   const [personNumber, setPersonNumber] = useState();
+
+  const location = useLocation();
+
+  console.log(location.state.username)
 
 
   const navigate = useNavigate()

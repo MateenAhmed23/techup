@@ -27,6 +27,7 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
+
 app.post("/company_signup", async (req, res) => {
   try {
     const {
