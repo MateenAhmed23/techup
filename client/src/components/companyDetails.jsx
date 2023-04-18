@@ -74,7 +74,7 @@ function CompanyDetails() {
 
       const res= await response.json()
 
-      console.log(res)
+      // console.log(res.status)
   }
 
   return (

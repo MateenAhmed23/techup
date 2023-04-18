@@ -46,7 +46,7 @@ function Login(){
 
 
   async function handleLogin(email, password){
-      console.log(email)
+      // console.log(email)
 
       const response = await fetch("http://127.0.0.1:5000/api/login", {
         method: "POST",
@@ -62,19 +62,15 @@ function Login(){
       const data = await response.json();
 
       console.log(data)
-      // if (data.status === "error"){
-      //   // setError(true);
-      //   alert(data.message);
-      //   // setTimeout(() => {
-      //   //   setErrorMsg("");
-      //   //   setError(false);
-      //   // }, 5000);
-      //   return;
-      // }else{
-      //   console.log('USER LOGINNED SUCCESSFULLY')
-      //   localStorage.setItem("token", data.token);
-      //   navigate('/');
-      // }
+
+      if (response.status == 201){
+        console.log('USER LOGINNED SUCCESSFULLY')
+        localStorage.setItem("token", data.token);
+        navigate('/');
+      }else{
+        alert(data.message);
+        return;
+      }
   }
 
   function handleclick(){
