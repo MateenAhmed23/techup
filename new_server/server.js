@@ -158,15 +158,13 @@ app.post("/api/login", async (req, res) => {
 //     email: client.email,
 // }
 // }
-app.post("/verify-token", (req, res) => {
-  console.log(req.headers.authorization);
+app.post("/api/verify-token", (req, res) => {
 
   const token = req.headers.authorization;
 
   // Verify the token and return a response
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(payload);
     res.status(201).json({ valid: true, payload });
   } catch (err) {
     console.log(err);
@@ -189,7 +187,7 @@ app.post("/verify-token", (req, res) => {
 //   { jobId: job._id }
 // }
 
-app.post("/create_jobs", async (req, res) => {
+app.post("/api/create_jobs", async (req, res) => {
   try {
     const {
       title,
