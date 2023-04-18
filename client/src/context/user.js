@@ -6,12 +6,8 @@ const UserContext = createContext()
 
 function Provider({children}){
 
-    // const [count, setCount] = useState(5);
-
-
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [userRole, setUserRole] = useState('')
     const [userId, setUserId] = useState('')
     const [userEmail, setUserEmail] = useState('')
     const [companyId, setCompanyId] = useState('')
@@ -115,12 +111,22 @@ function Provider({children}){
         return false
     }
 
+    const signOutUser = ()=>{
+        setIsLoading(true)
+        setIsLoggedIn(false)
+        setUserId('')
+        setUserEmail('')
+        setCompanyId('')
+        setUserRole('')
 
+    }
 
 
     const userInfo = {
         userEmail,
         userId: userId,
+        companyId,
+        userRole
         // userRole
     }
 
@@ -129,9 +135,7 @@ function Provider({children}){
         isLoggedIn,
         loginStatus,
         userInfo,
-        // updateCount,
-        // count: count,
-        // incrementCount: hehe
+        signOutUser
     }
 
     return (
