@@ -37,7 +37,8 @@ function generateToken(client) {
 // }
 // {
 //   status 200
-//   client
+//   clientId
+//   companyId
 //   token
 // }
 
@@ -90,7 +91,9 @@ app.post("/company_signup", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token); // 1 hour
-    res.status(201).json({ client, token });
+    res
+      .status(201)
+      .json({ clientId: client._id, companyId: company._id, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
