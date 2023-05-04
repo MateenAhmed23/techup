@@ -27,6 +27,7 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
+
 // {
 //   companyName,
 //   companyAddress,

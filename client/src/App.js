@@ -15,11 +15,12 @@ import Login from "./components/login";
 import Signup from "./components/signup";
 import CompanyDetails from "./components/companyDetails";
 import CreateNewJob from "./components/createNewJob";
-import JobDescSmall from "./components/subcomponents/jobDescSmall";
+import CompanyDashboard from "./components/companydashboard";
+import Memberdisplaycell from "./components/subcomponents/memberdisplaycell";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <CreateNewJob/>,
     element: <Landingpage/>,
   },
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/createnewjob",
     element: <CreateNewJob />,
+  },
+  {
+    path: "/jobdisplaycell",
+    element: < CompanyDashboard/>,
   },
   {
     path: "/companyDetails",
