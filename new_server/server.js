@@ -10,7 +10,7 @@ const Job = require("./models/job");
 const cors = require("cors");
 
 const app = express();
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -117,9 +117,6 @@ app.post("/api/company_signup", async (req, res) => {
 //   send companyID
 // }
 
-
-
-
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -141,9 +138,12 @@ app.post("/api/login", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token, { httpOnly: true }); // 1 hour
-    res
-      .status(201)
-      .json({ message: "Logged in successfully", clientId: client._id, token, companyId: client.company });
+    res.status(201).json({
+      message: "Logged in successfully",
+      clientId: client._id,
+      token,
+      companyId: client.company,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -161,7 +161,6 @@ app.post("/api/login", async (req, res) => {
 // }
 // }
 app.post("/api/verify-token", (req, res) => {
-
   const token = req.headers.authorization;
 
   // Verify the token and return a response
@@ -260,7 +259,7 @@ const verifyTokenMiddleWare = (req, res, next) => {
 // }
 
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
+app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
@@ -314,7 +313,7 @@ app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
 //   { companyId, isSuperUser(boolean), email, name }
 // }
 
-app.get("/get-user-info", async (req, res) => {
+app.get("/api/get-user-info", async (req, res) => {
   const userId = req.body.userId;
 
   try {
