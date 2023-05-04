@@ -7,8 +7,10 @@ const cookieParser = require("cookie-parser");
 const Company = require("./models/company");
 const Client = require("./models/client");
 const Job = require("./models/job");
+const cors = require("cors");
 
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use(cookieParser());
 
@@ -42,7 +44,7 @@ function generateToken(client) {
 //   token
 // }
 
-app.post("/company_signup", async (req, res) => {
+app.post("/api/company_signup", async (req, res) => {
   try {
     const {
       companyName,
@@ -112,9 +114,13 @@ app.post("/company_signup", async (req, res) => {
 //     message: "Logged in successfully"
 //   }
 //   cookie token
+//   send companyID
 // }
 
-app.post("/login", async (req, res) => {
+
+
+
+app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -137,7 +143,7 @@ app.post("/login", async (req, res) => {
     res.cookie("token", token, { httpOnly: true }); // 1 hour
     res
       .status(201)
-      .json({ message: "Logged in successfully", id: client._id, token });
+      .json({ message: "Logged in successfully", clientId: client._id, token, companyId: client.company });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -154,15 +160,13 @@ app.post("/login", async (req, res) => {
 //     email: client.email,
 // }
 // }
-app.post("/verify-token", (req, res) => {
-  console.log(req.headers.authorization);
+app.post("/api/verify-token", (req, res) => {
 
   const token = req.headers.authorization;
 
   // Verify the token and return a response
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(payload);
     res.status(201).json({ valid: true, payload });
   } catch (err) {
     console.log(err);
@@ -185,7 +189,7 @@ app.post("/verify-token", (req, res) => {
 //   { jobId: job._id }
 // }
 
-app.post("/create_jobs", async (req, res) => {
+app.post("/api/create_jobs", async (req, res) => {
   try {
     const {
       title,
