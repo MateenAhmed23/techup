@@ -8,6 +8,8 @@ const Company = require("./models/company");
 const Client = require("./models/client");
 const Job = require("./models/job");
 const cors = require("cors");
+const Question = require("./models/question");
+const Assessment = require("./models/assessment");
 
 const app = express();
 app.use(cors());
@@ -313,7 +315,7 @@ app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
 //   { companyId, isSuperUser(boolean), email, name }
 // }
 
-app.get("/api/get-user-info", async (req, res) => {
+app.post("/api/get-user-info", async (req, res) => {
   const userId = req.body.userId;
 
   try {
@@ -332,6 +334,127 @@ app.get("/api/get-user-info", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   text (question statement),
+//   correctAnswer(correct option text),
+//   incorrectAnswers(incorrect options ),
+//   tag (technical topic like OOP, DB or analytical),
+//   difficulty ("easy", "medium", "hard"),
+//   template (true if this is request is being made by superadmin, else false),
+//   company (contains companyId whos client is creating this question)
+// }
+// {
+//   status:201
+//   message: "Question created successfully",
+//   question,
+// }
+
+app.post("/api/create_question", async (req, res) => {
+  try {
+    const {
+      text,
+      correctAnswer,
+      incorrectAnswers,
+      tag,
+      difficulty,
+      template,
+      company,
+    } = req.body;
+
+    if (!template && !company) {
+      return res
+        .status(400)
+        .json({ message: "Company field is required when template is false" });
+    }
+
+    const question = new Question({
+      text,
+      correctAnswer,
+      incorrectAnswers,
+      tag,
+      difficulty,
+      template,
+      company: template ? null : company,
+    });
+
+    await question.save();
+
+    res.status(201).json({
+      message: "Question created successfully",
+      question,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// {
+//   companyId
+// }
+// {
+// status 201
+//   questions {array of question objects that belong to this comapnyId or are template questions}
+// }
+app.post("/api/get_questions", async (req, res) => {
+  try {
+    const companyId = req.body.companyId;
+
+    if (!companyId) {
+      return res.status(400).json({ message: "Company ID is required" });
+    }
+
+    const questions = await Question.find({
+      $or: [{ company: companyId }, { template: true }],
+    });
+
+    res.status(201).json({
+      message: "Questions fetched successfully",
+      questions,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// {
+//   name (name of the test so its easier to remember the purpose),
+//   questionIds (array of questionIds references to include in this assessment),
+//   company (the company that is creating this assessment)
+// }
+// {
+//   status 201,
+//   message: 'Assessment created successfully',
+//   assessment,
+// }
+
+app.post("/api/create_assessment", async (req, res) => {
+  try {
+    const { name, questionIds, company } = req.body;
+
+    if (!name || !questionIds || !company) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const assessment = new Assessment({
+      name,
+      questions: questionIds,
+      company,
+    });
+
+    await assessment.save();
+
+    res.status(201).json({
+      message: "Assessment created successfully",
+      assessment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

@@ -1,7 +1,6 @@
 // Import necessary packages and modules
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Question = require("./question");
 
 // Define the Assessment schema
 const assessmentSchema = new Schema({
@@ -9,10 +8,13 @@ const assessmentSchema = new Schema({
     type: String,
     required: true,
   },
-  questions: {
-    type: [Question.schema],
-    required: true,
-  },
+  questions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Question",
+      required: true,
+    },
+  ],
   company: {
     type: Schema.Types.ObjectId,
     ref: "Company",
