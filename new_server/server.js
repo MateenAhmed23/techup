@@ -27,7 +27,6 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-
 // {
 //   companyName,
 //   companyAddress,
@@ -296,6 +295,37 @@ app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
     });
 
     res.status(201).json({ clientId: newClient._id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   userId
+// }
+
+// {
+//   status 201
+//   { companyId, isSuperUser(boolean), email, name }
+// }
+
+app.get("/get-user-info", async (req, res) => {
+  const userId = req.body.userId;
+
+  try {
+    const client = await Client.findById(userId);
+    let isSuperUser = false;
+    if (client.role === "superuser") {
+      isSuperUser = true;
+    }
+
+    res.status(201).json({
+      companyId: client.company,
+      isSuperUser,
+      email: client.email,
+      name: client.name,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
