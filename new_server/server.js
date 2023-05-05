@@ -8,9 +8,11 @@ const Company = require("./models/company");
 const Client = require("./models/client");
 const Job = require("./models/job");
 const cors = require("cors");
+const Question = require("./models/question");
+const Assessment = require("./models/assessment");
 
 const app = express();
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -29,7 +31,6 @@ function generateToken(client) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-
 // {
 //   companyName,
 //   companyAddress,
@@ -40,7 +41,8 @@ function generateToken(client) {
 // }
 // {
 //   status 200
-//   client
+//   clientId
+//   companyId
 //   token
 // }
 
@@ -93,7 +95,9 @@ app.post("/api/company_signup", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token); // 1 hour
-    res.status(201).json({ client, token });
+    res
+      .status(201)
+      .json({ clientId: client._id, companyId: company._id, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -114,9 +118,6 @@ app.post("/api/company_signup", async (req, res) => {
 //   cookie token
 //   send companyID
 // }
-
-
-
 
 app.post("/api/login", async (req, res) => {
   try {
@@ -139,9 +140,12 @@ app.post("/api/login", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token, { httpOnly: true }); // 1 hour
-    res
-      .status(201)
-      .json({ message: "Logged in successfully", clientId: client._id, token, companyId: client.company });
+    res.status(201).json({
+      message: "Logged in successfully",
+      clientId: client._id,
+      token,
+      companyId: client.company,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -159,7 +163,6 @@ app.post("/api/login", async (req, res) => {
 // }
 // }
 app.post("/api/verify-token", (req, res) => {
-
   const token = req.headers.authorization;
 
   // Verify the token and return a response
@@ -258,7 +261,7 @@ const verifyTokenMiddleWare = (req, res, next) => {
 // }
 
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
+app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
@@ -300,6 +303,158 @@ app.post("/create_client", verifyTokenMiddleWare, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   userId
+// }
+
+// {
+//   status 201
+//   { companyId, isSuperUser(boolean), email, name }
+// }
+
+app.post("/api/get-user-info", async (req, res) => {
+  const userId = req.body.userId;
+
+  try {
+    const client = await Client.findById(userId);
+    let isSuperUser = false;
+    if (client.role === "superuser") {
+      isSuperUser = true;
+    }
+
+    res.status(201).json({
+      companyId: client.company,
+      isSuperUser,
+      email: client.email,
+      name: client.name,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   text (question statement),
+//   correctAnswer(correct option text),
+//   incorrectAnswers(incorrect options ),
+//   tag (technical topic like OOP, DB or analytical),
+//   difficulty ("easy", "medium", "hard"),
+//   template (true if this is request is being made by superadmin, else false),
+//   company (contains companyId whos client is creating this question)
+// }
+// {
+//   status:201
+//   message: "Question created successfully",
+//   question,
+// }
+
+app.post("/api/create_question", async (req, res) => {
+  try {
+    const {
+      text,
+      correctAnswer,
+      incorrectAnswers,
+      tag,
+      difficulty,
+      template,
+      company,
+    } = req.body;
+
+    if (!template && !company) {
+      return res
+        .status(400)
+        .json({ message: "Company field is required when template is false" });
+    }
+
+    const question = new Question({
+      text,
+      correctAnswer,
+      incorrectAnswers,
+      tag,
+      difficulty,
+      template,
+      company: template ? null : company,
+    });
+
+    await question.save();
+
+    res.status(201).json({
+      message: "Question created successfully",
+      question,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// {
+//   companyId
+// }
+// {
+// status 201
+//   questions {array of question objects that belong to this comapnyId or are template questions}
+// }
+app.post("/api/get_questions", async (req, res) => {
+  try {
+    const companyId = req.body.companyId;
+
+    if (!companyId) {
+      return res.status(400).json({ message: "Company ID is required" });
+    }
+
+    const questions = await Question.find({
+      $or: [{ company: companyId }, { template: true }],
+    });
+
+    res.status(201).json({
+      message: "Questions fetched successfully",
+      questions,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// {
+//   name (name of the test so its easier to remember the purpose),
+//   questionIds (array of questionIds references to include in this assessment),
+//   company (the company that is creating this assessment)
+// }
+// {
+//   status 201,
+//   message: 'Assessment created successfully',
+//   assessment,
+// }
+
+app.post("/api/create_assessment", async (req, res) => {
+  try {
+    const { name, questionIds, company } = req.body;
+
+    if (!name || !questionIds || !company) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const assessment = new Assessment({
+      name,
+      questions: questionIds,
+      company,
+    });
+
+    await assessment.save();
+
+    res.status(201).json({
+      message: "Assessment created successfully",
+      assessment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
