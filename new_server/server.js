@@ -344,7 +344,7 @@ app.post("/api/get-user-info", async (req, res) => {
 //   tag (technical topic like OOP, DB or analytical),
 //   difficulty ("easy", "medium", "hard"),
 //   template (true if this is request is being made by superadmin, else false),
-//   company (contains companyId whos client is creating this question)
+//   company (only if template is false, contains companyId whos client is creating this question)
 // }
 // {
 //   status:201
