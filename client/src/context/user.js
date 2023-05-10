@@ -12,6 +12,8 @@ function Provider({children}){
     const [userEmail, setUserEmail] = useState('')
     const [companyId, setCompanyId] = useState('')
     const [userRole, setUserRole] = useState('')
+    const [userName, setUserName] = useState('')
+
 
 
     const verifyToken = async (token)=>{
@@ -38,39 +40,44 @@ function Provider({children}){
     }
 
 
-    const getUserInformation = async ()=>{
+    const getUserInformation = async (clientId)=>{
 
-        isLoading(true)
+        setIsLoading(true)
 
         try{
+            console.log(clientId, 'trying to fetch user details')
             const res = await fetch('http://127.0.0.1:5000/api/get-user-info', {
               method: 'POST',
+              headers: {
+                "Content-Type": "application/json",
+              },
               body:JSON.stringify({
-                userId
+                userId: clientId
               })
             })
             // console.log('HAHA')
             const data = await res.json()
 
             setCompanyId(data.companyId)
-            setUserEmail(data.userEmail)
-            setUserRole(data.userRole)
+            setUserEmail(data.email)
+            setUserRole(data.clientRole)
+            setUserName(data.name)
     
             
           }catch(e){
             setIsLoggedIn(false)
-            localStorage.setItem("token", '');
+            localStorage.removeItem("token");
             setUserId('')
           }
 
-          isLoading(false)
+        setIsLoading(false)
 
     }
 
     const loginStatus = async ()=>{
 
 
-        console.log('I am here')
+        console.log('I am checking login status')
 
         setIsLoading(true)
         if (isLoggedIn){
@@ -92,18 +99,23 @@ function Provider({children}){
             // console.log('Inside loginStatus', res.valid)
             if (res.valid){
                 // console.log('I am returning valid')
-                console.log(res.payload)
+                // console.log(res.payload)
 
-                setUserId(res.payload.userId)
-                console.log(userId)
-                console.log(res.payload.userId)
+                console.log(res.payload)
+                console.log(res.payload.clientId, 'this is userId I got from verifytoken')
+                setUserId(res.payload.clientId)
+                // console.log(userId)
+                // console.log(res.payload.userId)
                 setIsLoggedIn(true)
                 // setUserEmail(res.payload.email)
                 setIsLoading(false)
 
-                getUserInformation()
+                getUserInformation(res.payload.clientId)
 
                 return true
+            }
+            else {
+              localStorage.removeItem("token");
             }
         }
 
@@ -112,12 +124,14 @@ function Provider({children}){
     }
 
     const signOutUser = ()=>{
+        console.log('I am in Signout')
         setIsLoading(true)
         setIsLoggedIn(false)
         setUserId('')
         setUserEmail('')
         setCompanyId('')
         setUserRole('')
+        setIsLoading(false)
 
     }
 
