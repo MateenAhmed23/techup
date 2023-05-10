@@ -57,9 +57,20 @@ app.post("/api/company_signup", async (req, res) => {
       password,
     } = req.body;
 
+
+    console.log(companyName,
+      companyAddress,
+      companyWebsite,
+      companyPhoneNumber,
+      email,
+      password)
+
     // Check if company website is already registered
     const companyExists = await Company.findOne({ website: companyWebsite });
+
+    console.log(companyExists)
     if (companyExists) {
+      console.log('Inside company exists')
       return res
         .status(400)
         .json({ message: "Company website already exists" });
@@ -67,6 +78,8 @@ app.post("/api/company_signup", async (req, res) => {
 
     // Check if client email is already registered
     const clientExists = await Client.findOne({ email });
+
+    console.log(clientExists)
     if (clientExists) {
       return res.status(400).json({ message: "Email already exists" });
     }
@@ -316,18 +329,25 @@ app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
 // }
 
 app.post("/api/get-user-info", async (req, res) => {
+
+  
+  console.log(req.body, 'Inside body')
   const userId = req.body.userId;
 
+  console.log(userId)
+  console.log('Inside gettingUserInfo', userId)
   try {
     const client = await Client.findById(userId);
     let isSuperUser = false;
+    console.log(client)
     if (client.role === "superuser") {
       isSuperUser = true;
     }
 
+    console.log(client)
     res.status(201).json({
       companyId: client.company,
-      isSuperUser,
+      clientRole: client.role,
       email: client.email,
       name: client.name,
     });
