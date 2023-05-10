@@ -37,7 +37,7 @@ function Signup(){
 
 
     if (isLoggedIn){
-      navigate('/companyDetails')
+      navigate('/')
     }
     else{
       loginStatus()
