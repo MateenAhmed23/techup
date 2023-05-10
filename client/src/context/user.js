@@ -12,12 +12,10 @@ function Provider({children}){
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // const [userRole, setUserRole] = useState('')
-    const [userID, setUserID] = useState('')
+    const [userId, setUserId] = useState('')
     const [userEmail, setUserEmail] = useState('')
-
-    // const hehe = ()=>{
-    //     setCount(count+1)
-    // }
+    const [companyId, setCompanyId] = useState('')
+    const [userRole, setUserRole] = useState('')
 
 
     const verifyToken = async (token)=>{
@@ -43,11 +41,35 @@ function Provider({children}){
           }
     }
 
-    // const updateCount = async ()=>{
-    //     // setUserID(`Mateen${count}`)
-    //     // console.log(count)
-    //     // setCount(count+1)
-    // }
+
+    const getUserInformation = async ()=>{
+
+        isLoading(true)
+
+        try{
+            const res = await fetch('http://127.0.0.1:5000/api/get-user-info', {
+              method: 'POST',
+              body:JSON.stringify({
+                userId
+              })
+            })
+            // console.log('HAHA')
+            const data = await res.json()
+
+            setCompanyId(data.companyId)
+            setUserEmail(data.userEmail)
+            setUserRole(data.userRole)
+    
+            
+          }catch(e){
+            setIsLoggedIn(false)
+            localStorage.setItem("token", '');
+            setUserId('')
+          }
+
+          isLoading(false)
+
+    }
 
     const loginStatus = async ()=>{
 
@@ -76,12 +98,14 @@ function Provider({children}){
                 // console.log('I am returning valid')
                 console.log(res.payload)
 
-                setUserID(res.payload.userId)
-                console.log(userID)
+                setUserId(res.payload.userId)
+                console.log(userId)
                 console.log(res.payload.userId)
                 setIsLoggedIn(true)
-                setUserEmail(res.payload.email)
+                // setUserEmail(res.payload.email)
                 setIsLoading(false)
+
+                getUserInformation()
 
                 return true
             }
@@ -92,18 +116,11 @@ function Provider({children}){
     }
 
 
-    const userClientLogin = async (naviagteIncaseFailed)=>{
-        const res = await loginStatus()
-        if (!res){
-            
-        }
-    }
-
 
 
     const userInfo = {
         userEmail,
-        userId: userID,
+        userId: userId,
         // userRole
     }
 

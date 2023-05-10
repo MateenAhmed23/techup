@@ -5,6 +5,9 @@ import Inputfield from "./subcomponents/inputfield";
 import "./cssmaincomponents/companydetails.css";
 
 
+import {useLocation} from 'react-router-dom';
+
+
 import UserContext from "../context/user";
 
 import { useNavigate } from "react-router-dom";
@@ -14,19 +17,65 @@ function CompanyDetails() {
   const [address, setAddress] = useState("");
   const [website, setWebsite] = useState("");
   const [number, setNumber] = useState();
-  const [personName, setPersonName] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [email, setEmail] = useState("");
-  const [personNumber, setPersonNumber] = useState();
+  // const [personName, setPersonName] = useState("");
+  // const [designation, setDesignation] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [personNumber, setPersonNumber] = useState();
+
+  const location = useLocation();
+
+  // email, password received from registration
+
+  const {email, password} = location.state
+
+  // companyName,
+  //     companyAddress,
+  //     companyWebsite,
+  //     companyPhoneNumber,
+  //     email,
+  //     password,
+
+  // console.log(location.state.username)
 
 
   const navigate = useNavigate()
 
-  const {isLoading, loginStatus, userInfo, isLoggedIn} = useContext(UserContext)
+  const isLoggedIn = true
+  const {isLoading, loginStatus, userInfo } = useContext(UserContext)
   
   useEffect(()=>{
-    loginStatus()
+    // loginStatus()
   },[])
+
+  async function handleRegister(){
+    console.log('Lets register the company here')
+
+    const companyAddress = address
+
+    const companyWebsite = website
+
+    const companyPhoneNumber = number
+
+
+     const response = await fetch("http://127.0.0.1:5000/api/company_signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          companyName,
+          companyAddress,
+          companyWebsite,
+          companyPhoneNumber,
+        }),
+      });
+
+      const res= await response.json()
+
+      // console.log(res.status)
+  }
 
   return (
     <div className="alldetails">
@@ -98,7 +147,7 @@ function CompanyDetails() {
       <div className="col2">
         <h1 className="headingcomp">Person Details</h1>
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Name"
@@ -109,9 +158,9 @@ function CompanyDetails() {
             onChange={(e) => setPersonName(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Designation"
@@ -122,9 +171,9 @@ function CompanyDetails() {
             onChange={(e) => setDesignation(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Email Address"
@@ -135,9 +184,9 @@ function CompanyDetails() {
             onChange={(e) => setEmail(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
 
-        <div className="form-outline mb-4">
+        {/* <div className="form-outline mb-4">
           <Inputfield
             claslabel="form-label"
             label="Contact Number"
@@ -148,7 +197,7 @@ function CompanyDetails() {
             onChange={(e) => setPersonNumber(e.target.value)}
             placeholdr=""
           />
-        </div>
+        </div> */}
       </div>
       <div className="buttondet">
         <a
@@ -158,13 +207,7 @@ function CompanyDetails() {
         >
            &nbsp; &nbsp;Back  &nbsp; &nbsp;
         </a>
-        <a
-          onClick={() => this.props.onnavclick("signup")}
-          className="register"
-          href="#"
-        >
-          Register
-        </a>
+        <button className="register" onClick={()=>handleRegister()}>Register</button>
       </div>
 
       <div className="footer">
@@ -175,11 +218,6 @@ function CompanyDetails() {
     </div>
     
   )
-  return (
-    <div className="alldetails">
-      
-    </div>
-  );
 }
 
 
