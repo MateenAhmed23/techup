@@ -1,19 +1,25 @@
-import React, { Component } from "react";
+import React, { useEffect, useContext } from "react";
 import logo from "./csssubcomponents/logowhite .png";
 import "./csssubcomponents/navbar.css";
 
 
 import { Link } from "react-router-dom";
 
+import UserContext from "../../context/user";
 
 
-class Navbar extends Component {
-  state = {
-    
-  };
-  render() {
-    return (
-        <nav>
+
+function Navbar(){
+
+  const {isLoggedIn, signOutUser} = useContext(UserContext)
+
+  useEffect(()=>{
+    // console.log(" i was changed in Navbar")
+  }, [isLoggedIn])
+
+
+  return (
+    <nav>
           <img src={logo} width={170} height={50} className="logo" />
           <ul>
             <li>
@@ -40,13 +46,26 @@ class Navbar extends Component {
           <a onClick={() => this.props.onnavclick("contractus")} className="contractus" href="#">
             Contract Us
           </a>
-          <Link to='/register'  className="signup">Signup</Link>
-          {/* <a onClick={() => this.props.onnavclick("signup")} className="signup" href="#">
-            SignUp
-          </a> */}
+          {isLoggedIn ? 
+          (<button  className="signup" onClick={()=>signOutUser()}>Signout</button>)
+          :
+          (<Link to='/register'  className="signup">Signup</Link>)
+          
+          }
+          
         </nav>
-    );
-  }
+  )
 }
+
+// class Navbar extends Component {
+//   state = {
+    
+//   };
+//   render() {
+//     return (
+        
+//     );
+//   }
+// }
 
 export default Navbar;

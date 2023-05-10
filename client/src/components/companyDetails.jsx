@@ -72,9 +72,20 @@ function CompanyDetails() {
         }),
       });
 
-      const res= await response.json()
+      const data= await response.json()
 
-      // console.log(res.status)
+      console.log(data)
+
+
+      console.log('Company MADE SUCCESSFULLY');
+        // console.log(data);
+
+      localStorage.setItem('token', data.token);
+
+
+      loginStatus();
+
+      navigate('/');
   }
 
   return (
