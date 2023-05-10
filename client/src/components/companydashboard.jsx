@@ -8,6 +8,8 @@ import Memberdisplaycell from "./subcomponents/memberdisplaycell";
 
 class CompanyDashboard extends Component {
   state = {
+    option1:"My Jobs",
+    option2:"Members",
     jobs: [
       {
         id: 1,
@@ -50,7 +52,7 @@ class CompanyDashboard extends Component {
       { id: 2, name: "Ahmad", rank: "Manager", email: "haris@gmail.com" }, // add more members descriptions here
       
     ],
-    displayType: "jobs",
+    displayType: "My Jobs",
   };
 
   handleSidebarClick = (displayType) => {
@@ -65,19 +67,20 @@ class CompanyDashboard extends Component {
           <CompNav className="navbar" />
         </div>
         <div className="Sidebar">
-          <Sidebar setActiveTab={this.handleSidebarClick} />
+          <Sidebar className="Sidebardash" option1={this.state.option1} option2={this.state.option2} setActiveTab={this.handleSidebarClick} />
         </div>
         <div className="searchbar">
           <h1 className="head">
             {displayType === "jobs" ? "MY JOBS" : "MEMBERS"}
           </h1>
           <SearchBar className="bar23" />
+          <button className="newjob">Create New JOb</button>
         </div>
         <div className="jobs">
           {" "}
           <table>
             <tbody>
-              {displayType === "jobs" &&
+              {displayType === this.state.option1 &&
                 jobs.map((job) => (
                   <tr key={job.id}>
                     <td className="job__desc">
@@ -90,7 +93,7 @@ class CompanyDashboard extends Component {
                     </td>
                   </tr>
                 ))}
-              {displayType === "members" &&
+              {displayType === this.state.option2 &&
                 members.map((member) => (
                   <tr key={member.id}>
                     <td className="job__desc">
