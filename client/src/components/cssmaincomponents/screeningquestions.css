@@ -1,0 +1,123 @@
+.screening {
+    margin-top: 0px;
+    padding-top: 0px;
+    height: auto;
+    width: 100%;
+    background-color: rgb(223, 217, 217);
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 9% 7% 17% 9% 450px 4% 500px;
+    grid-gap: 0%
+}
+.addingmemebrspage{
+    margin-top: 0px;
+    padding-top: 0px;
+    height: auto;
+    width: 100%;
+    background-color: rgb(223, 217, 217);
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 9% 7% 22% 9% 450px 4% 500px;
+    grid-gap: 0%
+
+}
+
+.navbar {
+    grid-row-start: 1;
+    grid-row-end: 2;
+
+}
+
+.headingscr {
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+}
+
+.headingscr h1 {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.questinsfields {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    padding-left: 26vw;
+}
+
+.savequestion {
+
+    grid-row-start: 4;
+    grid-row-end: 5;
+
+}
+
+.saveques {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 10px 10px;
+    border-radius: 50px;
+    width: 11vw;
+    background-color: #5EA0D0;
+    justify-content: center;
+    margin-left: 44vw;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+}
+
+.addedquestions {
+    grid-row-start: 5;
+    grid-row-end: 6;
+    margin-left: 7%;
+}
+    .addedmembers {
+        grid-row-start: 5;
+        grid-row-end: 6;
+        margin-left: 13%;
+    }
+
+.contolsques {
+    grid-row-start: 6;
+    grid-row-end: 7;
+    display: flex;
+    align-content: center;
+    align-content: center;
+    justify-content: space-evenly;
+    gap: -2px;
+    
+}
+.nextquest{border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 10px 10px;
+    border-radius: 50px;
+    width: 8vw;
+    height: 7vh;
+    background-color: #5EA0D0;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+/* margin-left: 44vw; */}
+.backquest{border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 10px 10px;
+    border-radius: 50px;
+    width: 8vw;
+    height: 7vh;
+    background-color: #5EA0D0;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+/* margin-left: 44vw; */}
+
+.footerquest {
+    grid-row-start: 7;
+    grid-row-end: 8;
+    background: rgba(0, 0, 0, 0.8);
+}

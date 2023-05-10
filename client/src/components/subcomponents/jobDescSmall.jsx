@@ -1,60 +1,35 @@
-import React, { Component } from "react";
+import React from "react";
 import "./csssubcomponents/jobDescSmall.css";
 
+function JobDescSmall(props) {
+  const inputStyle = {
+    height: props.height,
+    width: props.width ? props.width : "45vw", // apply props width if exists, else use 100% as default
+    color: props.color ? props.color : "#767676" // apply props color if exists, else use #000 as default
+  };
 
-function JobDescSmall(props){
-  console.log(props)
-
-  function hehe(e){
-    // console.log(props.label,e.target.value)
-    props.change(props.label,e.target.value)
+  function handleChange(e) {
+    props.change(props.label, e.target.value);
   }
+
   return (
-    <div className="field field_v1">    
+    <div className="field field_v1">
       <label className="ha-screen-reader" htmlFor={props.id}>
         {props.label}
       </label>
       <input
         id={props.id}
         type={props.type}
-        // onChange={props.onChange}
         className="field__input"
         placeholder={props.placeholder}
-        style={{ height: props.height }}
-        onChange={hehe}
-     />
+        style={inputStyle}
+        onChange={handleChange}
+      />
       <span className="field__label-wrap" aria-hidden="true">
         <span className="field__label">{props.label}</span>
       </span>
     </div>
-  )
+  );
 }
-
-
-
-// class JobDescSmall extends Component {
-//   state = {};
-//   render() {
-//     return (
-//       <div className="field field_v1">
-        
-//         <label className="ha-screen-reader" htmlFor={this.props.id}>
-//           Label
-//         </label>
-//         <input
-//           id={this.props.id}
-//           type={this.props.type}
-//           onChange={this.props.onChange}
-//           className="field__input"
-//           placeholder={this.props.placeholder}
-//           style={{ height: this.props.height }}
-//    />
-//         <span className="field__label-wrap" aria-hidden="true">
-//           <span className="field__label">{this.props.label}</span>
-//         </span>
-//       </div>
-//     );
-//   }
-// }
 
 export default JobDescSmall;
