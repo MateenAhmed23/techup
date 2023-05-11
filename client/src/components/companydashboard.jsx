@@ -180,6 +180,7 @@ function CompanyDashboard(){
   )
 } 
 
+
 // class CompanyDashboard extends Component {
 //   state = {
 //     jobs: [
