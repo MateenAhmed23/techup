@@ -9,6 +9,11 @@ const jobSchema = new mongoose.Schema({
     enum: ["internship", "fulltime", "parttime"],
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["active", "deactive"],
+    required: true,
+  },
   stack: { type: String, required: true },
   description: { type: String, required: true },
   yearsOfExperience: { type: Number, required: true },
