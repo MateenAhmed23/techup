@@ -3,6 +3,7 @@ import "./csssubcomponents/sidebardashboard.css";
 import Arbisoft from"./csssubcomponents/arbisoft.jpg"
 
 class Sidebar extends Component {
+
   state = {};
   render() {
     return (
@@ -20,20 +21,20 @@ class Sidebar extends Component {
                         <span class="item">My Jobs</span>
                     </a> */}
                    <a href="#" onClick={() => this.props.setActiveTab('jobs')}>
-  <span class="icon"><i class="fas fa-home"></i></span>
-  <span class="item">My Jobs</span>
+  <span className="icon"><i className="fas fa-home"></i></span>
+  <span className="item">My Jobs</span>
 </a>
                 </li>
                 <li>
                 <a href="#" onClick={() => this.props.setActiveTab('members')}>
-  <span class="icon"><i class="fas fa-desktop"></i></span>
-  <span class="item">Members</span>
+  <span className="icon"><i className="fas fa-desktop"></i></span>
+  <span className="item">Members</span>
 </a>
                 </li>
                 <li>
                     <a href="#">
-                        <span class="icon"><i class="fas fa-desktop"></i></span>
-                        <span class="item">Contract Support</span>
+                        <span className="icon"><i className="fas fa-desktop"></i></span>
+                        <span className="item">Contract Support</span>
                     </a>
                 </li>
              

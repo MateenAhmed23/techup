@@ -36,7 +36,7 @@ const router = createBrowserRouter([
     element: <CreateNewJob />,
   },
   {
-    path: "/jobdisplaycell",
+    path: "/dashboard",
     element: < CompanyDashboard/>,
   },
   {

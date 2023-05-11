@@ -88,7 +88,7 @@ function Provider({children}){
 
         const token = localStorage.getItem('token')
 
-        // console.log(' Token is ', token)
+        console.log(' Token is ', token)
 
 
 

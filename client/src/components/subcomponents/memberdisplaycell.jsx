@@ -16,11 +16,6 @@ class Memberdisplaycell extends Component {
             {this.props.rank}
             </a>
           </li>
-          <li>
-              <a onClick={() => this.props.onnavclick("aboutus")} className="commonitems" href="#">
-              {this.props.email}
-              </a>
-            </li>
         </ul>
         <a onClick={() => this.props.onnavclick("contractus")} className="editt" href="#">
         View Details
