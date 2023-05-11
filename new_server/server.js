@@ -57,20 +57,21 @@ app.post("/api/company_signup", async (req, res) => {
       password,
     } = req.body;
 
-
-    console.log(companyName,
+    console.log(
+      companyName,
       companyAddress,
       companyWebsite,
       companyPhoneNumber,
       email,
-      password)
+      password
+    );
 
-    // Check if company website is already registered
-    const companyExists = await Company.findOne({ website: companyWebsite });
+    // Check if company name is already registered
+    const companyExists = await Company.findOne({ name: companyName });
 
-    console.log(companyExists)
+    console.log(companyExists);
     if (companyExists) {
-      console.log('Inside company exists')
+      console.log("Inside company exists");
       return res
         .status(400)
         .json({ message: "Company website already exists" });
@@ -79,7 +80,7 @@ app.post("/api/company_signup", async (req, res) => {
     // Check if client email is already registered
     const clientExists = await Client.findOne({ email });
 
-    console.log(clientExists)
+    console.log(clientExists);
     if (clientExists) {
       return res.status(400).json({ message: "Email already exists" });
     }
@@ -203,7 +204,7 @@ app.post("/api/verify-token", (req, res) => {
 //   { jobId: job._id }
 // }
 
-app.post("/api/create_jobs", async (req, res) => {
+app.post("/api/create_job", async (req, res) => {
   try {
     const {
       title,
@@ -229,6 +230,7 @@ app.post("/api/create_jobs", async (req, res) => {
       stack,
       description,
       yearsOfExperience,
+      status: "deactive",
       company: companyId,
     });
 
@@ -236,6 +238,35 @@ app.post("/api/create_jobs", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   companyId;
+// }
+// {
+//   status_code: 200;
+//   type, status, _id;
+// }
+app.post("/api/get_all_jobs", async (req, res) => {
+  try {
+    const companyId = req.body.companyId;
+
+    if (!companyId) {
+      return res.status(400).json({ message: "Company ID is required" });
+    }
+
+    const jobs = await Job.find({ company: companyId }).select(
+      "title type status _id"
+    );
+
+    res.status(201).json({
+      message: "Jobs fetched successfully",
+      jobs,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -320,31 +351,56 @@ app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
 });
 
 // {
+//   companyId;
+// }
+// {
+//   status_code: 200;
+//   name, role, _id;
+// }
+app.post("/api/get_all_clients", async (req, res) => {
+  try {
+    const companyId = req.body.companyId;
+
+    if (!companyId) {
+      return res.status(400).json({ message: "Company ID is required" });
+    }
+
+    const clients = await Client.find({ company: companyId }).select(
+      "name role _id"
+    );
+
+    res.status(201).json({
+      message: "Clients fetched successfully",
+      clients,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// {
 //   userId
 // }
-
 // {
 //   status 201
 //   { companyId, isSuperUser(boolean), email, name }
 // }
-
 app.post("/api/get-user-info", async (req, res) => {
-
-  
-  console.log(req.body, 'Inside body')
+  console.log(req.body, "Inside body");
   const userId = req.body.userId;
 
-  console.log(userId)
-  console.log('Inside gettingUserInfo', userId)
+  console.log(userId);
+  console.log("Inside gettingUserInfo", userId);
   try {
     const client = await Client.findById(userId);
     let isSuperUser = false;
-    console.log(client)
+    console.log(client);
     if (client.role === "superuser") {
       isSuperUser = true;
     }
 
-    console.log(client)
+    console.log(client);
     res.status(201).json({
       companyId: client.company,
       clientRole: client.role,
@@ -364,7 +420,7 @@ app.post("/api/get-user-info", async (req, res) => {
 //   tag (technical topic like OOP, DB or analytical),
 //   difficulty ("easy", "medium", "hard"),
 //   template (true if this is request is being made by superadmin, else false),
-//   company (contains companyId whos client is creating this question)
+//   company (only if template is false, contains companyId whos client is creating this question)
 // }
 // {
 //   status:201
