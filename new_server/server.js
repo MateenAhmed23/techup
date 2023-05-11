@@ -305,7 +305,7 @@ const verifyTokenMiddleWare = (req, res, next) => {
 // }
 
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
+app.post("/api/create_client", async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
