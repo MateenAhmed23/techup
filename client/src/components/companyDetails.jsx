@@ -19,14 +19,17 @@ function CompanyDetails() {
   const [number, setNumber] = useState();
   // const [personName, setPersonName] = useState("");
   // const [designation, setDesignation] = useState("");
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
   // const [personNumber, setPersonNumber] = useState();
 
   const location = useLocation();
 
   // email, password received from registration
 
-  const {email, password} = location.state
+    // const {email, password} = location.state
+
+
 
   // companyName,
   //     companyAddress,
@@ -45,6 +48,16 @@ function CompanyDetails() {
   
   useEffect(()=>{
     // loginStatus()
+    // console.log(location.state, 'Location')
+    if (!location.state){
+      navigate('/register')
+    }
+    else{
+      // const {email, password} = location.state
+      // console.log(location.state)
+      setEmail(location.state.email)
+      setPassword(location.state.password)
+    }
   },[])
 
   async function handleRegister(){
