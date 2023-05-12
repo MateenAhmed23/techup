@@ -230,7 +230,7 @@ function CreateNewJob(){
 
 
   async function submitHandler(){
-    console.log('Lets crate the job here')
+    console.log('Lets create the job here')
     console.log(title, location, type, stack, experience, desc, perks, duties)
 
     const response = await fetch("http://127.0.0.1:5000/api/create_job", {
