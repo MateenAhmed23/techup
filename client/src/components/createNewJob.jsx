@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 
 
+import UserContext from '../context/user';
+
+import { useNavigate  } from 'react-router-dom';
+
+
 
 function CreateNewJob(){
+
+  const {isLoading, loginStatus, isLoggedIn, userInfo} = useContext(UserContext);
+
+
+  const navigate = useNavigate();
+
 
   // const [jobDescriptions, setJobDescriptions] = useState([
   //   {
@@ -204,10 +215,11 @@ function CreateNewJob(){
   const [location, setLocation] = useState('')
   const [type, setType] = useState('')
   const [stack, setStack] = useState('')
-  const [experience, setExperience] = useState('')
+  const [experience, setExperience] = useState()
   const [desc, setDesc] = useState('')
   const [perks, setPerks] = useState('')
   const [duties, setDuties] = useState('')
+  const [department, setDepartment] = useState('')
 
 
 
@@ -217,9 +229,34 @@ function CreateNewJob(){
   // console.log(jobDescriptionssmall)
 
 
-  function submitHandler(){
+  async function submitHandler(){
     console.log('Lets crate the job here')
     console.log(title, location, type, stack, experience, desc, perks, duties)
+
+    const response = await fetch("http://127.0.0.1:5000/api/create_job", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          department,
+          type,
+          stack,
+          description: desc,
+          yearsOfExperience: experience,
+          companyId: userInfo.companyId
+        }),
+      });
+
+      const data = await response.json();
+
+      navigate('/dashboard')
+      alert('Job Created Successfully')
+
+      
+
+
   }
 
   function handleChange(changeFor, value){
