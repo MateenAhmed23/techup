@@ -191,12 +191,14 @@ app.post("/api/verify-token", (req, res) => {
 
 // {
 //   title,
-//   department,
-//   type,
-//   stack,
-//   description,
-//   yearsOfExperience (number),
-//   companyId,
+// department,
+// type,
+// stack,
+// location,
+// description
+// description,
+// yearsOfExperience,
+// companyId,
 // }
 
 // {
@@ -211,6 +213,8 @@ app.post("/api/create_job", async (req, res) => {
       department,
       type,
       stack,
+      location,
+      perks,
       description,
       yearsOfExperience,
       companyId,
@@ -228,6 +232,8 @@ app.post("/api/create_job", async (req, res) => {
       department,
       type,
       stack,
+      location,
+      perks,
       description,
       yearsOfExperience,
       status: "deactive",
@@ -292,20 +298,18 @@ const verifyTokenMiddleWare = (req, res, next) => {
 };
 
 // {
-//   headers.authorization -> token,
 //   clientId
 //   name,
 //   email,
 //   password
 // }
-
 // {
 //   status 201
 //   { clientId: newClient._id }
 // }
 
 // API endpoint for a superuser client to create new regular clients for its own company
-app.post("/api/create_client", verifyTokenMiddleWare, async (req, res) => {
+app.post("/api/create_client", async (req, res) => {
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
