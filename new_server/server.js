@@ -45,7 +45,6 @@ function generateToken(client) {
 //   companyId
 //   token
 // }
-
 app.post("/api/company_signup", async (req, res) => {
   try {
     const {
@@ -244,6 +243,26 @@ app.post("/api/create_job", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
+//   jobid -> params;
+// }
+// {
+//  complete job details
+// }
+app.get("/api/get_job/:id", async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id).exec();
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.status(201).json(job);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
