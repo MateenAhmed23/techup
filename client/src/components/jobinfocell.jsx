@@ -14,7 +14,14 @@ function JobInfo(){
   const option1 = 'Dashboard'
   const option2 = 'Edit this Job'
 
-  const [jobId, setJobId] = useState(1)
+  // const [jobId, setJobId] = useState(1)
+
+
+  const [title,setTitle] = useState('')
+  const [desc,setDesc] = useState('')
+  const [experience, setExperience] = useState('')
+  const [domain, setDomain] = useState('')
+  const [status, setStatus] = useState('')
 
   const { id } = useParams();
 
@@ -71,32 +78,27 @@ function JobInfo(){
           />
         </div>
         <div className="searchbarjob">
-          <h1 className="head">Job # {jobId}</h1>
+          <h1 className="head">Job # {id}</h1>
           <SearchBar className="bar23" />
           <button className="url">Get Job Url</button>
         </div>
         <div className="jobdesc">
-          <h1 className="jobtitle">Job Title</h1>
+          <h1 className="jobtitle">{title}</h1>
           <p className="jobinfodis  ">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Exercitationem quae quisquam rem iure dolorem iste libero vel? Culpa
-            minus natus provident tempore voluptatibus quia ullam, perferendis
-            ipsa mollitia, dolorum tenetur asperiores voluptas ex iste vero
-            optio debitis blanditiis odit veniam sit voluptatem fugiat?
-            Perspiciatis nulla laboriosam, facere nihil ipsum corrupti.
+           {desc}
           </p>
           <div className="otherinfo">
             <div>
               <h4>Experience</h4>
-              <p>4 years</p>
+              <p>{experience} years</p>
             </div>
             <div>
               <h4>Domain</h4>
-              <p>4 years</p>
+              <p>{domain}</p>
             </div>
             <div>
               <h4>Status</h4>
-              <p>4 years</p>
+              <p>{status}</p>
             </div>
           </div>
         </div>
