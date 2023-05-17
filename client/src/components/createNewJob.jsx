@@ -27,14 +27,13 @@ function CreateNewJob(){
       placeholder: "e.g. Software Engineer",
       height: "7vh",
     },
-    // {
-    //   id: 2,
-    //   label: "Department",
-    //   type: "desciption",
-    //   placeholder: "e.g. Human Resources",
-    //   height: "7vh",
-    // },
-
+    {
+      id: 2,
+      label: "Department",
+      type: "description",
+      placeholder: "e.g. Human Resources",
+      height: "7vh",
+    },
     {
       id: 3,
       label: "Job Location",
