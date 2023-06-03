@@ -12,24 +12,47 @@ function JobDescSmall(props) {
     props.change(props.label, e.target.value);
   }
 
-  return (
-    <div className="field field_v1">
-      <label className="ha-screen-reader" htmlFor={props.id}>
-        {props.label}
-      </label>
-      <input
-        id={props.id}
-        type={props.type}
-        className="field__input"
-        placeholder={props.placeholder}
-        style={inputStyle}
-        onChange={handleChange}
-      />
-      <span className="field__label-wrap" aria-hidden="true">
-        <span className="field__label">{props.label}</span>
-      </span>
-    </div>
-  );
+  if (props.options) {
+    // if options are present, render a select field
+    return (
+      <div className="field field_v1">
+        <label className="ha-screen-reader" htmlFor={props.id}>
+          {props.label}
+        </label>
+        <select
+          id={props.id}
+          className="field__input"
+          style={inputStyle}
+          onChange={handleChange}
+        >
+          {props.options.map((option, index) => <option key={index}>{option}</option>)}
+        </select>
+        <span className="field__label-wrap" aria-hidden="true">
+          <span className="field__label">{props.label}</span>
+        </span>
+      </div>
+    );
+  } else {
+    // if options are not present, render a regular input field
+    return (
+      <div className="field field_v1">
+        <label className="ha-screen-reader" htmlFor={props.id}>
+          {props.label}
+        </label>
+        <input
+          id={props.id}
+          type={props.type}
+          className="field__input"
+          placeholder={props.placeholder}
+          style={inputStyle}
+          onChange={handleChange}
+        />
+        <span className="field__label-wrap" aria-hidden="true">
+          <span className="field__label">{props.label}</span>
+        </span>
+      </div>
+    );
+  }
 }
 
 export default JobDescSmall;

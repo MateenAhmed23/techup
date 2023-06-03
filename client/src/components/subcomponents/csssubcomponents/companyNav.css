@@ -31,9 +31,9 @@ nav {
 
 .avatar {
     margin-top: 1%;
-    border: black solid;
+    /* border: black solid; */
     margin-right: 55px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     text-decoration: none;
     margin-bottom: 1%;
     
