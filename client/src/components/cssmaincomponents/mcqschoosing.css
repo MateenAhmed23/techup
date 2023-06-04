@@ -1,3 +1,7 @@
+html {
+    background-color: rgb(223, 217, 217);
+}
+
 .mcqschoosingpage {
     margin-top: 0px;
     padding-top: 0px;
@@ -5,10 +9,11 @@
     width: 100%;
     background-color: rgb(223, 217, 217);
     display: grid;
-    grid-template-columns: 38vw 62vw;
-    grid-template-rows: 12% 350px 300px 500px 500px;
+    grid-template-columns: 38vw 51vw;
+    grid-template-rows: 6% 3% 350px 5% 5% 300px 5% 5% 400px 3% 2% 500px 400px;
     grid-gap: 1%;
     column-gap: 10%;
+
 }
 
 .navbar {
@@ -20,13 +25,31 @@
 
 }
 
+.headingcustomsquesbx {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: flex;
+    justify-content: center;
+}
+
+.h1haha1cust {
+    text-decoration: underline;
+    font-weight: bolder;
+    font-family: 'Helvetica Neue', sans-serif;
+    letter-spacing: 4px;
+
+}
+
 .customquestions {
     grid-column-start: 1;
     grid-column-end: 2;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
     /* background-color: rgb(169, 155, 155); */
 }
+
 .customquestions h2 {
     text-align: center;
     font-family: 'Times New Roman', Times, serif;
@@ -34,46 +57,198 @@
 }
 
 
-.templatequestions {
+/* .templatequestions {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 4;
     background-color: blue;
-}
+} */
 
-.wholeassesmentdescription {
+.Mcqsoptions {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+
     /* background-color: rgb(169, 155, 155); */
 }
-.testheadset{
-    margin-left: 15vw;
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1vh;
 }
 
-.addedquestionsdispalychoo {
+.addmcqoption {
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 6vw;
+    height: 5vh;
+    background-color: #093b60;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 2vh;
+    color: antiquewhite;
+
+}
+
+.remmcqoption {
+    margin-left: 1vw;
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 8vw;
+    height: 5vh;
+    background-color: #093b60;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 2vh;
+    color: antiquewhite;
+
+}
+
+.addcreatedcustomques {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 4;
     grid-row-end: 5;
+    display: flex;
+    justify-content: center;
+
+}
+
+.addquestioncustombutton {
+    margin-left: 1vw;
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 11vw;
+    height: 8vh;
+    background-color: #305876;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+    color: antiquewhite;
+}
+
+.testheadset {
+    margin-left: 15vw;
+}
+
+.headingTemplatequesbx {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 5;
+    grid-row-end: 6;
+    display: flex;
+    justify-content: center;
+}
+
+.templatequestionsmaindiv {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 6;
+    grid-row-end: 7;
+    padding-left: 27vw;
+}
+
+.addcreatedtemplques {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 7;
+    grid-row-end: 8;
+    display: flex;
+    justify-content: center;
+
+}
+
+.addquestiontemplbutton {
+    margin-left: 1vw;
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 11vw;
+    height: 8vh;
+    background-color: #305876;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+    color: antiquewhite;
+}
+
+.headingsettingstest {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 8;
+    grid-row-end: 9;
+    display: flex;
+    justify-content: center;
+}
+
+.testsettigsmaindiv {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 9;
+    grid-row-end: 10;
+    padding-left: 27vw;
+}
+
+.testsettignsbutttonswrap {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 10;
+    grid-row-end: 11;
+    display: flex;
+    justify-content: center;
+}
+
+.testsettignsbutton {
+    margin-left: 1vw;
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 11vw;
+    height: 8vh;
+    background-color: #305876;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+    color: antiquewhite;
+}
+.headingaddedquests{ grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 11;
+    grid-row-end: 12;
+    display: flex;
+    justify-content: center;}
+.addedquestionsdispalychoo {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 12;
+    grid-row-end: 13;
     /* background-color: blueviolet; */
     /* background-color: rgb(169, 155, 155); */
     margin-left: 5vw;
 }
-.addedquestionsdispalychoo h2 {
-    /* text-align: center; */
-    margin-left: 35vw;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
-}
+
 
 
 .footer {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 5;
-    grid-row-end: 6;
+    grid-row-start: 13;
+    grid-row-end: 14;
     background: rgba(0, 0, 0, 0.9);
 }

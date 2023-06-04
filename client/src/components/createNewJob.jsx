@@ -52,11 +52,12 @@ function CreateNewJob(){
     // },
 
     {
-      id: 5,
+      id: 4,
       label: "Type",
-      type: "text",
+      type: "select",
       placeholder: "e.g. Full Time",
       height: "7vh",
+      options: ["Full Time", "Part Time", "Contract", "Internship"],
     },
 
     // {
@@ -68,7 +69,7 @@ function CreateNewJob(){
     // },
 
     {
-      id: 7,
+      id: 5,
       label: "Stack",
       type: "text",
       placeholder: "e.g. MERN",
@@ -82,35 +83,27 @@ function CreateNewJob(){
     //   height: "15vh",
     // },
     {
-      id: 11,
+      id: 6,
       label: "Experience",
-      type: "text",
+      type: "number",
       placeholder: "e.g. 1 yr",
       height: "7vh",
     },
     {
-      id: 9,
+      id: 7,
       label: "General Job Description",
       type: "text",
       placeholder: "e.g. Your responsibility is to create responsive website",
       height: "23vh",
     },
     {
-      id: 10,
+      id: 8,
       label: "Perks",
       type: "text",
       placeholder: "e.g. Work from home",
       height: "23vh",
     },
-    {
-      id: 11,
-      label: "Duties and Responsibilities",
-      type: "text",
-      placeholder: "e.g. Should be a teamworker",
-      height: "23vh",
-    },
-    
-   
+       
     // add more job descriptions here
   ]
 
@@ -127,8 +120,8 @@ function CreateNewJob(){
 
 
 
-  const jobDescriptionssmall = jobDescriptions.slice(0, 5);
-  const jobDescriptionslarge = jobDescriptions.slice(5, 11);
+  const jobDescriptionssmall = jobDescriptions.slice(0, 6);
+  const jobDescriptionslarge = jobDescriptions.slice(6, 11);
 
   // console.log(jobDescriptionssmall)
 
@@ -214,6 +207,7 @@ function CreateNewJob(){
                       placeholder={jobDesc.placeholder}
                       label={jobDesc.label}
                       height={jobDesc.height}
+                      options={jobDesc.options}
                       change = {handleChange}
                     />
                   </td>
@@ -242,9 +236,9 @@ function CreateNewJob(){
             </tbody>
           </table>
         </div>
-        <div className="buttonsss">
-          <button className="back">Back</button>
-          <button className="create" onClick={()=>submitHandler()}>Create</button>
+        <div className="buttonjobnew">
+          <button className="backjobnew">Back</button>
+          <button className="createjobnew" onClick={()=>submitHandler()}>Create</button>
         </div>
         <div className="footer">
           <h1 className="heading">Footer</h1>
