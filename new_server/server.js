@@ -268,6 +268,7 @@ app.get("/api/get_job/:id", async (req, res) => {
 
 // {
 //   companyId;
+// clientId;
 // }
 // {
 //   status_code: 200;
@@ -276,6 +277,18 @@ app.get("/api/get_job/:id", async (req, res) => {
 app.post("/api/get_all_jobs", async (req, res) => {
   try {
     const companyId = req.body.companyId;
+    const clientId = req.body.clientId;
+
+    const client = await Client.findById(clientId);
+    if (!client) {
+      return res.status(401).json({ message: "Client not found" });
+    }
+
+    if (companyId != client.company) {
+      return res
+        .status(404)
+        .json({ message: "Client does not belong to company!!" });
+    }
 
     if (!companyId) {
       return res.status(400).json({ message: "Company ID is required" });
