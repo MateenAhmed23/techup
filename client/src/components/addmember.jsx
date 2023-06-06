@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/screeningquestions.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
@@ -18,6 +18,25 @@ function Addmember(){
 
 
   const navigate = useNavigate();
+
+
+  useEffect(()=>{
+
+
+    if (loginStatus()){
+      
+    }
+    else{
+      console.log('Please login first to access this page.')
+      navigate('/')
+    }
+    // console.log(loginStatus())
+    // if (loginStatus())
+    // {
+    //   console.log('HEE22')
+    //   navigate('/')
+    // }
+  },[])
 
   const [addedMembers, setAddedMembers] = useState([])
 
@@ -88,9 +107,9 @@ async function submitHandler(){
         }),
       });
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (data.status === 201){
+      if (response.status === 201){
         alert('Member added successfully')
         navigate('/dashboard')
       }

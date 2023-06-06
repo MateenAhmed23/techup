@@ -110,7 +110,7 @@ function CreateNewJob(){
 
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState('')
-  const [type, setType] = useState('')
+  const [jobType, setType] = useState('Full Time')
   const [stack, setStack] = useState('')
   const [experience, setExperience] = useState()
   const [desc, setDesc] = useState('')
@@ -157,7 +157,7 @@ function CreateNewJob(){
         body: JSON.stringify({
           title,
           department,
-          type,
+          type: jobType,
           stack,
           description: desc,
           yearsOfExperience: experience,
@@ -167,7 +167,7 @@ function CreateNewJob(){
         }),
       });
 
-      const data = await response.json();
+      // const data = await response.json();
 
       navigate('/dashboard')
       alert('Job Created Successfully')
@@ -188,6 +188,7 @@ function CreateNewJob(){
         break;
       case 'Type':
         setType(value)
+        console.log(value)
         break;
       case 'Stack':
         setStack(value)
