@@ -206,6 +206,8 @@ app.post("/api/verify-token", (req, res) => {
 // }
 
 app.post("/api/create_job", async (req, res) => {
+
+  console.log(req.body)
   try {
     const {
       title,
