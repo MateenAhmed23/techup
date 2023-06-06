@@ -5,6 +5,11 @@ import logo from "./csssubcomponents/logoblack.png";
 import google from "./csssubcomponents/google.png";
 import linkedin from "./csssubcomponents/linkedin.png";
 
+
+import { useNavigate  } from 'react-router-dom';
+
+
+
 class LoginForm extends Component {
   state = {
     username: "",
@@ -26,6 +31,11 @@ class LoginForm extends Component {
   handlePasswordChange = (e) => {
     this.setState({ password: e.target.value });
   };
+
+  redirectToSignup = ()=>{
+    const navigate = useNavigate();
+    navigate('/register');
+  }
 
   render() {
     const { username, password } = this.state;
@@ -109,9 +119,9 @@ class LoginForm extends Component {
                           style={{ color: "#393f81" }}
                         >
                           Don't have an account?{" "}
-                          <a href="#!" style={{ color: "#393f81" }}>
+                          <button onClick={()=>this.redirectToSignup()} style={{ color: "#393f81" }}>
                             Register here
-                          </a>
+                          </button>
                         </p>
                         <p className="container d-flex justify-content-center align-items-center"  style={{ color: "grey" ,size:"2%",fontWeight:"bolder",textDecoration:"underline" }}>OR login with </p>
                         <div className="container d-flex justify-content-center align-items-center">

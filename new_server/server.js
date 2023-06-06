@@ -206,6 +206,8 @@ app.post("/api/verify-token", (req, res) => {
 // }
 
 app.post("/api/create_job", async (req, res) => {
+
+  console.log(req.body)
   try {
     const {
       title,
@@ -329,6 +331,7 @@ const verifyTokenMiddleWare = (req, res, next) => {
 
 // API endpoint for a superuser client to create new regular clients for its own company
 app.post("/api/create_client", async (req, res) => {
+  console.log(req.body)
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
