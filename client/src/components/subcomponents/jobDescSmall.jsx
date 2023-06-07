@@ -6,6 +6,7 @@ function JobDescSmall(props) {
     height: props.height,
     width: props.width ? props.width : "45vw", // apply props width if exists, else use 100% as default
     color: props.color ? props.color : "#767676" // apply props color if exists, else use #000 as default
+    
   };
 
   function handleChange(e) {
@@ -15,6 +16,7 @@ function JobDescSmall(props) {
   if (props.options) {
     // if options are present, render a select field
     return (
+      <div className="field" style={{ width: props.width ? props.width : "45vw" }}>
       <div className="field field_v1">
         <label className="ha-screen-reader" htmlFor={props.id}>
           {props.label}
@@ -31,10 +33,14 @@ function JobDescSmall(props) {
           <span className="field__label">{props.label}</span>
         </span>
       </div>
+      </div>
     );
   } else {
     // if options are not present, render a regular input field
     return (
+      <div className="field" style={{ width: props.width ? props.width : "45vw" }}>
+ 
+
       <div className="field field_v1">
         <label className="ha-screen-reader" htmlFor={props.id}>
           {props.label}
@@ -50,6 +56,7 @@ function JobDescSmall(props) {
         <span className="field__label-wrap" aria-hidden="true">
           <span className="field__label">{props.label}</span>
         </span>
+      </div>
       </div>
     );
   }

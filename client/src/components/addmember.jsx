@@ -72,14 +72,14 @@ function Addmember(){
       {
         id: 3,
         label: "Password",
-        type: "text",
+        type: "password",
         placeholder: "e.g. Software E",
         height: "7vh",
       },
       {
         id: 4,
         label: "Confirm Password",
-        type: "text",
+        type: "password",
         placeholder: "e.g. Software E",
         height: "7vh",
       }]
