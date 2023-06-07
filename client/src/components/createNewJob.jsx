@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
@@ -110,12 +110,12 @@ function CreateNewJob(){
 
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState('')
-  const [type, setType] = useState('')
+  const [jobType, setType] = useState('Full Time')
   const [stack, setStack] = useState('')
   const [experience, setExperience] = useState()
   const [desc, setDesc] = useState('')
   const [perks, setPerks] = useState('')
-  const [duties, setDuties] = useState('')
+  // const [duties, setDuties] = useState('')
   const [department, setDepartment] = useState('')
 
 
@@ -126,9 +126,28 @@ function CreateNewJob(){
   // console.log(jobDescriptionssmall)
 
 
+  useEffect(()=>{
+
+
+    if (loginStatus()){
+      
+    }
+    else{
+      console.log('Please login first to access this page.')
+      navigate('/')
+    }
+    // console.log(loginStatus())
+    // if (loginStatus())
+    // {
+    //   console.log('HEE22')
+    //   navigate('/')
+    // }
+  },[])
+
+
+
   async function submitHandler(){
     console.log('Lets create the job here')
-    console.log(title, location, type, stack, experience, desc, perks, duties)
 
     const response = await fetch("http://127.0.0.1:5000/api/create_job", {
         method: "POST",
@@ -138,15 +157,17 @@ function CreateNewJob(){
         body: JSON.stringify({
           title,
           department,
-          type,
+          type: jobType,
           stack,
           description: desc,
           yearsOfExperience: experience,
-          companyId: userInfo.companyId
+          companyId: userInfo.companyId,
+          location:location,
+          perks:perks
         }),
       });
 
-      const data = await response.json();
+      // const data = await response.json();
 
       navigate('/dashboard')
       alert('Job Created Successfully')
@@ -167,6 +188,7 @@ function CreateNewJob(){
         break;
       case 'Type':
         setType(value)
+        console.log(value)
         break;
       case 'Stack':
         setStack(value)
@@ -180,8 +202,8 @@ function CreateNewJob(){
       case 'Perks':
         setPerks(value)
         break;
-      case 'Duties and Responsibilities':
-        setDuties(value)
+      case 'Department':
+        setDepartment(value)
         break;
       default:
         break;

@@ -37,7 +37,8 @@ function JobInfo(){
   }
 
   async function getJobInfo(){
-
+    // get_job/:id
+    console.log('Inside getJob')
     try{
       const response = await fetch(`http://127.0.0.1:5000/api/get_job/${id}`, {
         method: "GET",
@@ -48,7 +49,13 @@ function JobInfo(){
     
     console.log(response.status)
     const data = await response.json()
+      console.log(data)
 
+      setTitle(data.title)
+      setExperience(data.yearsOfExperience)
+      setDomain(data.stack)
+      setStatus(data.status)
+      setDesc(data.description)
 
     if(data.status === 500){
 
@@ -78,12 +85,12 @@ function JobInfo(){
           />
         </div>
         <div className="searchbarjob">
-          <h1 className="head">Job # {id}</h1>
+          <h1 className="head">{title}</h1>
           <SearchBar className="bar23" />
           <button className="url">Get Job Url</button>
         </div>
         <div className="jobdesc">
-          <h1 className="jobtitle">{title}</h1>
+          {/* <h1 className="jobtitle">{title}</h1> */}
           <p className="jobinfodis  ">
            {desc}
           </p>
