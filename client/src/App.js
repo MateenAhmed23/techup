@@ -15,6 +15,7 @@ import JobInfo from "./components/jobinfocell";
 import ScreeningQuestions from "./components/screeningquestions";
 import Addmember from "./components/addmember";
 import Mcqschoosing from "./components/mcqschoosing";
+import CandidateProfile from "./components/candidateprofile";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
   }
   ,
   {
-    path: "/jobinfo",
+    path: "/jobinfo/:id",
     element: <JobInfo />,
   }
   ,
@@ -59,6 +60,9 @@ const router = createBrowserRouter([
   {
     path: "/mcqschoosing",
     element: <Mcqschoosing />,
+  },{
+    path: "/CandidateProfile",
+    element: <CandidateProfile />,
   }
 ]);
 

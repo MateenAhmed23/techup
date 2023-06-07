@@ -1,107 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 
 
+import UserContext from '../context/user';
+
+import { useNavigate  } from 'react-router-dom';
+
+
 
 function CreateNewJob(){
 
-  // const [jobDescriptions, setJobDescriptions] = useState([
-  //   {
-  //     id: 1,
-  //     label: "Job Title",
-  //     type: "text",
-  //     placeholder: "e.g. Software Engineer",
-  //     height: "7vh",
-  //   },
-  //   // {
-  //   //   id: 2,
-  //   //   label: "Department",
-  //   //   type: "desciption",
-  //   //   placeholder: "e.g. Human Resources",
-  //   //   height: "7vh",
-  //   // },
+  const {isLoading, loginStatus, isLoggedIn, userInfo} = useContext(UserContext);
 
-  //   {
-  //     id: 3,
-  //     label: "Job Location",
-  //     type: "text",
-  //     placeholder: "e.g. New York",
-  //     height: "7vh",
-  //   },
 
-  //   // {
-  //   //   id: 4,
-  //   //   label: "Salary",
+  const navigate = useNavigate();
 
-  //   //   type: "tel",
-  //   //   placeholder: "e.g. 1000",
-  //   //   height: "7vh",
-  //   // },
 
-  //   {
-  //     id: 5,
-  //     label: "Type",
-  //     type: "text",
-  //     placeholder: "e.g. Full Time",
-  //     height: "7vh",
-  //   },
-
-  //   // {
-  //   //   id: 6,
-  //   //   label: "Overtime",
-  //   //   type: "text",
-  //   //   placeholder: "e.g. Yes",
-  //   //   height: "7vh",
-  //   // },
-
-  //   {
-  //     id: 7,
-  //     label: "Stack",
-  //     type: "text",
-  //     placeholder: "e.g. MERN",
-  //     height: "7vh",
-  //   },
-  //   // {
-  //   //   id: 8,
-  //   //   label: "Application Instructions",
-  //   //   type: "text",
-  //   //   placeholder: "e.g. Submit cv in pdf format ",
-  //   //   height: "15vh",
-  //   // },
-  //   {
-  //     id: 11,
-  //     label: "Experience",
-  //     type: "text",
-  //     placeholder: "e.g. 1 yr",
-  //     height: "7vh",
-  //   },
-  //   {
-  //     id: 9,
-  //     label: "General Job Description",
-  //     type: "text",
-  //     placeholder: "e.g. Your responsibility is to create responsive website",
-  //     height: "23vh",
-  //   },
-  //   {
-  //     id: 10,
-  //     label: "Perks",
-  //     type: "text",
-  //     placeholder: "e.g. Work from home",
-  //     height: "23vh",
-  //   },
-  //   {
-  //     id: 11,
-  //     label: "Duties and Responsibilities",
-  //     type: "text",
-  //     placeholder: "e.g. Should be a teamworker",
-  //     height: "23vh",
-  //   },
-    
-   
-  //   // add more job descriptions here
-  // ])
 
   const jobDescriptions = [
     {
@@ -111,14 +27,13 @@ function CreateNewJob(){
       placeholder: "e.g. Software Engineer",
       height: "7vh",
     },
-    // {
-    //   id: 2,
-    //   label: "Department",
-    //   type: "desciption",
-    //   placeholder: "e.g. Human Resources",
-    //   height: "7vh",
-    // },
-
+    {
+      id: 2,
+      label: "Department",
+      type: "description",
+      placeholder: "e.g. Human Resources",
+      height: "7vh",
+    },
     {
       id: 3,
       label: "Job Location",
@@ -137,11 +52,12 @@ function CreateNewJob(){
     // },
 
     {
-      id: 5,
+      id: 4,
       label: "Type",
-      type: "text",
+      type: "select",
       placeholder: "e.g. Full Time",
       height: "7vh",
+      options: ["Full Time", "Part Time", "Contract", "Internship"],
     },
 
     // {
@@ -153,7 +69,7 @@ function CreateNewJob(){
     // },
 
     {
-      id: 7,
+      id: 5,
       label: "Stack",
       type: "text",
       placeholder: "e.g. MERN",
@@ -167,59 +83,98 @@ function CreateNewJob(){
     //   height: "15vh",
     // },
     {
-      id: 11,
+      id: 6,
       label: "Experience",
-      type: "text",
+      type: "number",
       placeholder: "e.g. 1 yr",
       height: "7vh",
     },
     {
-      id: 9,
+      id: 7,
       label: "General Job Description",
       type: "text",
       placeholder: "e.g. Your responsibility is to create responsive website",
       height: "23vh",
     },
     {
-      id: 10,
+      id: 8,
       label: "Perks",
       type: "text",
       placeholder: "e.g. Work from home",
       height: "23vh",
     },
-    {
-      id: 11,
-      label: "Duties and Responsibilities",
-      type: "text",
-      placeholder: "e.g. Should be a teamworker",
-      height: "23vh",
-    },
-    
-   
+       
     // add more job descriptions here
   ]
 
 
   const [title, setTitle] = useState('')
   const [location, setLocation] = useState('')
-  const [type, setType] = useState('')
+  const [jobType, setType] = useState('Full Time')
   const [stack, setStack] = useState('')
-  const [experience, setExperience] = useState('')
+  const [experience, setExperience] = useState()
   const [desc, setDesc] = useState('')
   const [perks, setPerks] = useState('')
-  const [duties, setDuties] = useState('')
+  // const [duties, setDuties] = useState('')
+  const [department, setDepartment] = useState('')
 
 
 
-  const jobDescriptionssmall = jobDescriptions.slice(0, 5);
-  const jobDescriptionslarge = jobDescriptions.slice(5, 11);
+  const jobDescriptionssmall = jobDescriptions.slice(0, 6);
+  const jobDescriptionslarge = jobDescriptions.slice(6, 11);
 
   // console.log(jobDescriptionssmall)
 
 
-  function submitHandler(){
-    console.log('Lets crate the job here')
-    console.log(title, location, type, stack, experience, desc, perks, duties)
+  useEffect(()=>{
+
+
+    if (loginStatus()){
+      
+    }
+    else{
+      console.log('Please login first to access this page.')
+      navigate('/')
+    }
+    // console.log(loginStatus())
+    // if (loginStatus())
+    // {
+    //   console.log('HEE22')
+    //   navigate('/')
+    // }
+  },[])
+
+
+
+  async function submitHandler(){
+    console.log('Lets create the job here')
+
+    const response = await fetch("http://127.0.0.1:5000/api/create_job", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          department,
+          type: jobType,
+          stack,
+          description: desc,
+          yearsOfExperience: experience,
+          companyId: userInfo.companyId,
+          location:location,
+          perks:perks
+        }),
+      });
+
+      // const data = await response.json();
+
+      navigate('/dashboard')
+      alert('Job Created Successfully')
+
+      
+
+
   }
 
   function handleChange(changeFor, value){
@@ -233,6 +188,7 @@ function CreateNewJob(){
         break;
       case 'Type':
         setType(value)
+        console.log(value)
         break;
       case 'Stack':
         setStack(value)
@@ -246,8 +202,8 @@ function CreateNewJob(){
       case 'Perks':
         setPerks(value)
         break;
-      case 'Duties and Responsibilities':
-        setDuties(value)
+      case 'Department':
+        setDepartment(value)
         break;
       default:
         break;
@@ -273,6 +229,7 @@ function CreateNewJob(){
                       placeholder={jobDesc.placeholder}
                       label={jobDesc.label}
                       height={jobDesc.height}
+                      options={jobDesc.options}
                       change = {handleChange}
                     />
                   </td>
@@ -301,9 +258,9 @@ function CreateNewJob(){
             </tbody>
           </table>
         </div>
-        <div className="buttonsss">
-          <button className="back">Back</button>
-          <button className="create" onClick={()=>submitHandler()}>Create</button>
+        <div className="buttonjobnew">
+          <button className="backjobnew">Back</button>
+          <button className="createjobnew" onClick={()=>submitHandler()}>Create</button>
         </div>
         <div className="footer">
           <h1 className="heading">Footer</h1>
