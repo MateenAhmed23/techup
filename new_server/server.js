@@ -70,7 +70,7 @@ app.post("/api/company_signup", async (req, res) => {
 
     console.log(companyExists);
     if (companyExists) {
-      console.log("Inside company exists");
+      // console.log("Inside company exists");
       return res
         .status(400)
         .json({ message: "Company website already exists" });
@@ -277,6 +277,9 @@ app.get("/api/get_job/:id", async (req, res) => {
 //   type, status, _id;
 // }
 app.post("/api/get_all_jobs", async (req, res) => {
+
+  // console.log('Inside')
+  // console.log(req.body)
   try {
     const companyId = req.body.companyId;
     const clientId = req.body.clientId;
@@ -399,8 +402,10 @@ app.post("/api/create_client", async (req, res) => {
 app.post("/api/get_all_clients", async (req, res) => {
   try {
     const companyId = req.body.companyId;
+    console.log("Inside Get all clients", companyId)
 
     if (!companyId) {
+      console.log('Inside the error smh')
       return res.status(400).json({ message: "Company ID is required" });
     }
 
@@ -426,11 +431,11 @@ app.post("/api/get_all_clients", async (req, res) => {
 //   { companyId, isSuperUser(boolean), email, name }
 // }
 app.post("/api/get-user-info", async (req, res) => {
-  console.log(req.body, "Inside body");
+  // console.log(req.body, "Inside body");
   const userId = req.body.userId;
 
-  console.log(userId);
-  console.log("Inside gettingUserInfo", userId);
+  // console.log(userId);
+  // console.log("Inside gettingUserInfo", userId);
   try {
     const client = await Client.findById(userId);
     let isSuperUser = false;

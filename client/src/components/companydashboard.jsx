@@ -83,15 +83,19 @@ function CompanyDashboard(){
 
 
   useEffect(()=>{
-    if (!isLoggedIn){
-      authentication()
+    if (isLoggedIn && userInfo.companyId){
+      console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      getMembers()
+      getJobs()
       // setLoading(false)
     }
     else{
-      getMembers()
-      getJobs()
+      authentication()
+      // console.log('Going to get jobs and members')
+      // console.log(userInfo.companyId)
+      
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, userInfo.companyId])
 
 
   async function getJobs(){
@@ -107,11 +111,17 @@ function CompanyDashboard(){
 
     const data = await res.json()
 
-    setJobs(data.jobs)
+    if (res.status == 400){
+
+    }else{
+      setJobs(data.jobs)
+
+    }
   }
 
 
   async function getMembers(){
+    console.log('Company ID', userInfo.companyId)
     const res = await fetch('http://127.0.0.1:5000/api/get_all_clients', {
               method: 'POST',
               headers: {
@@ -124,7 +134,14 @@ function CompanyDashboard(){
 
     const data = await res.json()
 
-    setMembers(data.clients)
+    if (res.status == 400){
+
+    }else{
+      setMembers(data.clients)
+
+    }
+
+    // setMembers(data.clients)
   }
 
   return (
