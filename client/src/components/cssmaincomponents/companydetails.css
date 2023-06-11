@@ -18,15 +18,20 @@
 
   /* position: fixed; */
 }
+
 .maninhead {
   margin-top: 2%;
-margin-left: 41%;
+  /* margin-left: 41%; */
   grid-column-start: 1;
   grid-column-end: 4;
   grid-row-start: 2;
   grid-row-end: 3;
   text-decoration: underline;
+  letter-spacing: 3px;
+  font-family:Arial, Helvetica, sans-serif;
+  text-align: center;
 }
+
 .headingcomp {
   margin-left: 30%;
   text-decoration: underline;
@@ -40,23 +45,12 @@ margin-left: 41%;
   /* margin-top: %; */
   margin-right: 10%;
   grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 3;
-  grid-row-end: 4;
-  /* position: fixed; */
-}
-.col2 {
-  z-index: 2;
-  box-shadow: 0 10px 20px rgba(245, 240, 240, 0.2);
-  margin-left: 10%;
-  margin-right: 10%;
-  /* margin-top: 10%; */
-  grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 3;
   grid-row-end: 4;
   /* position: fixed; */
 }
+
 
 a {
   font-weight: bolder;
@@ -82,7 +76,7 @@ a {
   margin-left: 10%;
 }
 
-.back {
+.back1154 {
   text-decoration: none;
   margin-left: 40%;
   margin-right: -20px;
@@ -99,6 +93,9 @@ a {
   vertical-align: middle;
   box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
 }
+.register:hover,.back1154:hover{
+  color: rgb(235, 235, 244);
+}
 
 .buttondet {
   grid-column-start: 1;
@@ -107,10 +104,64 @@ a {
   grid-row-end: 5;
 }
 
-.footer {
+.footercompdetails12 {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 5;
   grid-row-end: 6;
-  background: rgba(209, 28, 28, 0.9);
+  background: rgba(0, 0, 0, 0.9);
+}
+@media only screen and (max-width: 600px) {
+  .col1 {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .register, .back1154 {
+    font-size: 0.8em; /* decrease font size */
+    padding: 10px 15px; /* decrease padding */
+    height: auto; /* allow the height to adapt to content */
+    margin-left: 5%;
+    box-sizing: border-box; /* make sure padding and border are included in the element's total width and height */
+  }
+
+  .maninhead {
+    font-size: 1.2em; /* decrease font size */
+    /* margin-left: 10%; adjust margin */
+  }
+
+  .buttondet {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .col1 {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .register, .back1154 {
+    font-size: 0.9em; /* decrease font size */
+    padding: 15px 20px; /* adjust padding */
+    height: auto; /* allow the height to adapt to content */
+    width: ;
+    margin-left: 10%;
+    box-sizing: border-box; /* make sure padding and border are included in the element's total width and height */
+  }
+
+  .maninhead {
+    font-size: 1.5em; /* decrease font size */
+    margin-left: 20%; /* adjust margin */
+  }
+
+  .buttondet {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+  }
 }

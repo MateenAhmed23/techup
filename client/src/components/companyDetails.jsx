@@ -113,11 +113,11 @@ function CompanyDetails() {
       (
         <>
           <Navbar className="navbar"></Navbar>
-          <h1 className="maninhead">Profile SetUp</h1>
+          <h1 className="maninhead">Company Details</h1>
       
       <div className="col1">
         {" "}
-        <h1 className="headingcomp">Company Details</h1>
+       
         {/* <button onClick={()=>console.log(userInfo.userId, userInfo)}>Update Count</button> */}
         <div className="form-outline mb-4">
           <Inputfield
@@ -159,7 +159,7 @@ function CompanyDetails() {
           <Inputfield
             claslabel="form-label"
             label="Company Phone Number"
-            type="number"
+            type="tel"
             value={number}
             classfield="form-control form-control-lg"
             id="emailfield"
@@ -168,65 +168,10 @@ function CompanyDetails() {
           />
         </div>
       </div>
-      <div className="col2">
-        <h1 className="headingcomp">Person Details</h1>
-
-        {/* <div className="form-outline mb-4">
-          <Inputfield
-            claslabel="form-label"
-            label="Name"
-            type="text"
-            value={personName}
-            classfield="form-control form-control-lg"
-            id="emailfield"
-            onChange={(e) => setPersonName(e.target.value)}
-            placeholdr=""
-          />
-        </div> */}
-
-        {/* <div className="form-outline mb-4">
-          <Inputfield
-            claslabel="form-label"
-            label="Designation"
-            type="text"
-            value={designation}
-            classfield="form-control form-control-lg"
-            id="emailfield"
-            onChange={(e) => setDesignation(e.target.value)}
-            placeholdr=""
-          />
-        </div> */}
-
-        {/* <div className="form-outline mb-4">
-          <Inputfield
-            claslabel="form-label"
-            label="Email Address"
-            type="email"
-            value={email}
-            classfield="form-control form-control-lg"
-            id="emailfield"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholdr=""
-          />
-        </div> */}
-
-        {/* <div className="form-outline mb-4">
-          <Inputfield
-            claslabel="form-label"
-            label="Contact Number"
-            type="number"
-            value={personNumber}
-            classfield="form-control form-control-lg"
-            id="emailfield"
-            onChange={(e) => setPersonNumber(e.target.value)}
-            placeholdr=""
-          />
-        </div> */}
-      </div>
       <div className="buttondet">
         <a
           onClick={() => this.props.onnavclick("contractus")}
-          className="back"
+          className="back1154"
           href="#"
         >
            &nbsp; &nbsp;Back  &nbsp; &nbsp;
@@ -234,7 +179,7 @@ function CompanyDetails() {
         <button className="register" onClick={()=>handleRegister()}>Register</button>
       </div>
 
-      <div className="footer">
+      <div className="footercompdetails12">
         <h1 className="heading">Footer</h1>
       </div>
         </>
