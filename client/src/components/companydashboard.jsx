@@ -67,27 +67,27 @@ function CompanyDashboard() {
     setDisplayType(displayType);
   }
 
-  async function authentication(){
+  async function authentication() {
     const res = await loginStatus()
     console.log('Result from login status', res)
-    if (!res){
+    if (!res) {
       alert('You must login to access this page')
       navigate('/login')
     }
   }
 
-  useEffect(()=>{
-    if (isLoggedIn && userInfo.companyId){
+  useEffect(() => {
+    if (isLoggedIn && userInfo.companyId) {
       console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
       getMembers()
       getJobs()
       // setLoading(false)
     }
-    else{
+    else {
       authentication()
       // console.log('Going to get jobs and members')
       // console.log(userInfo.companyId)
-      
+
     }
   }, [isLoggedIn, userInfo.companyId])
 
@@ -105,32 +105,32 @@ function CompanyDashboard() {
     const data = await res.json();
 
 
-    if (res.status == 400){
+    if (res.status == 400) {
 
-    }else{
+    } else {
       setJobs(data.jobs)
 
     }
   }
 
 
-  async function getMembers(){
+  async function getMembers() {
     console.log('Company ID', userInfo.companyId)
     const res = await fetch('http://127.0.0.1:5000/api/get_all_clients', {
-              method: 'POST',
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body:JSON.stringify({
-                companyId: userInfo.companyId
-              })
-            })
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        companyId: userInfo.companyId
+      })
+    })
 
     const data = await res.json()
 
-    if (res.status == 400){
+    if (res.status == 400) {
 
-    }else{
+    } else {
       setMembers(data.clients)
 
     }
