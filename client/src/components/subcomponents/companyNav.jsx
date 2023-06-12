@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./csssubcomponents/companyNav.css"
+import "./csssubcomponents/companyNav.css";
 import logout from "./csssubcomponents/logout.png";
 import dropdown from"./csssubcomponents/dropdown.png";
 import notifications from"./csssubcomponents/BELL.png";
@@ -9,14 +9,15 @@ class CompNav extends Component {
     render() { 
         return (
             <nav>
-            <img src={dropdown} width={80} height={60} className="logo" />
-                <p  className="companyname" >
-                  Compay Name
-                </p>
-            <img src={notifications} width={60} height={40} className="bellicon" />
-            <img src={logout} width={70} height={55} className="avatar" />
-            
-          </nav>
+                <div className="nav-left">
+                    <img src={dropdown} className="logo" alt="logo" />
+                    <p className="companyname">Company Name</p>
+                </div>
+                <div className="nav-right">
+                    <img src={notifications} className="bellicon" alt="notifications" />
+                    <img src={logout} className="avatar" alt="logout" />
+                </div>
+            </nav>
         );
     }
 }

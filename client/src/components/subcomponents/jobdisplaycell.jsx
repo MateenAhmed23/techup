@@ -17,17 +17,12 @@ class JobDisplaycell extends Component {
               {this.props.Dateposted}
               </a>
             </li>
-            <li>
-              <a onClick={() => this.props.onnavclick("aboutus")} className="commonitems" href="#">
-              {this.props.Status}
-              </a>
-            </li>
+         
             
           </ul>
           <a onClick={() => this.props.onnavclick("contractus")} className="editt" href="#">
           View Details
           </a>
-          <a href="#">&nbsp;&nbsp;</a>
 
           <a onClick={() => this.props.onnavclick("signup")} className="viewdetails" href="#">
             Edit
