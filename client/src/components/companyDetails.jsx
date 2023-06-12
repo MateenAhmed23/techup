@@ -1,17 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-// import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import Inputfield from "./subcomponents/inputfield";
 import "./cssmaincomponents/companydetails.css";
-
-
 import {useLocation} from 'react-router-dom';
-
-
 import UserContext from "../context/user";
-
 import { useNavigate } from "react-router-dom";
-
 function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
@@ -30,7 +23,6 @@ function CompanyDetails() {
     // const {email, password} = location.state
 
 
-
   // companyName,
   //     companyAddress,
   //     companyWebsite,
@@ -39,10 +31,7 @@ function CompanyDetails() {
   //     password,
 
   // console.log(location.state.username)
-
-
   const navigate = useNavigate()
-
   const isLoggedIn = true
   const {isLoading, loginStatus, userInfo } = useContext(UserContext)
   
@@ -68,7 +57,6 @@ function CompanyDetails() {
     const companyWebsite = website
 
     const companyPhoneNumber = number
-
 
      const response = await fetch("http://127.0.0.1:5000/api/company_signup", {
         method: "POST",
@@ -188,7 +176,4 @@ function CompanyDetails() {
     
   )
 }
-
-
-
 export default CompanyDetails;
