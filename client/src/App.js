@@ -15,12 +15,13 @@ import JobInfo from "./components/jobinfocell";
 import ScreeningQuestions from "./components/screeningquestions";
 import Addmember from "./components/addmember";
 import Mcqschoosing from "./components/mcqschoosing";
-
+import CandidateProfile from "./components/candidateprofile";
+// import inte from "./components/interviewScheduling";
+import InterviewScheduler from"./components/interviewScheduling"
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landingpage/>,
-  
+    element: <Landingpage />,
   },
   {
     path: "/login",
@@ -36,18 +37,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: < CompanyDashboard/>,
+    element: <CompanyDashboard />,
   },
   {
     path: "/companyDetails",
     element: <CompanyDetails />,
-  }
-  ,
+  },
   {
     path: "/jobinfo/:id",
     element: <JobInfo />,
-  }
-  ,
+  },
   {
     path: "/screeningquestions",
     element: <ScreeningQuestions />,
@@ -59,7 +58,15 @@ const router = createBrowserRouter([
   {
     path: "/mcqschoosing",
     element: <Mcqschoosing />,
-  }
+  },
+  {
+    path: "/CandidateProfile",
+    element: <CandidateProfile />,
+  },
+  {
+    path: "/interviewScheduling",
+    element: <InterviewScheduler/>,
+  },
 ]);
 
 function App() {

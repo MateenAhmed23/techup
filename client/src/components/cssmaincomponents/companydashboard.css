@@ -5,9 +5,10 @@
       width: 100%;
       background-color: rgb(223, 217, 217);
       display: grid;
-      grid-template-columns: 26% 74%;
-      grid-template-rows: 4.6% 10% 00px 500px;
-      grid-gap: 0%
+      grid-template-columns: 27% 73%;
+      grid-template-rows: 5% 10% 180px 500px;
+      grid-gap: 0%;
+      overflow-x: hidden;
     }
 
     .navbar {
@@ -21,29 +22,42 @@
 
     .head {
       font-size: 4vh;
-      font-family: 'Open Sans', sans-serif;
+      font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
       font-weight: bolder;
-      padding-top: 1%;
+      letter-spacing: 2px;
     }
 
 
     .searchbar {
+
       grid-column-start: 2;
       grid-column-end: 3;
       grid-row-start: 2;
       grid-row-end: 3;
       display: flex;
-      align-items: center;
-      /* add this property */
-      margin-top: 2%;
+      margin-top: 6vh;
       width: 100vw;
       flex-direction: row;
       gap: 5%;
+
+    }
+    .createNewjob{
+      margin-top: 1vh;
+      border-style: solid;
+      border-color: black;
+      padding: 7px 7px;
+      border-radius: 50px;
+      width: 13vw;
+      height: 8vh;
+      background-color: #093b60;
+      justify-content: center;
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: bolder;
+      font-size: 2.5vh;
+      color: antiquewhite;
     }
 
-    .Sidebar{
-      margin-top: 0%;
-      padding-top: 0%;
+    .Sidebar {
       grid-column-start: 1;
       grid-column-end: 2;
       grid-row-start: 2;
@@ -54,19 +68,19 @@
       margin-top: 0px;
       grid-column-start: 2;
       grid-column-end: 3;
-      z-index: 1;
       grid-row-start: 3;
       grid-row-end: 4;
       background-color: rgb(223, 217, 217);
+      margin-left: 3vw;
       ;
 
     }
 
-    .footer {
+    .footerDASHBOARD {
       grid-column-start: 1;
       grid-column-end: 3;
-      grid-row-start: 4;
-      grid-row-end: 5;
+      grid-row-start: 5;
+      grid-row-end: 6;
       background: rgba(0, 0, 0, 0.8);
     }
 
@@ -120,3 +134,4 @@
         padding: 18px 34px;
       }
     }
+    
