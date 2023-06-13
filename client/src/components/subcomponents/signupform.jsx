@@ -6,8 +6,12 @@ import google from "./csssubcomponents/google.png";
 import linkedin from "./csssubcomponents/linkedin.png";
 
 
-function SignupForm({onSubmit}){
+import { useNavigate  } from 'react-router-dom';
 
+
+function SignupForm({onSubmit}){
+  
+  const navigate = useNavigate();
 
   // const [username,setUsername] = useState('')
   const [email,setEmail] = useState('')
@@ -36,6 +40,10 @@ function SignupForm({onSubmit}){
   function handleConfirmPasswordChange (e) {
     setConfirmPassword(e.target.value)
   };
+
+  function redirectToLogin(){
+    navigate('/login');
+  }
 
   return(
     <section className="vh-100">
@@ -136,36 +144,15 @@ function SignupForm({onSubmit}){
                             Register
                           </Button>
                         </div>
-
                         <p
-                          className="container d-flex justify-content-center align-items-center"
-                          style={{
-                            color: "grey",
-                            size: "2%",
-                            fontWeight: "bolder",
-                            textDecoration: "underline",
-                          }}
+                          className="mb-2 pb-lg-2"
+                          style={{ color: "#393f81" }}
                         >
-                          OR REGISTER with{" "}
+                          Already Have an Account?{" "}
+                          <button onClick={()=>redirectToLogin()} style={{ color: "#393f81" }}>
+                            Login
+                          </button>
                         </p>
-                        <div className="container d-flex justify-content-center align-items-center">
-                          <span style={{ marginRight: "4%" }}>
-                            <img
-                              src={google}
-                              width={60}
-                              height={40}
-                              className="logomain"
-                            />
-                          </span>
-                          <span style={{ marginLeft: "0%" }}>
-                            <img
-                              src={linkedin}
-                              width={70}
-                              height={49}
-                              className="logomain"
-                            />
-                          </span>
-                        </div>
                       </form>
                     </div>
                   </div>
