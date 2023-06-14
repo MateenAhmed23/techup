@@ -3,6 +3,7 @@ import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import SignupForm from './subcomponents/signupform';
+import Footer from './subcomponents/footer';
 
 
 
@@ -121,8 +122,8 @@ function Signup(){
             <div className="LogForm">
               <SignupForm onSubmit={handleSignup} />
             </div>
-            <div className="footer">
-              <h1 className="heading">Footer</h1>
+            <div className="footerloginpg">
+              <Footer/>
             </div>
           </>
       )};

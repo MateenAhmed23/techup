@@ -85,3 +85,12 @@ li {
     font-size: 16px;
     margin-bottom: 10px;
 }
+.footerinterviewschpg {
+    /* margin-top: 60vh; */
+    width: 100%;
+    align-self: stretch; /* To override the align-items property from the parent */
+}
+.footer{
+margin-top: 10vh;
+    width: 100%;
+}

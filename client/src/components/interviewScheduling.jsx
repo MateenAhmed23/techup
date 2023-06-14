@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./cssmaincomponents/interviewScheduling.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import CompNav from "./subcomponents/companyNav";
+import Footer from "./subcomponents/footer";
 
 const InterviewScheduler = () => {
   const [interviewSlots, setInterviewSlots] = useState([]);
@@ -216,6 +217,9 @@ const InterviewScheduler = () => {
           </ul>
         )}
       </div>
+       
+        <Footer className="footer"/>
+    
     </div>
   );
 };

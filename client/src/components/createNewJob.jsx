@@ -2,7 +2,7 @@ import React, { useState, useContext,useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
-
+import Footer from "./subcomponents/footer";
 
 import UserContext from '../context/user';
 
@@ -262,8 +262,8 @@ function CreateNewJob(){
           <button className="backjobnew">Back</button>
           <button className="createjobnew" onClick={()=>submitHandler()}>Create</button>
         </div>
-        <div className="footer">
-          <h1 className="heading">Footer</h1>
+        <div className="footercreatenewjobpg">
+        <Footer></Footer>
         </div>
       </div>
   )
