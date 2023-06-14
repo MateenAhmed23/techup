@@ -69,7 +69,7 @@ function CompanyDashboard() {
 
   async function authentication() {
     const res = await loginStatus()
-    console.log('Result from login status', res)
+    // console.log('Result from login status', res)
     if (!res) {
       alert('You must login to access this page')
       navigate('/login')
@@ -78,7 +78,7 @@ function CompanyDashboard() {
 
   useEffect(() => {
     if (isLoggedIn && userInfo.companyId) {
-      console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
       getMembers()
       getJobs()
       // setLoading(false)
@@ -115,7 +115,7 @@ function CompanyDashboard() {
 
 
   async function getMembers() {
-    console.log('Company ID', userInfo.companyId)
+    // console.log('Company ID', userInfo.companyId)
     const res = await fetch('http://127.0.0.1:5000/api/get_all_clients', {
       method: 'POST',
       headers: {

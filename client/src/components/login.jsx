@@ -66,7 +66,7 @@ function Login(){
       if (response.status == 201){
         console.log('USER LOGINNED SUCCESSFULLY')
         localStorage.setItem("token", data.token);
-        navigate('/');
+        navigate('/dashboard');
       }else{
         alert(data.message);
         return;
