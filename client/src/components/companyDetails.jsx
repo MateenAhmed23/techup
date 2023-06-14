@@ -5,6 +5,7 @@ import "./cssmaincomponents/companydetails.css";
 import {useLocation} from 'react-router-dom';
 import UserContext from "../context/user";
 import { useNavigate } from "react-router-dom";
+import Footer from "./subcomponents/footer";
 function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
@@ -167,8 +168,9 @@ function CompanyDetails() {
         <button className="register" onClick={()=>handleRegister()}>Register</button>
       </div>
 
-      <div className="footercompdetails12">
-        <h1 className="heading">Footer</h1>
+      <div className="footercompdetailspg">
+        {/* <h1 className="heading">Footer</h1> */}
+        <Footer/>
       </div>
         </>
       )}

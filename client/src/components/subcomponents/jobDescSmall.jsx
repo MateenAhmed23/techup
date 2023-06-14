@@ -20,6 +20,7 @@ function JobDescSmall(props) {
       <div className="field field_v1">
         <label className="ha-screen-reader" htmlFor={props.id}>
           {props.label}
+          
         </label>
         <select
           id={props.id}

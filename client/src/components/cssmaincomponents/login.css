@@ -7,7 +7,7 @@
    background-color: rgb(223, 217, 217);
    display: grid;
    grid-template-columns: 25% 50% 25%;
-   grid-template-rows: 7% 700px 500px;
+   grid-template-rows: 7% 1100px 500px;
    grid-gap: 0%
 }
 
@@ -30,10 +30,10 @@
    grid-row-end: 3;
 }
 
-.footer {
+.footerloginpg {
    grid-column-start: 1;
    grid-column-end: 4;
    grid-row-start: 3;
    grid-row-end: 4;
-   background: rgba(209, 28, 28, 0.9);
+   
 }

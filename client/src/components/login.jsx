@@ -3,6 +3,7 @@ import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import LoginForm from "./subcomponents/loginform";
+import Footer from "./subcomponents/footer";
 
 import { useNavigate  } from 'react-router-dom';
 
@@ -85,8 +86,8 @@ function Login(){
         <div className="LogForm">
           <LoginForm onSubmit={handleLogin} />
         </div>
-        <div className="footer">
-          <h1 className="heading">Footer</h1>
+        <div className="footerloginpg">
+<Footer/>
         </div>
       </div>
   )
