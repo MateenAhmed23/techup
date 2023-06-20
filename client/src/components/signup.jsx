@@ -3,6 +3,7 @@ import "./cssmaincomponents/login.css";
 // import Footer from "./subcomponents/footer";
 import Navbar from "./subcomponents/navbar";
 import SignupForm from './subcomponents/signupform';
+import Footer from './subcomponents/footer';
 
 
 

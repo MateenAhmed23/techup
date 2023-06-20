@@ -4,6 +4,7 @@ import CompNav from "./subcomponents/companyNav";
 import Muqadim from "./subcomponents/csssubcomponents/AbdulMuqadim.jpg";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import arrow from "./subcomponents/csssubcomponents/arrow.png";
+import Footer from "./subcomponents/footer";
 class CandidateProfile extends Component {
   state = {};
   render() {
@@ -113,8 +114,9 @@ class CandidateProfile extends Component {
           </div>
           
         </div>
-        <div className="footer">
-          <h1 className="heading">Footer</h1>
+        <div className="footercandidateprofpg">
+          {/* <h1 className="heading">Footer</h1> */}
+          <Footer/>
         </div>
       </div>
     );

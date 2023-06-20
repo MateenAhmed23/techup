@@ -3,6 +3,7 @@ import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/mcqschoosing.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import QuestionDisplaycell from "./subcomponents/questiondisplaycell";
+import Footer from "./subcomponents/footer";
 
 class Mcqschoosing extends Component {
   state = {
@@ -287,8 +288,9 @@ class Mcqschoosing extends Component {
             </tbody>
           </table>
         </div>
-        <div className="footer">
-          <h1 className="heading">Footer</h1>
+        <div className="footermcqchoosingpg">
+          {/* <h1 className="heading">Footer</h1> */}
+          <Footer/>
         </div>
       </div>
     );

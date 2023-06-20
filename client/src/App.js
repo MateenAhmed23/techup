@@ -18,6 +18,7 @@ import Mcqschoosing from "./components/mcqschoosing";
 import CandidateProfile from "./components/candidateprofile";
 // import inte from "./components/interviewScheduling";
 import InterviewScheduler from"./components/interviewScheduling"
+import Footer from "./components/subcomponents/footer";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: "/interviewScheduling",
     element: <InterviewScheduler/>,
+  },
+  {
+    path: "/footer",
+    element: <Footer/>,
   },
 ]);
 
