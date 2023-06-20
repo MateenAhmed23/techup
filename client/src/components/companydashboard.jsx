@@ -153,6 +153,15 @@ function CompanyDashboard() {
           {displayType === "jobs" ? "MY JOBS" : "MEMBERS"}
         </h1>
         <SearchBar className="bar23" />
+        {displayType === "jobs" ? <Link to="/createnewjob">
+          <button className="createNewjob">
+            Create new Job
+          </button>
+        </Link> : <Link to="/addmember">
+          <button className="createNewjob">
+            Add Member
+          </button>
+        </Link>}
         <Link to="/createnewjob">
           <button className="createNewjob">
             {displayType === "jobs" ? "Create new Job" : "Create new Member"}
