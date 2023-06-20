@@ -117,20 +117,20 @@ function Signup() {
     <div className="loginpage">
       {isLoading ? (
         <h1> I am currently loading. HA</h1>
-      ) : (
-        <>
+        ): (
+          <>
           <Navbar onnavclick={handleclick} className="navbar"></Navbar>
-
-          <div className="LogForm">
-            <SignupForm onSubmit={handleSignup} />
-          </div>
-          <div className="footer">
-            <h1 className="heading">Footer</h1>
-          </div>
-        </>
+    
+            <div className="LogForm">
+              <SignupForm onSubmit={handleSignup} />
+            </div>
+            <div className="footerloginpg">
+              <Footer/>
+            </div>
+          </>
       )};
-
-    </div>
+            
+          </div>
   )
 }
 

@@ -76,18 +76,17 @@ function CompanyDetails() {
 
       const data= await response.json()
 
-      console.log(data)
+      console.log(data);
 
-
-      console.log('Company MADE SUCCESSFULLY');
-        // console.log(data);
-
-      localStorage.setItem('token', data.token);
-
-
-      loginStatus();
-
-      navigate('/');
+      if (response.status == 201) {
+        console.log('USER CREATED SUCCESSFULLY');
+        localStorage.setItem("token", data.token);
+        loginStatus();
+        navigate('/dashboard');
+      } else {
+        alert(data.message);
+        return;
+      }
   }
 
   return (

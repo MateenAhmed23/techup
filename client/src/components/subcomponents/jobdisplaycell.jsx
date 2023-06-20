@@ -8,6 +8,7 @@ class JobDisplaycell extends Component {
             <div className='cell'>
           <ul>
             <li>
+              {/* <p className="commonitems active">{this.props.title} </p> */}
               <a onClick={() => this.props.onnavclick("home")} className="commonitems active" href="#">
               {this.props.title}
               </a>
