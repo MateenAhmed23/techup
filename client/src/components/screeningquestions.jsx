@@ -3,6 +3,7 @@ import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/screeningquestions.css";
 import QuestionDisplaycCell from "./subcomponents/questiondisplaycell";
 import JobDescSmall from "./subcomponents/jobDescSmall";
+import Footer from "./subcomponents/footer";
 class ScreeningQuestions extends Component {
   state = {
     questioncreation: [
@@ -100,8 +101,9 @@ class ScreeningQuestions extends Component {
           <button className="backquest">Back</button>
           <button className="nextquest">Next</button>
         </div>
-        <div className="footerquest">
-          <h1 className="heading">Footer</h1>
+        <div className="footerscreeningpg">
+          {/* <h1 className="heading">Foote</h1> */}
+          <Footer/>
         </div>
       </div>
     );
