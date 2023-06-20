@@ -5,6 +5,9 @@ import Sidebar from "./subcomponents/sidebardashboard";
 import SearchBar from "./subcomponents/searchbar";
 import JobDisplaycell from "./subcomponents/jobdisplaycell";
 import Memberdisplaycell from "./subcomponents/memberdisplaycell";
+
+import { Link } from 'react-router-dom';
+
 import Footer from "./subcomponents/footer";
 
 import { useNavigate } from "react-router-dom";
@@ -150,9 +153,11 @@ function CompanyDashboard() {
           {displayType === "jobs" ? "MY JOBS" : "MEMBERS"}
         </h1>
         <SearchBar className="bar23" />
-        <button className="createNewjob">
-          {displayType === "jobs" ? "Create new Job" : "Create new Member"}
-        </button>
+        <Link to="/createnewjob">
+          <button className="createNewjob">
+            {displayType === "jobs" ? "Create new Job" : "Create new Member"}
+          </button>
+        </Link>
       </div>
       <div className="jobs">
         {" "}
@@ -165,8 +170,8 @@ function CompanyDashboard() {
                     <JobDisplaycell
                       id={job._id}
                       title={job.title}
-                      Dateposted={job.type}
-                      Status={job.status}
+                      Dateposted={job.Dateposted}
+                      Status={job.Status}
                     />
                   </td>
                 </tr>

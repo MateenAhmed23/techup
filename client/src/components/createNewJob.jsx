@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
@@ -6,13 +6,13 @@ import Footer from "./subcomponents/footer";
 
 import UserContext from '../context/user';
 
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
-function CreateNewJob(){
+function CreateNewJob() {
 
-  const {isLoading, loginStatus, isLoggedIn, userInfo} = useContext(UserContext);
+  const { isLoading, loginStatus, isLoggedIn, userInfo } = useContext(UserContext);
 
 
   const navigate = useNavigate();
@@ -103,7 +103,7 @@ function CreateNewJob(){
       placeholder: "e.g. Work from home",
       height: "23vh",
     },
-       
+
     // add more job descriptions here
   ]
 
@@ -126,13 +126,13 @@ function CreateNewJob(){
   // console.log(jobDescriptionssmall)
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
 
-    if (loginStatus()){
-      
+    if (loginStatus()) {
+
     }
-    else{
+    else {
       console.log('Please login first to access this page.')
       navigate('/')
     }
@@ -142,44 +142,44 @@ function CreateNewJob(){
     //   console.log('HEE22')
     //   navigate('/')
     // }
-  },[])
+  }, [])
 
 
 
-  async function submitHandler(){
+  async function submitHandler() {
     console.log('Lets create the job here')
 
     const response = await fetch("http://127.0.0.1:5000/api/create_job", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          department,
-          type: jobType,
-          stack,
-          description: desc,
-          yearsOfExperience: experience,
-          companyId: userInfo.companyId,
-          location:location,
-          perks:perks
-        }),
-      });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        department,
+        type: jobType,
+        stack,
+        description: desc,
+        yearsOfExperience: experience,
+        companyId: userInfo.companyId,
+        location: location,
+        perks: perks
+      }),
+    });
 
-      // const data = await response.json();
+    // const data = await response.json();
 
-      navigate('/dashboard')
-      alert('Job Created Successfully')
+    navigate('/dashboard')
+    alert('Job Created Successfully')
 
-      
+
 
 
   }
 
-  function handleChange(changeFor, value){
+  function handleChange(changeFor, value) {
     console.log('I AM FREAKING HEREEEE')
-    switch (changeFor){
+    switch (changeFor) {
       case 'Job Title':
         setTitle(value)
         break;
@@ -211,61 +211,62 @@ function CreateNewJob(){
     }
   }
 
-  return(
+  return (
     <div className="newjobpage">
-        <CompNav className="navbar" />
-        <div className="mainhead">
-          <h1 className="h1h">Create New Job </h1>
-        </div>
-        <div className="details">
-          <table>
-            <tbody>
-              {jobDescriptionssmall.map((jobDesc) => (
-                <tr key={jobDesc.id}>
-                  <td className="job-desc-cell">
-                    <JobDescSmall
-                      id={jobDesc.id}
-                      type={jobDesc.type}
-                      placeholder={jobDesc.placeholder}
-                      label={jobDesc.label}
-                      height={jobDesc.height}
-                      options={jobDesc.options}
-                      change = {handleChange}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="descriptions">
-          <table>
-            <tbody>
-              {jobDescriptionslarge.map((jobDesc) => (
-                <tr key={jobDesc.id}>
-                  <td className="job-desc-cell">
-                    <JobDescSmall
-                      id={jobDesc.id}
-                      type={jobDesc.type}
-                      placeholder={jobDesc.placeholder}
-                      label={jobDesc.label}
-                      height={jobDesc.height}
-                      change = {handleChange}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="buttonjobnew">
-          <button className="backjobnew">Back</button>
-          <button className="createjobnew" onClick={()=>submitHandler()}>Create</button>
-        </div>
-        <div className="footercreatenewjobpg">
-        <Footer></Footer>
-        </div>
+      <CompNav className="navbar" />
+      <div className="mainhead">
+        <h1 className="h1h">Create New Job </h1>
       </div>
+      <div className="details">
+        <table>
+          <tbody>
+            {jobDescriptionssmall.map((jobDesc) => (
+              <tr key={jobDesc.id}>
+                <td className="job-desc-cell">
+                  <JobDescSmall
+                    id={jobDesc.id}
+                    type={jobDesc.type}
+                    placeholder={jobDesc.placeholder}
+                    label={jobDesc.label}
+                    height={jobDesc.height}
+                    options={jobDesc.options}
+                    change={handleChange}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="descriptions">
+        <table>
+          <tbody>
+            {jobDescriptionslarge.map((jobDesc) => (
+              <tr key={jobDesc.id}>
+                <td className="job-desc-cell">
+                  <JobDescSmall
+                    id={jobDesc.id}
+                    type={jobDesc.type}
+                    placeholder={jobDesc.placeholder}
+                    label={jobDesc.label}
+                    height={jobDesc.height}
+                    change={handleChange}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="buttonjobnew">
+        <button className="backjobnew">Back</button>
+        <button className="createjobnew" onClick={() => submitHandler()}>Create</button>
+      </div>
+      <div className="footerjob1">
+        <h1 className="heading">Footer</h1>
+
+      </div>
+    </div>
   )
 }
 
