@@ -108,6 +108,7 @@ function CompanyDashboard() {
 
     const data = await res.json();
 
+    console.log(data)
 
     if (res.status == 400) {
 
@@ -179,8 +180,8 @@ function CompanyDashboard() {
                     <JobDisplaycell
                       id={job._id}
                       title={job.title}
-                      Dateposted={job.Dateposted}
-                      Status={job.Status}
+                      type={job.type}
+                      status={job.status}
                     />
                   </td>
                 </tr>
