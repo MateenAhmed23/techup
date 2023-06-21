@@ -12,35 +12,35 @@ import Footer from './subcomponents/footer';
 
 // import {useHistory} from 'react-router-dom'
 
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 import UserContext from '../context/user';
 
 
 
-function Signup(){
+function Signup() {
 
   const navigate = useNavigate();
 
-  const {isLoading, loginStatus, isLoggedIn} = useContext(UserContext);
+  const { isLoading, loginStatus, isLoggedIn } = useContext(UserContext);
 
 
   // const [userData,setUserData] = useState(null);
 
-  function handleclick(){
+  function handleclick() {
     // IDHER KIA DAALNA HA MUQAY????
   }
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
 
-    if (isLoggedIn){
-      navigate('/')
+    if (isLoggedIn) {
+      navigate('/dashboard')
     }
-    else{
+    else {
       loginStatus()
     }
     // console.log(loginStatus())
@@ -49,7 +49,7 @@ function Signup(){
     //   console.log('HEE22')
     //   navigate('/')
     // }
-  },[isLoggedIn])
+  }, [isLoggedIn])
 
   // useEffect(()=>{
   //   console.log('Called inside signup')
@@ -57,7 +57,7 @@ function Signup(){
   //   updateCount()
   // },[])
 
-  async function handleSignup(email,password,confirmPassword){
+  async function handleSignup(email, password, confirmPassword) {
     if (password !== confirmPassword) {
       // setError(true);
       alert("Passwords do not match");
@@ -102,10 +102,12 @@ function Signup(){
       //   // history.push("/login");
       // }
 
-      navigate('/companyDetails', {state:{
-        email,
-        password
-      }})
+      navigate('/companyDetails', {
+        state: {
+          email,
+          password
+        }
+      })
 
 
     }
@@ -131,5 +133,5 @@ function Signup(){
           </div>
   )
 }
- 
+
 export default Signup;
