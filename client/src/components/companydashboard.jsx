@@ -108,6 +108,7 @@ function CompanyDashboard() {
 
     const data = await res.json();
 
+    console.log(data)
 
     if (res.status == 400) {
 
@@ -153,6 +154,15 @@ function CompanyDashboard() {
           {displayType === "jobs" ? "MY JOBS" : "MEMBERS"}
         </h1>
         <SearchBar className="bar23" />
+        {displayType === "jobs" ? <Link to="/createnewjob">
+          <button className="createNewjob">
+            Create new Job
+          </button>
+        </Link> : <Link to="/addmember">
+          <button className="createNewjob">
+            Add Member
+          </button>
+        </Link>}
         <Link to="/createnewjob">
           <button className="createNewjob">
             {displayType === "jobs" ? "Create new Job" : "Create new Member"}
@@ -170,8 +180,8 @@ function CompanyDashboard() {
                     <JobDisplaycell
                       id={job._id}
                       title={job.title}
-                      Dateposted={job.Dateposted}
-                      Status={job.Status}
+                      type={job.type}
+                      status={job.status}
                     />
                   </td>
                 </tr>
