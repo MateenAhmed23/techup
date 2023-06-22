@@ -102,16 +102,16 @@ class CandidateProfile extends Component {
             <p className=" skillsetp"> HTML</p>
             <p className=" skillsetp">Figma</p>
             <p className=" skillsetp">Next Js</p>
-            
+
           </div>
           <h1 className="divhead">Jobs Currently Applied For</h1>
           <div className="skilssetdiv">
             <p className=" skillsetp">Fornt end developer </p>
             <p className=" skillsetp">UI/UX Designer</p>
             <p className=" skillsetp">Junior Backend Developer </p>
-            
+
           </div>
-          
+
         </div>
         <div className="footer">
           <h1 className="heading">Footer</h1>

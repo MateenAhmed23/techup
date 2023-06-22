@@ -82,13 +82,9 @@ function CompanyDashboard() {
       console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
       getMembers()
       getJobs()
-      // setLoading(false)
     }
     else {
       authentication()
-      // console.log('Going to get jobs and members')
-      // console.log(userInfo.companyId)
-
     }
   }, [isLoggedIn, userInfo.companyId])
 

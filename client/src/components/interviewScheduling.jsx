@@ -1,16 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./cssmaincomponents/interviewScheduling.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import CompNav from "./subcomponents/companyNav";
+
+import UserContext from "../context/user";
 
 const InterviewScheduler = () => {
   const [interviewSlots, setInterviewSlots] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState("");
   const [selectedEndDate, setSelectedEndDate] = useState("");
   const [selectedSingleDate, setSelectedSingleDate] = useState("");
+  const [selectedRangeStartTime, setSelectedRangeStartTime] = useState("");
+  const [selectedRangeEndTime, setSelectedRangeEndTime] = useState("");
   const [selectedStartTime, setSelectedStartTime] = useState("");
   const [selectedEndTime, setSelectedEndTime] = useState("");
   const [selectedDuration, setSelectedDuration] = useState("");
+  const [selectedRangeDuration, setSelectedRangeDuration] = useState("");
+
+  const { isLoading, isLoggedIn, loginStatus, userInfo } = useContext(UserContext);
+
+  // useEffect(() => {
+  //   if (userInfo && userInfo.userId) {
+  //     console.log(userInfo);
+  //   }
+  // }, [userInfo]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log(userInfo);
+    }
+    else {
+      if (loginStatus()) {
+
+      } else {
+
+      }
+    }
+  }, [])
 
   const handleStartDateChange = (e) => {
     setSelectedStartDate(e.target.value);
@@ -24,8 +50,16 @@ const InterviewScheduler = () => {
     setSelectedSingleDate(e.target.value);
   };
 
+  const handleStartRangeTimeChange = (e) => {
+    setSelectedRangeStartTime(e.target.value);
+  };
+
   const handleStartTimeChange = (e) => {
     setSelectedStartTime(e.target.value);
+  };
+
+  const handleEndRangeTimeChange = (e) => {
+    setSelectedRangeEndTime(e.target.value);
   };
 
   const handleEndTimeChange = (e) => {
@@ -36,34 +70,49 @@ const InterviewScheduler = () => {
     setSelectedDuration(e.target.value);
   };
 
-  const handleAddRangeSlot = () => {
+  const handleRangeDurationChange = (e) => {
+    setSelectedRangeDuration(e.target.value);
+  };
+
+  async function handleAddRangeSlot() {
     if (
       selectedStartDate &&
       selectedEndDate &&
-      selectedStartTime &&
-      selectedEndTime &&
-      selectedDuration
+      selectedRangeStartTime &&
+      selectedRangeEndTime &&
+      selectedRangeDuration
     ) {
       const newSlot = {
         startDate: selectedStartDate,
         endDate: selectedEndDate,
-        startTime: selectedStartTime,
-        endTime: selectedEndTime,
-        duration: selectedDuration,
+        startTime: selectedRangeStartTime,
+        endTime: selectedRangeEndTime,
+        duration: selectedRangeDuration,
       };
 
       setInterviewSlots([...interviewSlots, newSlot]);
 
-      // Reset selected values
-      setSelectedStartDate("");
-      setSelectedEndDate("");
-      setSelectedStartTime("");
-      setSelectedEndTime("");
-      setSelectedDuration("");
+      // setSelectedStartDate("");
+      // setSelectedEndDate("");
+      // setSelectedRangeStartTime("");
+      // setSelectedRangeEndTime("");
+      // setSelectedRangeDuration("");
+
+      console.log(userInfo);
+      newSlot["clientId"] = userInfo.userId;
+      // const res = await fetch("http://127.0.0.1:5000/api/add_slot", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newSlot),
+      // });
     }
   };
 
-  const handleAddSingleSlot = () => {
+
+  async function handleAddSingleSlot() {
+
     if (
       selectedSingleDate &&
       selectedStartTime &&
@@ -79,11 +128,19 @@ const InterviewScheduler = () => {
 
       setInterviewSlots([...interviewSlots, newSlot]);
 
-      // Reset selected values
-      setSelectedSingleDate("");
-      setSelectedStartTime("");
-      setSelectedEndTime("");
-      setSelectedDuration("");
+      // setSelectedSingleDate("");
+      // setSelectedStartTime("");
+      // setSelectedEndTime("");
+      // setSelectedDuration("");
+
+      newSlot["clientId"] = userInfo.userId;
+      const res = await fetch("http://127.0.0.1:5000/api/add_slot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newSlot),
+      });
     }
   };
 
@@ -123,8 +180,8 @@ const InterviewScheduler = () => {
               label="Start Time"
               height="7vh"
               width="20vw"
-              value={selectedStartTime}
-              onChange={handleStartTimeChange}
+              value={selectedRangeStartTime}
+              onChange={handleStartRangeTimeChange}
             />
           </div>
           <div className="input-container">
@@ -134,8 +191,8 @@ const InterviewScheduler = () => {
               label="End Time"
               height="7vh"
               width="20vw"
-              value={selectedEndTime}
-              onChange={handleEndTimeChange}
+              value={selectedRangeEndTime}
+              onChange={handleEndRangeTimeChange}
             />
           </div>
           <div className="input-container">
@@ -145,8 +202,8 @@ const InterviewScheduler = () => {
               label="Duration"
               height="7vh"
               width="20vw"
-              value={selectedDuration}
-              onChange={handleDurationChange}
+              value={selectedRangeDuration}
+              onChange={handleRangeDurationChange}
             />
           </div>
           <button onClick={handleAddRangeSlot}>Add Range Slot</button>
@@ -208,9 +265,17 @@ const InterviewScheduler = () => {
           <ul>
             {interviewSlots.map((slot, index) => (
               <li key={index}>
-                {slot.startDate} - {slot.endDate || ""} {slot.date || ""},{" "}
-                {slot.startTime} - {slot.endTime}, Duration: {slot.duration}{" "}
-                minutes
+                {slot.startDate ? (
+                  <div>
+                    {slot.startDate} - {slot.endDate}, {slot.startTime} - {slot.endTime},
+                    Duration: {slot.duration} minutes
+                  </div>
+                ) : (
+                  <div>
+                    {slot.date}, {slot.startTime} - {slot.endTime},
+                    Duration: {slot.duration} minutes
+                  </div>
+                )}
               </li>
             ))}
           </ul>

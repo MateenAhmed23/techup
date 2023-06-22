@@ -10,6 +10,7 @@ const Job = require("./models/job");
 const cors = require("cors");
 const Question = require("./models/question");
 const Assessment = require("./models/assessment");
+const Slot = require("./models/slot");
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,17 @@ app.use(cookieParser());
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
+
+app.post("/api/add_slot", async (req, res) => {
+  console.log(req.body);
+  try {
+    const newSlot = await Slot.create(req.body);
+    res.status(201).json(newSlot);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 function generateToken(client) {
   const payload = {
