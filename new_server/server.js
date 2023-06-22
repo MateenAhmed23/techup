@@ -118,6 +118,31 @@ app.post("/api/company_signup", async (req, res) => {
 });
 
 // {
+//   clientId
+// }
+// {
+//   200: removed
+//   404: not found
+// }
+router.post("/api/remove_client", async (req, res) => {
+  const { clientId } = req.body;
+
+  try {
+    const client = await Client.findById(clientId);
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    await Client.findByIdAndDelete(clientId);
+
+    return res.status(200).json({ message: "Client deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
 //   email,
 //   password
 // }
