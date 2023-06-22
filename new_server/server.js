@@ -132,6 +132,22 @@ app.post("/api/company_signup", async (req, res) => {
 //   send companyID
 // }
 
+app.post("/api/get_company", async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  try {
+    const company = await Company.findById(id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    return res.json(company);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+});
+
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
