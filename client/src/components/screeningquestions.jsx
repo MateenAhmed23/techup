@@ -1,53 +1,52 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/screeningquestions.css";
 import QuestionDisplaycCell from "./subcomponents/questiondisplaycell";
 import JobDescSmall from "./subcomponents/jobDescSmall";
-class ScreeningQuestions extends Component {
-  state = {
-    questioncreation: [
-      {
-        id: 1,
-        label: "Name",
-        type: "text",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-      },
-      {
-        id: 2,
-        label: "Response TYPE",
-        type: "text",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-      },
-      {
-        id: 2,
-        label: "Mandatory",
-        type: "text",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-      },
-    ],
-    addedquestions: [
-      {
-        id: 1,
-        question: "Where fo you see yourself in 5 years?",
-        type: "Descriptive",
-      },
-      {
-        id: 1,
-        question: "Where fo you see yourself in 5 years?",
-        type: "Descriptive",
-      },
-      {
-        id: 1,
-        question: "Where fo you see yourself in 5 years?",
-        type: "Descriptive",
-      },
-    ],
-  };
-  render() {
-    return (
+import Footer from "./subcomponents/footer";
+
+function ScreeningQuestions(){
+  const [questioncreation,setQuestionCreation] = useState([
+          {
+            id: 1,
+            label: "Name",
+            type: "text",
+            placeholder: "e.g. Software E",
+            height: "7vh",
+          },
+          {
+            id: 2,
+            label: "Response TYPE",
+            type: "text",
+            placeholder: "e.g. Software E",
+            height: "7vh",
+          },
+          {
+            id: 2,
+            label: "Mandatory",
+            type: "text",
+            placeholder: "e.g. Software E",
+            height: "7vh",
+          },
+        ]);
+  const [addedquestions, setAddedQuestions] = useState([
+          {
+            id: 1,
+            question: "Where fo you see yourself in 5 years?",
+            type: "Descriptive",
+          },
+          {
+            id: 1,
+            question: "Where fo you see yourself in 5 years?",
+            type: "Descriptive",
+          },
+          {
+            id: 1,
+            question: "Where fo you see yourself in 5 years?",
+            type: "Descriptive",
+          },
+        ])
+  return(
       <div className="screening">
         <div>
           <CompNav className="navbar" />
@@ -58,7 +57,7 @@ class ScreeningQuestions extends Component {
         <div className="questinsfields">
           <table>
             <tbody>
-              {this.state.questioncreation.map((jobDesc) => (
+              {questioncreation.map((jobDesc) => (
                 <tr key={jobDesc.id}>
                   <td className="job-desc-cell">
                     <JobDescSmall
@@ -82,7 +81,7 @@ class ScreeningQuestions extends Component {
           {" "}
           <table>
             <tbody>
-              {this.state.addedquestions.map((quest) => (
+              {addedquestions.map((quest) => (
                 <tr key={quest.id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycCell
@@ -100,12 +99,12 @@ class ScreeningQuestions extends Component {
           <button className="backquest">Back</button>
           <button className="nextquest">Next</button>
         </div>
-        <div className="footerquest">
-          <h1 className="heading">Footer</h1>
+        <div className="footerscreeningpg">
+          {/* <h1 className="heading">Foote</h1> */}
+          <Footer/>
         </div>
       </div>
-    );
-  }
+  )
 }
 
 export default ScreeningQuestions;

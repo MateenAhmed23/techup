@@ -6,7 +6,7 @@
     background-color: rgb(223, 217, 217);
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 9% 7% 17% 9% 450px 4% 500px;
+    grid-template-rows: 9% 7% 17% 9% 450px 7% 500px;
     grid-gap: 0%
 }
 .addingmemebrspage{
@@ -60,7 +60,7 @@
     padding: 10px 10px;
     border-radius: 50px;
     width: 11vw;
-    background-color: #5EA0D0;
+    background-color: #081e2e;
     justify-content: center;
     margin-left: 44vw;
     font-family: 'Times New Roman', Times, serif;
@@ -96,8 +96,7 @@
     border-radius: 50px;
     width: 8vw;
     height: 7vh;
-    background-color: #5EA0D0;
-    justify-content: center;
+    background-color: #081e2e;    justify-content: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bolder;
     font-size: 3vh;
@@ -109,15 +108,15 @@
     border-radius: 50px;
     width: 8vw;
     height: 7vh;
-    background-color: #5EA0D0;
+    background-color: #081e2e;
     justify-content: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bolder;
     font-size: 3vh;
 /* margin-left: 44vw; */}
 
-.footerquest {
+.footerscreeningpg {
     grid-row-start: 7;
     grid-row-end: 8;
-    background: rgba(0, 0, 0, 0.8);
+    /* background: rgba(0, 0, 0, 0.8); */
 }

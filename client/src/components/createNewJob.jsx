@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/createnewjob.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
-
+import Footer from "./subcomponents/footer";
 
 import UserContext from '../context/user';
 
@@ -260,6 +260,7 @@ function CreateNewJob() {
       </div>
       <div className="footerjob1">
         <h1 className="heading">Footer</h1>
+
       </div>
     </div>
   )

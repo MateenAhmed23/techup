@@ -3,6 +3,7 @@ import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/screeningquestions.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import Memberdisplaycell from "./subcomponents/memberdisplaycell";
+import Footer from "./subcomponents/footer";
 
 
 import UserContext from '../context/user';
@@ -195,8 +196,9 @@ function handleChange(changeFor, value){
           <button className="backquest">Back</button>
           <button className="nextquest">Next</button>
         </div>
-        <div className="footerquest">
-          <h1 className="heading">Footer</h1>
+        <div className="footerscreeningpg">
+          {/* <h1 className="heading">Footer</h1> */}
+          <Footer/>
         </div>
       </div>
   )

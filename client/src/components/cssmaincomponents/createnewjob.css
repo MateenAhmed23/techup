@@ -93,6 +93,7 @@
   align-items: center; /* for vertical alignment */
   flex-direction: row; /* stack the items vertically */
   height: 100%;
+  /* margin-bottom: ; */
 }
 .backjobnew {
   background-color: rgb(65, 73, 73);

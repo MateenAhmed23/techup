@@ -6,6 +6,7 @@ import LoginForm from "./subcomponents/loginform";
 
 import { useNavigate } from 'react-router-dom';
 
+import Footer from "./subcomponents/footer";
 
 import UserContext from '../context/user';
 
@@ -66,7 +67,7 @@ function Login() {
     if (response.status == 201) {
       console.log('USER LOGINNED SUCCESSFULLY')
       localStorage.setItem("token", data.token);
-      navigate('/');
+      navigate('/dashboard');
     } else {
       alert(data.message);
       return;
@@ -80,15 +81,15 @@ function Login() {
 
   return (
     <div className="loginpage">
-      <Navbar onnavclick={handleclick} className="navbar"></Navbar>
+        <Navbar onnavclick={handleclick} className="navbar"></Navbar>
 
-      <div className="LogForm">
-        <LoginForm onSubmit={handleLogin} />
+        <div className="LogForm">
+          <LoginForm onSubmit={handleLogin} />
+        </div>
+        <div className="footerloginpg">
+          <Footer/>
+        </div>
       </div>
-      <div className="footer">
-        <h1 className="heading">Footer</h1>
-      </div>
-    </div>
   )
 
 }

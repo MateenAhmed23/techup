@@ -9,8 +9,8 @@ html {
     width: 100%;
     background-color: rgb(223, 217, 217);
     display: grid;
-    grid-template-columns: 30vw 68vw;
-    grid-template-rows: 10% 700px 400px;
+    grid-template-columns: 30vw 68.9vw;
+    grid-template-rows: 10% 900px 400px;
 
 }
 
@@ -254,7 +254,7 @@ html {
     font-size: 3vh;
 }
 
-.footer {
+.footercandidateprofpg {
 
     grid-column-start: 1;
     grid-column-end: 3;

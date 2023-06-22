@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "./subcomponents/navbar";
-import Footer from "./subcomponents/footer";
+// import Footer from "./subcomponents/footer";
 import logo from "./subcomponents/csssubcomponents/logoblack.png";
 import attract from "./cssmaincomponents/attracttalent.svg";
 import sleek from "./cssmaincomponents/minimaltracking.svg";
@@ -12,95 +12,101 @@ import ahsan from "./cssmaincomponents/AHSAN.jpg";
 import mateen from "./cssmaincomponents/MATEEN.jpg";
 import saad from "./cssmaincomponents/SAAD.jpg";
 import sufi from "./cssmaincomponents/SUFI.jpg";
+import Footer from"./subcomponents/footer"
 
-class Landingpage extends Component {
-  state = {
+import UserContext from "../context/user";
+
+
+
+
+const Landingpage = () => {
+  const [state, setState] = useState({
     serviceIndex: 0,
     services: [
       "TECHNICAL RECRUITMENT",
       "TECHNICAL SCREENING",
       " REPORT GENERATION",
       "INTERVIEW SCHEDULING",
-    ], // array of services to cycle through
-    serviceText: "", // text of the current service being typed
-    typing: true, // flag to track whether we are currently typing or erasing text
-    // above is code for typing erasing effect
-    animateServices: false, //code for apearing servoces anumation
-  };
+    ],
+    serviceText: "",
+    typing: true,
+    animateServices: false,
+  });
 
-  componentDidMount() {
-    //below is all code for animations
-    //bewlow is for typig animations
-    // set an interval to update the service text every 3 seconds
-    this.intervalId = setInterval(() => {
-      this.setState((prevState) => ({
+  const { isLoggedIn, loginStatus, userInfo } =
+    useContext(UserContext);
+
+  useEffect(() => {
+    let intervalId;
+    intervalId = setInterval(() => {
+      setState((prevState) => ({
+        ...prevState,
         serviceIndex: (prevState.serviceIndex + 1) % prevState.services.length,
         serviceText: "",
         typing: true,
       }));
 
-      // delay the start of the typing animation by 500ms
       setTimeout(() => {
-        this.typeText();
+        typeText();
       }, 500);
-    }, 7000); //important
-    //bewlow is for services animations
-  }
+    }, 7000);
 
-  componentWillUnmount() {
-    // clear the interval when the component is unmounted
-    clearInterval(this.intervalId);
-  }
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
-  typeText() {
-    // add the next character to the service text
-    this.setState((prevState) => ({
+  useEffect(() => {
+    if (loginStatus() && userInfo.companyId) {
+      
+    }
+    else {
+    }
+  }, [isLoggedIn, userInfo.companyId])
+
+  const typeText = () => {
+    setState((prevState) => ({
+      ...prevState,
       serviceText: prevState.services[prevState.serviceIndex].slice(
         0,
         prevState.serviceText.length + 1
       ),
     }));
 
-    // if there are more characters to type, schedule the next character addition
     if (
-      this.state.serviceText.length <
-      this.state.services[this.state.serviceIndex].length
+      state.serviceText.length <
+      state.services[state.serviceIndex].length
     ) {
       setTimeout(() => {
-        this.typeText();
-      }, 180); //important
+        typeText();
+      }, 180);
     } else {
-      // if we have typed all the characters, start the erasing animation after 1.5 seconds
       setTimeout(() => {
-        this.eraseText();
+        eraseText();
       }, 2000);
     }
-  }
+  };
 
-  eraseText() {
-    // remove the last character from the service text
-    this.setState((prevState) => ({
+  const eraseText = () => {
+    setState((prevState) => ({
+      ...prevState,
       serviceText: prevState.serviceText.slice(
         0,
         prevState.serviceText.length - 1
       ),
     }));
 
-    // if there are more characters to erase, schedule the next character deletion
-    if (this.state.serviceText.length > 0) {
+    if (state.serviceText.length > 0) {
       setTimeout(() => {
-        this.eraseText();
+        eraseText();
       }, 100);
     } else {
-      // if we have erased all the characters, set the typing flag to false to indicate that we are done
-      this.setState({
-        typing: false,
-      });
+      setState((prevState) => ({ ...prevState, typing: false }));
     }
-  }
-  handleclick = (option) => {
+  };
+
+  const handleClick = (option) => {
     let element = null;
-    console.log(option);
     switch (option) {
       case "home":
         element = document.getElementsByClassName("home")[0];
@@ -125,18 +131,18 @@ class Landingpage extends Component {
       });
     }
   };
-  render() {
-    return (
-      <div className="landingpage">
+
+  return (
+    <div className="landingpage">
         {/* <Footer></Footer> */}
-        <Navbar onnavclick={this.handleclick} className="navbar"></Navbar>
+        <Navbar onnavclick={handleClick} className="navbar" loginStatus={isLoggedIn}></Navbar>
 
         <div className="image">
           <img src={logo} width={370} height={120} className="logomain" />
           <p className=" statement">
             WE WILL AUTOMATE{" "}
-            <span className="services">{this.state.serviceText}</span>
-            {this.state.typing ? "|" : ""} FOR YOU
+            <span className="services">{state.serviceText}</span>
+            {state.typing ? "|" : ""} FOR YOU
           </p>
 
           <p className="description">
@@ -176,10 +182,10 @@ class Landingpage extends Component {
                 src={attract}
                 width={70}
                 height={70}
-                className="iconuniq content"
+                className="iconuniqlandpg"
               />
-              <p className="headinguniq content">Attract talent</p>
-              <p className="descuniq content">
+              <p className="headinguniqlandpg ">Attract talent</p>
+              <p className="descuniqlandpg ">
                 Our ATS features an "attract talent" module to help clients
                 showcase their brand, create job postings, share them on social
                 media, and engage with candidates. With a user-friendly
@@ -188,9 +194,9 @@ class Landingpage extends Component {
               </p>
             </div>
             <div className="service">
-              <img src={sleek} width={70} height={70} className="iconuniq" />
-              <p className="headinguniq">Sleek minimal tracking </p>
-              <p className="descuniq">
+              <img src={sleek} width={70} height={70} className="iconuniqlandpg" />
+              <p className="headinguniqlandpg">Sleek minimal tracking </p>
+              <p className="descuniqlandpg">
                 Our ATS features a sleek and minimal design that allows users to
                 navigate with ease and access key features quickly. Our tracking
                 module offers robust capabilities to manage job postings,
@@ -203,10 +209,10 @@ class Landingpage extends Component {
                 src={efficient}
                 width={70}
                 height={70}
-                className="iconuniq content"
+                className="iconuniqlandpg"
               />
-              <p className="headinguniq content">Efficient assessment tool</p>
-              <p className="descuniq">
+              <p className="headinguniqlandpg">Efficient assessment tool</p>
+              <p className="descuniqlandpg">
                 Our ATS offers an efficient assessment tool to evaluate
                 candidates based on customizable criteria, including skills,
                 experience, and qualifications. Our intuitive interface
@@ -219,12 +225,12 @@ class Landingpage extends Component {
                 src="https://cdn.vuram.com/3b238589f2a8a016fd89fcd7ba978f06.svg"
                 width={70}
                 height={70}
-                className="iconuniq content"
+                className="iconuniqlandpg"
               />
-              <p className="headinguniq">
+              <p className="headinguniqlandpg">
                 360-degree view into candidate sourcing
               </p>
-              <p className="descuniq">
+              <p className="descuniqlandpg">
                 Our ATS provides a 360-degree view into candidate sourcing,
                 allowing recruiters to track the source of each candidate and
                 the effectiveness of each channel. Advanced analytics provide
@@ -238,10 +244,10 @@ class Landingpage extends Component {
                 src="https://cdn.vuram.com/e3a583d2e4c0b70c8f83456c4ddccd26.svg"
                 width={70}
                 height={70}
-                className="iconuniq"
+                className="iconuniqlandpg"
               />
-              <p className="headinguniq">Personalized dashboards</p>
-              <p className="descuniq">
+              <p className="headinguniqlandpg">Personalized dashboards</p>
+              <p className="descuniqlandpg">
                 Our ATS offers personalized dashboards for each user, allowing
                 them to customize their view and access the features most
                 important to them. The dashboards provide real-time updates on
@@ -255,10 +261,10 @@ class Landingpage extends Component {
                 src="https://cdn.vuram.com/270510ea69092e90212db6a8e8bcab54.svg"
                 width={70}
                 height={70}
-                className="iconuniq"
+                className="iconuniqlandpg"
               />
-              <p className="headinguniq">Efficiently track referrals</p>
-              <p className="descuniq">
+              <p className="headinguniqlandpg">Efficiently track referrals</p>
+              <p className="descuniqlandpg">
                 Our ATS allows clients to efficiently track referrals by
                 capturing data on the source of each candidate and providing
                 analytics to measure the success of referral programs. Our
@@ -271,9 +277,11 @@ class Landingpage extends Component {
         </div>
 
         <div className="aboutus">
+          <div className="aboutusheavy">
           <h1 className="keyfeatures">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ABOUT US
+            ABOUT US
           </h1>
+          </div>
           <div className="team">
             <div className="member abdul">
               <img src={ahsan} width={200} height={200} className="imageteam" />
@@ -295,7 +303,7 @@ class Landingpage extends Component {
               <p className="headingteam">
                 &nbsp;&nbsp;&nbsp;&nbsp;Mateen Ahmad
               </p>
-              <p className="descteam">&nbsp;&nbsp;&nbsp;Back End developer</p>
+              <p className="descteam">&nbsp;&nbsp;&nbsp;Full stack developer</p>
             </div>
             <div className="member abdul">
               <img src={saad} width={200} height={200} className="imageteam" />
@@ -315,10 +323,12 @@ class Landingpage extends Component {
         </div>
 
         <div className="pricing">
+          <div className="pricingheadings">
           <p className="keyfeatures">Pricing Packages</p>
           <h1 className="different">
-            &nbsp;TechUp offers very reasonable prices{" "}
+            TechUp offers very reasonable prices{" "}
           </h1>
+          </div>
           <br />
           <div className="container">
             <div className="row">
@@ -416,12 +426,10 @@ class Landingpage extends Component {
           </div>
         </div>
 
-        {/* <div className="footer">
-          <h1 className="heading">Footer</h1>
-        </div> */}
+        <div className="footerlandpg"><Footer/></div>
       </div>
-    );
-  }
+  )
 }
+
 
 export default Landingpage;

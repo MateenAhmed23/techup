@@ -68,19 +68,19 @@ app.post("/api/company_signup", async (req, res) => {
       password,
     } = req.body;
 
-    console.log(
-      companyName,
-      companyAddress,
-      companyWebsite,
-      companyPhoneNumber,
-      email,
-      password
-    );
+    // console.log(
+    //   companyName,
+    //   companyAddress,
+    //   companyWebsite,
+    //   companyPhoneNumber,
+    //   email,
+    //   password
+    // );
 
     // Check if company name is already registered
     const companyExists = await Company.findOne({ name: companyName });
 
-    console.log(companyExists);
+    // console.log(companyExists);
     if (companyExists) {
       // console.log("Inside company exists");
       return res
@@ -91,7 +91,7 @@ app.post("/api/company_signup", async (req, res) => {
     // Check if client email is already registered
     const clientExists = await Client.findOne({ email });
 
-    console.log(clientExists);
+    // console.log(clientExists);
     if (clientExists) {
       return res.status(400).json({ message: "Email already exists" });
     }
@@ -218,7 +218,7 @@ app.post("/api/verify-token", (req, res) => {
 // }
 
 app.post("/api/create_job", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const {
       title,
@@ -345,7 +345,7 @@ const verifyTokenMiddleWare = (req, res, next) => {
 
 // API endpoint for a superuser client to create new regular clients for its own company
 app.post("/api/create_client", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     // Check if the authenticated client is a superuser
     const client = await Client.findById(req.body.clientId);
@@ -400,10 +400,10 @@ app.post("/api/create_client", async (req, res) => {
 app.post("/api/get_all_clients", async (req, res) => {
   try {
     const companyId = req.body.companyId;
-    console.log("Inside Get all clients", companyId);
+    // console.log("Inside Get all clients", companyId);
 
     if (!companyId) {
-      console.log("Inside the error smh");
+      // console.log("Inside the error smh");
       return res.status(400).json({ message: "Company ID is required" });
     }
 
@@ -429,7 +429,7 @@ app.post("/api/get_all_clients", async (req, res) => {
 //   { companyId, isSuperUser(boolean), email, name }
 // }
 app.post("/api/get-user-info", async (req, res) => {
-  // console.log(req.body, "Inside body");
+  console.log(req.body, "Inside body");
   const userId = req.body.userId;
 
   // console.log(userId);
@@ -437,12 +437,12 @@ app.post("/api/get-user-info", async (req, res) => {
   try {
     const client = await Client.findById(userId);
     let isSuperUser = false;
-    console.log(client);
+    // console.log(client);
     if (client.role === "superuser") {
       isSuperUser = true;
     }
 
-    console.log(client);
+    // console.log(client);
     res.status(201).json({
       companyId: client.company,
       clientRole: client.role,

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import "./cssmaincomponents/interviewScheduling.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import CompNav from "./subcomponents/companyNav";
+import Footer from "./subcomponents/footer";
 
 import UserContext from "../context/user";
 
@@ -281,6 +282,9 @@ const InterviewScheduler = () => {
           </ul>
         )}
       </div>
+       
+        <Footer className="footer"/>
+    
     </div>
   );
 };

@@ -37,7 +37,7 @@ function Provider({ children }) {
     setIsLoading(true);
 
     try {
-      console.log(clientId, "trying to fetch user details");
+      // console.log(clientId, "trying to fetch user details");
       const res = await fetch("http://127.0.0.1:5000/api/get-user-info", {
         method: "POST",
         headers: {
@@ -66,6 +66,8 @@ function Provider({ children }) {
   const loginStatus = async () => {
     console.log("I am checking login status");
 
+    // console.log('I am checking login status')
+
     setIsLoading(true);
     if (isLoggedIn) {
       setIsLoading(false);
@@ -74,7 +76,7 @@ function Provider({ children }) {
 
     const token = localStorage.getItem("token");
 
-    console.log(" Token is ", token);
+    // console.log(' Token is ', token)
 
     // token exists
     if (token) {
@@ -84,11 +86,8 @@ function Provider({ children }) {
         // console.log('I am returning valid')
         // console.log(res.payload)
 
-        console.log(res.payload);
-        console.log(
-          res.payload.clientId,
-          "this is userId I got from verifytoken"
-        );
+        // console.log(res.payload)
+        // console.log(res.payload.clientId, 'this is userId I got from verifytoken')
         setUserId(res.payload.clientId);
         // console.log(userId)
         // console.log(res.payload.userId)
@@ -109,7 +108,8 @@ function Provider({ children }) {
   };
 
   const signOutUser = () => {
-    console.log("I am in Signout");
+    // console.log('I am in Signout')
+    localStorage.removeItem("token");
     setIsLoading(true);
     setIsLoggedIn(false);
     setUserId("");

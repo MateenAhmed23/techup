@@ -5,6 +5,7 @@ import "./cssmaincomponents/companydetails.css";
 import {useLocation} from 'react-router-dom';
 import UserContext from "../context/user";
 import { useNavigate } from "react-router-dom";
+import Footer from "./subcomponents/footer";
 function CompanyDetails() {
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
@@ -75,18 +76,17 @@ function CompanyDetails() {
 
       const data= await response.json()
 
-      console.log(data)
+      console.log(data);
 
-
-      console.log('Company MADE SUCCESSFULLY');
-        // console.log(data);
-
-      localStorage.setItem('token', data.token);
-
-
-      loginStatus();
-
-      navigate('/');
+      if (response.status == 201) {
+        console.log('USER CREATED SUCCESSFULLY');
+        localStorage.setItem("token", data.token);
+        loginStatus();
+        navigate('/dashboard');
+      } else {
+        alert(data.message);
+        return;
+      }
   }
 
   return (
@@ -167,8 +167,9 @@ function CompanyDetails() {
         <button className="register" onClick={()=>handleRegister()}>Register</button>
       </div>
 
-      <div className="footercompdetails12">
-        <h1 className="heading">Footer</h1>
+      <div className="footercompdetailspg">
+        {/* <h1 className="heading">Footer</h1> */}
+        <Footer/>
       </div>
         </>
       )}
