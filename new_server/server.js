@@ -1,6 +1,7 @@
 require("dotenv").config(); // Load environment variables from .env file
 const express = require("express");
 const mongoose = require("mongoose");
+const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
@@ -10,6 +11,7 @@ const Job = require("./models/job");
 const cors = require("cors");
 const Question = require("./models/question");
 const Assessment = require("./models/assessment");
+const Slot = require("./models/slot");
 
 const app = express();
 app.use(cors());
@@ -18,6 +20,17 @@ app.use(cookieParser());
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
+
+// app.post("/api/add_slot", async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     // const newSlot = await Slot.create(req.body);
+//     // res.status(201).json(newSlot);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 
 function generateToken(client) {
   const payload = {
@@ -30,6 +43,31 @@ function generateToken(client) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
+
+app.post("/api/get_slots", async (req, res) => {
+  try {
+    const { clientId } = req.body;
+    const slots = await Slot.find({ clientId });
+
+    res.json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/add_slots", async (req, res) => {
+  try {
+    const slotsData = req.body;
+
+    const slots = slotsData.map((slotData) => new Slot(slotData));
+    await Slot.insertMany(slots);
+
+    res.status(200).send({ message: "Slots added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred while adding slots" });
+  }
+});
 
 // {
 //   companyName,
@@ -45,6 +83,7 @@ function generateToken(client) {
 //   companyId
 //   token
 // }
+
 app.post("/api/company_signup", async (req, res) => {
   try {
     const {
