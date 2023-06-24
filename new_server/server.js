@@ -163,7 +163,7 @@ app.post("/api/company_signup", async (req, res) => {
 //   200: removed
 //   404: not found
 // }
-router.post("/api/remove_client", async (req, res) => {
+app.post("/api/remove_client", async (req, res) => {
   const { clientId } = req.body;
 
   try {
