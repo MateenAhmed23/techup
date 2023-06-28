@@ -171,10 +171,6 @@ function CreateNewJob() {
 
     navigate('/dashboard')
     alert('Job Created Successfully')
-
-
-
-
   }
 
   function handleChange(changeFor, value) {

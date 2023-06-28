@@ -1,6 +1,7 @@
 require("dotenv").config(); // Load environment variables from .env file
 const express = require("express");
 const mongoose = require("mongoose");
+const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
@@ -10,6 +11,7 @@ const Job = require("./models/job");
 const cors = require("cors");
 const Question = require("./models/question");
 const Assessment = require("./models/assessment");
+const Slot = require("./models/slot");
 
 const app = express();
 app.use(cors());
@@ -18,6 +20,17 @@ app.use(cookieParser());
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
+
+// app.post("/api/add_slot", async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     // const newSlot = await Slot.create(req.body);
+//     // res.status(201).json(newSlot);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 
 function generateToken(client) {
   const payload = {
@@ -30,6 +43,31 @@ function generateToken(client) {
 
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
+
+app.post("/api/get_slots", async (req, res) => {
+  try {
+    const { clientId } = req.body;
+    const slots = await Slot.find({ clientId });
+
+    res.json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/add_slots", async (req, res) => {
+  try {
+    const slotsData = req.body;
+
+    const slots = slotsData.map((slotData) => new Slot(slotData));
+    await Slot.insertMany(slots);
+
+    res.status(200).send({ message: "Slots added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred while adding slots" });
+  }
+});
 
 // {
 //   companyName,
@@ -45,6 +83,7 @@ function generateToken(client) {
 //   companyId
 //   token
 // }
+
 app.post("/api/company_signup", async (req, res) => {
   try {
     const {
@@ -118,6 +157,31 @@ app.post("/api/company_signup", async (req, res) => {
 });
 
 // {
+//   clientId
+// }
+// {
+//   200: removed
+//   404: not found
+// }
+app.post("/api/remove_client", async (req, res) => {
+  const { clientId } = req.body;
+
+  try {
+    const client = await Client.findById(clientId);
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    await Client.findByIdAndDelete(clientId);
+
+    return res.status(200).json({ message: "Client deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
 //   email,
 //   password
 // }
@@ -131,6 +195,22 @@ app.post("/api/company_signup", async (req, res) => {
 //   cookie token
 //   send companyID
 // }
+
+app.post("/api/get_company", async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  try {
+    const company = await Company.findById(id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    return res.json(company);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+});
 
 app.post("/api/login", async (req, res) => {
   try {
