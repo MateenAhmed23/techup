@@ -1,0 +1,75 @@
+.Appliedjobspage{
+    margin-top: 0px;
+    padding-top: 0px;
+    height: auto;
+    width: 100%;
+    background-color: rgb(223, 217, 217);
+    display: grid;
+    grid-template-columns: 30vw 68.9vw;
+    grid-template-rows: 10% 150px 600px 400px;
+
+}
+
+.navbar {
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+
+}
+
+.head {
+    font-size: 4vh;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bolder;
+    letter-spacing: 2px;
+  }
+
+
+  .searchbar1122 {
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: flex;
+    margin-top: 6vh;
+    width: 100vw;
+    flex-direction: row;
+    gap: 5%;
+    justify-content: center;
+
+  }
+  .createNewjob{
+    margin-top: 1vh;
+    border-style: solid;
+    border-color: black;
+    padding: 7px 7px;
+    border-radius: 50px;
+    width: 13vw;
+    height: 8vh;
+    background-color: #093b60;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 2.5vh;
+    color: antiquewhite;
+  }
+
+.jobsdisplayapplied{
+    grid-column-start: 1;
+    grid-row-start: 3;
+     grid-row-end: 4;
+   grid-column-end: 30;
+   /* background-color: rgb(255, 255, 255); */
+   border-top: 3px black solid;
+}
+
+.footerappliedjobspg{
+    grid-column-start: 1;
+   grid-row-start: 4;
+    grid-row-end: 5;
+  grid-column-end: 3;
+   
+}

@@ -1,5 +1,7 @@
 html {
     background-color: rgb(223, 217, 217);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .candidateprofilepage {
@@ -10,8 +12,17 @@ html {
     background-color: rgb(223, 217, 217);
     display: grid;
     grid-template-columns: 30vw 68.9vw;
-    grid-template-rows: 10% 900px 400px;
+    grid-template-rows: 10% 900px 100px 400px;
 
+}
+.logoCandidate{
+    height:35vh ;
+    width: 18vw;
+    border-radius: 50%;
+    margin-left: 5vw;
+    border: 7px;
+    border-color: black;
+    border-style: double;
 }
 
 .navbar {
@@ -32,10 +43,16 @@ html {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
+    /* border-right: 3px solid black; */
+    /* border-color: black; */
+    /* border-style:solid; */
+    /* border-bottm: 3px solid black; */
+    
 }
 
 .managerinfo {
     margin-left: 1.5vw;
+    margin-top: 4vh;
 }
 
 .postname {
@@ -76,7 +93,7 @@ html {
 
 .addnotesbut:hover {
 
-    color: rgb(33, 33, 175);
+    color: rgb(43, 43, 109);
     /* font-size:1.1vw ; */
 }
 
@@ -192,8 +209,25 @@ html {
     display: flex;
     justify-content: center;
     margin-top: 1vh;
+    /* align-items: ; */
 }
+.viewscorebut{border-style: solid;
+    margin-left: 2vw;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 12vw;
+    height: 7vh;
+    background-color: #093b60;
+    justify-content: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bolder;
+    font-size: 3.5vh;
+    letter-spacing: 4px;
+    color: antiquewhite;
+    /* border-radius: px; */
 
+}
 .opnecvbut {
     border-style: solid;
     border-color: black;
@@ -253,12 +287,49 @@ html {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 3vh;
 }
+.reusltssection{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    
+}
+.headresultssections{
+    letter-spacing: 3px;
+    font-size: 3.5vh;
+    font-weight: bolder;
+}
+.screeningquestionsdiv{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    /* align-content: center; */
+}
+.butvewrsults{
+    font-size: medium;
+    /* padding: 10px 10px 10px 10px; */
+    width: 13vw;
 
+}
+.scoreresults{
+    font-size:3.7vh;
+    /* margin-left: 40%; */
+}
+.mcqsquestionsdiv{
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+}
 .footercandidateprofpg {
 
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
 
 }
