@@ -14,11 +14,16 @@ import Memberdisplaycell from "./components/subcomponents/memberdisplaycell";
 import JobInfo from "./components/jobinfocell";
 import ScreeningQuestions from "./components/screeningquestions";
 import Addmember from "./components/addmember";
+import CandidateLogin from "./components/candidateLogin";
+import CandidateDashboard from "./components/candidateDashboard";
 import Mcqschoosing from "./components/mcqschoosing";
 import CandidateProfile from "./components/candidateprofile";
+import CandidateSignup from "./components/candidateSignup";
 // import inte from "./components/interviewScheduling";
-import InterviewScheduler from"./components/interviewScheduling"
+import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
+import { Provider as CandidateProvider } from "./context/candidate"; // adjust path according to your folder structure
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,19 +71,33 @@ const router = createBrowserRouter([
   },
   {
     path: "/interviewScheduling",
-    element: <InterviewScheduler/>,
+    element: <InterviewScheduler />,
   },
   {
     path: "/footer",
-    element: <Footer/>,
+    element: <Footer />,
+  },
+  {
+    path: "/candidate-login",
+    element: <CandidateLogin />,
+  },
+  {
+    path: "/candidate-dashboard",
+    element: <CandidateDashboard />,
+  },
+  {
+    path: "/candidate-signup",
+    element: <CandidateSignup />,
   },
 ]);
 
 function App() {
   return (
-    <React.Fragment>
-      <RouterProvider router={router} />
-    </React.Fragment>
+    <CandidateProvider>
+      <React.Fragment>
+        <RouterProvider router={router} />
+      </React.Fragment>
+    </CandidateProvider>
   );
 }
 
