@@ -16,7 +16,7 @@ class CandidateProfile extends Component {
         </div>
         <div className="leftside">
           <div className="avatarprofile">
-            <img src={Muqadim} width={220} height={200} className="logo" />
+            <img src={Muqadim}  className="logoCandidate" />
           </div>
           <div className="managerinfo">
             <h2 className="postname">Manger</h2>
@@ -90,6 +90,7 @@ class CandidateProfile extends Component {
           </div>
           <div className="opencvbutdiv">
             <button className="opnecvbut">Open CV</button>
+            <button className="viewscorebut">Results</button>
           </div>
           <div className="companydispayinfodiv">
             <p className="companywantedinfo">
@@ -113,6 +114,19 @@ class CandidateProfile extends Component {
 
           </div>
 
+        </div>
+        <div className="reusltssection">
+          {/* <h1>Results Section</h1> */}
+          <div className="screeningquestionsdiv">
+          <h1 className="headresultssections">Screenig Questioms Rating</h1>
+            <h2 className="scoreresults">7/10</h2>
+            <button className="butvewrsults">View Results</button>
+          </div>
+          <div className="mcqsquestionsdiv">
+            <h1 className="headresultssections">MCQs Test Score</h1>
+            <h2 className="scoreresults">35/50</h2>
+            <button className="butvewrsults">View Results</button>
+          </div>
         </div>
         <div className="footercandidateprofpg">
           {/* <h1 className="heading">Footer</h1> */}

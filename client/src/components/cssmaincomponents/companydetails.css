@@ -27,9 +27,10 @@
   grid-row-start: 2;
   grid-row-end: 3;
   text-decoration: underline;
-  letter-spacing: 3px;
+  letter-spacing: 8px;
   font-family:Arial, Helvetica, sans-serif;
   text-align: center;
+
 }
 
 .headingcomp {
@@ -58,28 +59,9 @@ a {
 }
 
 .register {
-  margin-right: 55px;
-  border: 3px solid black;
-  border-radius: 20px;
-  color: rgb(0, 0, 0);
-  background-color: rgb(162, 172, 181);
-  padding-bottom: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 45px;
-  display: inline-block;
-  line-height: 40px;
   text-decoration: none;
-  /* outline-offset: 54px; */
-  vertical-align: middle;
-  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
-  margin-left: 10%;
-}
-
-.back1154 {
-  text-decoration: none;
-  margin-left: 40%;
-  margin-right: -20px;
+  /* margin-left: 40%; */
+  /* margin-right: -20px; */
   border: 3px solid black;
   border-radius: 20px;
   color: rgb(3, 3, 3);
@@ -93,6 +75,22 @@ a {
   vertical-align: middle;
   box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
 }
+
+.back1154 {
+  text-decoration: none;
+  border: 3px solid black;
+  border-radius: 20px;
+  color: rgb(3, 3, 3);
+  background-color: rgb(26, 94, 154);
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 45px;
+  /* display: inline-block; */
+  line-height: 40px;
+  vertical-align: middle;
+  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
+}
 .register:hover,.back1154:hover{
   color: rgb(235, 235, 244);
 }
@@ -102,6 +100,10 @@ a {
   grid-column-end: 3;
   grid-row-start: 4;
   grid-row-end: 5;
+  display: flex;
+  flex-direction: row;
+  /* align-content: center; */
+  justify-content: center;
 }
 
 .footercompdetailspg {
@@ -135,6 +137,11 @@ a {
     grid-column-end: 3;
     grid-row-start: 4;
     grid-row-end: 5;
+    display: flex;
+    flex-direction: row;
+    /* align-content: center; */
+    justify-content: center;
+    /* align-items: ; */
   }
 }
 
@@ -148,7 +155,7 @@ a {
     font-size: 0.9em; /* decrease font size */
     padding: 15px 20px; /* adjust padding */
     height: auto; /* allow the height to adapt to content */
-    width: ;
+    width: 15vw ;
     margin-left: 10%;
     box-sizing: border-box; /* make sure padding and border are included in the element's total width and height */
   }

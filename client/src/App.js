@@ -10,7 +10,7 @@ import Signup from "./components/signup";
 import CompanyDetails from "./components/companyDetails";
 import CreateNewJob from "./components/createNewJob";
 import CompanyDashboard from "./components/companydashboard";
-import Memberdisplaycell from "./components/subcomponents/memberdisplaycell";
+// import Memberdisplaycell from "./components/subcomponents/memberdisplaycell";
 import JobInfo from "./components/jobinfocell";
 import ScreeningQuestions from "./components/screeningquestions";
 import Addmember from "./components/addmember";
@@ -24,6 +24,11 @@ import JobUrl from "./components/jobUrl";
 import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
 import { Provider as CandidateProvider } from "./context/candidate"; // adjust path according to your folder structure
+import InterviewScheduler from"./components/interviewScheduling"
+// import Footer from "./components/subcomponents/footer";
+// import ResultsScreen from "./components/resultsscreen";
+import AppliedJobs from "./components/appliedjobscandidate";
+import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +94,12 @@ const router = createBrowserRouter([
   {
     path: "/candidate-signup",
     element: <CandidateSignup />,
+    path: "/appliedjobs",
+    element: <AppliedJobs/>,
+  },
+  {
+    path: "/SingleDisplaycol",
+    element: <SingleDisplaycol/>,
   },
 ]);
 
