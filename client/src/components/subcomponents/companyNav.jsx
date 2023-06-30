@@ -17,6 +17,7 @@ function CompNav() {
     useContext(UserContext);
 
   const [companyName, setCompanyName] = useState('')
+
   function signoutUser() {
     signOutUser();
     navigate('/');

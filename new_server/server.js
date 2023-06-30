@@ -11,7 +11,9 @@ const Job = require("./models/job");
 const cors = require("cors");
 const Question = require("./models/question");
 const Assessment = require("./models/assessment");
+const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
+const Application = require("./models/application");
 
 const app = express();
 app.use(cors());
@@ -31,7 +33,6 @@ mongoose.connect(process.env.MONGO_URI);
 //     res.status(500).json({ message: "Server error" });
 //   }
 // });
-
 function generateToken(client) {
   const payload = {
     clientId: client._id,
@@ -41,7 +42,19 @@ function generateToken(client) {
     expiresIn: "5h",
   };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, options);
+  return jwt.sign(payload, process.env.JWT_SECRET_CLIENT, options);
+}
+
+function generateCandidateToken(candidate) {
+  const payload = {
+    candidateId: candidate._id,
+    candidateEmail: candidate.email,
+  };
+  const options = {
+    expiresIn: "5h",
+  };
+
+  return jwt.sign(payload, process.env.JWT_SECRET_CANDIDATE, options);
 }
 
 app.post("/api/get_slots", async (req, res) => {
@@ -156,6 +169,34 @@ app.post("/api/company_signup", async (req, res) => {
   }
 });
 
+app.post("/api/candidate_signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const candidateExists = await Candidate.findOne({ email });
+
+    if (candidateExists) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const candidate = await Candidate.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    const token = generateCandidateToken(candidate);
+
+    res.cookie("token", token); // 1 hour
+    res.status(201).json({ candidateId: candidate._id, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // {
 //   clientId
 // }
@@ -195,7 +236,6 @@ app.post("/api/remove_client", async (req, res) => {
 //   cookie token
 //   send companyID
 // }
-
 app.post("/api/get_company", async (req, res) => {
   const { id } = req.body;
   console.log(id);
@@ -209,6 +249,38 @@ app.post("/api/get_company", async (req, res) => {
     return res.json(company);
   } catch (err) {
     return res.status(500).json({ message: err.message });
+  }
+});
+
+app.post("/api/candidate-login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find candidate by email
+    const candidate = await Candidate.findOne({ email });
+    if (!candidate) {
+      return res.status(400).json({ message: "Invalid email" });
+    }
+
+    // Compare password with stored hash
+    const validPassword = await bcrypt.compare(password, candidate.password);
+    if (!validPassword) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    // Create and sign JWT
+    const token = generateCandidateToken(candidate);
+
+    res.cookie("token", token, { httpOnly: true }); // 1 hour
+
+    res.status(201).json({
+      message: "Logged in successfully",
+      candidateId: candidate._id,
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -233,6 +305,7 @@ app.post("/api/login", async (req, res) => {
 
     // Set JWT as a cookie
     res.cookie("token", token, { httpOnly: true }); // 1 hour
+
     res.status(201).json({
       message: "Logged in successfully",
       clientId: client._id,
@@ -255,15 +328,26 @@ app.post("/api/login", async (req, res) => {
 //     email: client.email,
 // }
 // }
-app.post("/api/verify-token", (req, res) => {
+app.post("/api/verify-token-client", (req, res) => {
   const token = req.headers.authorization;
-
+  console.log("verifying");
   // Verify the token and return a response
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET_CLIENT);
     res.status(201).json({ valid: true, payload });
   } catch (err) {
-    console.log(err);
+    res.status(401).json({ valid: false, error: "Invalid token" });
+  }
+});
+
+app.post("/api/verify-token-candidate", (req, res) => {
+  const token = req.headers.authorization;
+  console.log("verifying");
+  // Verify the token and return a response
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET_CANDIDATE);
+    res.status(201).json({ valid: true, payload });
+  } catch (err) {
     res.status(401).json({ valid: false, error: "Invalid token" });
   }
 });
@@ -284,7 +368,6 @@ app.post("/api/verify-token", (req, res) => {
 //   status 201
 //   { jobId: job._id }
 // }
-
 app.post("/api/create_job", async (req, res) => {
   // console.log(req.body);
   try {
@@ -486,6 +569,44 @@ app.post("/api/get_all_clients", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/api/create_application", async (req, res) => {
+  try {
+    const { candidateId, jobId } = req.body;
+    console.log(req.body);
+    const application = new Application({
+      candidate: candidateId,
+      job: jobId,
+    });
+
+    await application.save();
+
+    res
+      .status(200)
+      .json({ message: "Application created successfully", application });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/api/get-candidate-info", async (req, res) => {
+  console.log(req.body, "Inside body");
+  const candidateId = req.body.candidateId;
+
+  try {
+    const candidate = await Candidate.findById(candidateId);
+
+    res.status(201).json({
+      candidateId: candidate._id,
+      email: candidate.email,
+      name: candidate.name,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

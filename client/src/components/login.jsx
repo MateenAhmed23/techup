@@ -9,9 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from "./subcomponents/footer";
 
 import UserContext from '../context/user';
-
-
-
+import CandidateContext from '../context/candidate';
 
 
 function Login() {
@@ -19,8 +17,7 @@ function Login() {
   const navigate = useNavigate();
 
   const { isLoading, loginStatus, isLoggedIn } = useContext(UserContext);
-
-
+  // const { isLoggedIn: isCandidateLoggedIn, loginStatus: candidateLoginStatus } = useContext(CandidateContext)
 
   // const [username, setUsername] = useState('')
   // const [password, setPassword] = useState('')
@@ -29,20 +26,19 @@ function Login() {
 
 
   useEffect(() => {
-
-
+    // if (isCandidateLoggedIn) {
+    //   navigate('/candidate-dashboard');
+    // }
+    // else if (candidateLoginStatus()) {
+    //   navigate('/candidate-dashboard');
+    // }
+    // else 
     if (isLoggedIn) {
       navigate('/dashboard')
     }
     else {
       loginStatus()
     }
-    // console.log(loginStatus())
-    // if (loginStatus())
-    // {
-    //   console.log('HEE22')
-    //   navigate('/')
-    // }
   }, [isLoggedIn])
 
 
@@ -81,15 +77,16 @@ function Login() {
 
   return (
     <div className="loginpage">
-        <Navbar onnavclick={handleclick} className="navbar"></Navbar>
+      <Navbar onnavclick={handleclick} className="navbar"></Navbar>
 
-        <div className="LogForm">
-          <LoginForm onSubmit={handleLogin} />
-        </div>
-        <div className="footerloginpg">
-          <Footer/>
-        </div>
+      <div className="LogForm">
+        <LoginForm onSubmit={handleLogin} link={"/register"} />
       </div>
+
+      <div className="footerloginpg">
+        <Footer />
+      </div>
+    </div>
   )
 
 }
