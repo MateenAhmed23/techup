@@ -13,6 +13,7 @@ const Question = require("./models/question");
 const Assessment = require("./models/assessment");
 const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
+const Application = require("./models/application");
 
 const app = express();
 app.use(cors());
@@ -571,6 +572,26 @@ app.post("/api/get_all_clients", async (req, res) => {
   }
 });
 
+app.post("/api/create_application", async (req, res) => {
+  try {
+    const { candidateId, jobId } = req.body;
+    console.log(req.body);
+    const application = new Application({
+      candidate: candidateId,
+      job: jobId,
+    });
+
+    await application.save();
+
+    res
+      .status(200)
+      .json({ message: "Application created successfully", application });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.post("/api/get-candidate-info", async (req, res) => {
   console.log(req.body, "Inside body");
   const candidateId = req.body.candidateId;
@@ -582,7 +603,6 @@ app.post("/api/get-candidate-info", async (req, res) => {
       candidateId: candidate._id,
       email: candidate.email,
       name: candidate.name,
-      jobs: candidate.jobs,
     });
   } catch (error) {
     console.error(error);

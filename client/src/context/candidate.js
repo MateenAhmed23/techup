@@ -7,7 +7,6 @@ function Provider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [candidateId, setCandidateId] = useState("");
   const [candidateEmail, setCandidateEmail] = useState("");
-  const [candidateJobs, setCandidateJobs] = useState([]);
   const [candidateName, setCandidateName] = useState("");
 
   const verifyToken = async (token) => {
@@ -48,7 +47,6 @@ function Provider({ children }) {
       setCandidateId(data._id);
       setCandidateEmail(data.email);
       setCandidateName(data.name);
-      setCandidateJobs(data.jobs);
     } catch (e) {
       setIsLoggedIn(false);
       localStorage.removeItem("token");
@@ -93,7 +91,6 @@ function Provider({ children }) {
     setIsLoggedIn(false);
     setCandidateId("");
     setCandidateEmail("");
-    setCandidateJobs([]);
     setCandidateName("");
     setIsLoading(false);
   };
@@ -101,7 +98,6 @@ function Provider({ children }) {
   const candidateInfo = {
     candidateEmail,
     candidateId,
-    candidateJobs,
     candidateName,
   };
 
