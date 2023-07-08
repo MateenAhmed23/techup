@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-
 const UserContext = createContext();
 
 function Provider({ children }) {
@@ -13,7 +12,7 @@ function Provider({ children }) {
 
   const verifyToken = async (token) => {
     try {
-      const res = await fetch("http://127.0.0.1:5000/api/verify-token", {
+      const res = await fetch("http://127.0.0.1:5000/api/verify-token-client", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +107,6 @@ function Provider({ children }) {
   };
 
   const signOutUser = () => {
-    // console.log('I am in Signout')
     localStorage.removeItem("token");
     setIsLoading(true);
     setIsLoggedIn(false);

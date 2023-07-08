@@ -14,14 +14,22 @@ import CompanyDashboard from "./components/companydashboard";
 import JobInfo from "./components/jobinfocell";
 import ScreeningQuestions from "./components/screeningquestions";
 import Addmember from "./components/addmember";
+import CandidateLogin from "./components/candidateLogin";
+import CandidateDashboard from "./components/candidateDashboard";
 import Mcqschoosing from "./components/mcqschoosing";
 import CandidateProfile from "./components/candidateprofile";
+import CandidateSignup from "./components/candidateSignup";
+import JobUrl from "./components/jobUrl";
 // import inte from "./components/interviewScheduling";
+import InterviewScheduler from "./components/interviewScheduling";
+import Footer from "./components/subcomponents/footer";
+import { Provider as CandidateProvider } from "./context/candidate"; // adjust path according to your folder structure
 import InterviewScheduler from"./components/interviewScheduling"
 // import Footer from "./components/subcomponents/footer";
 // import ResultsScreen from "./components/resultsscreen";
 import AppliedJobs from "./components/appliedjobscandidate";
 import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,8 +56,8 @@ const router = createBrowserRouter([
     element: <CompanyDetails />,
   },
   {
-    path: "/jobinfo/:id",
-    element: <JobInfo />,
+    path: "/joburl/:id",
+    element: <JobUrl />,
   },
   {
     path: "/screeningquestions",
@@ -69,9 +77,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/interviewScheduling",
-    element: <InterviewScheduler/>,
+    element: <InterviewScheduler />,
   },
   {
+    path: "/footer",
+    element: <Footer />,
+  },
+  {
+    path: "/candidate-login",
+    element: <CandidateLogin />,
+  },
+  {
+    path: "/candidate-dashboard",
+    element: <CandidateDashboard />,
+  },
+  {
+    path: "/candidate-signup",
+    element: <CandidateSignup />,
     path: "/appliedjobs",
     element: <AppliedJobs/>,
   },
@@ -83,9 +105,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <React.Fragment>
-      <RouterProvider router={router} />
-    </React.Fragment>
+    <CandidateProvider>
+      <React.Fragment>
+        <RouterProvider router={router} />
+      </React.Fragment>
+    </CandidateProvider>
   );
 }
 
