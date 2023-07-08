@@ -56,7 +56,10 @@ html {
     font-weight: bold;
 }
 
+.correctoptionmcqschoosing{
+margin-top: 0.4vh;
 
+}
 /* .templatequestions {
     grid-column-start: 1;
     grid-column-end: 3;
