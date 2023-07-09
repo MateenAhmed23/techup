@@ -4,6 +4,7 @@ import "./csssubcomponents/jobdisplaycell.css";
 class QuestionDisplaycell extends Component {
   state = {};
   render() {
+    const { showDetailsButton = true } = this.props; // default value is true if not provided
     return (
       <div className="cell">
         <ul>
@@ -38,6 +39,7 @@ class QuestionDisplaycell extends Component {
           onClick={() => this.props.onnavclick("Edit")}
           className="editt"
           href="#"
+          style={{ visibility: showDetailsButton ? "visible" : "hidden" }} // change visibility based on prop
         >
           View Details
         </a>

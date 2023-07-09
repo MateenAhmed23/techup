@@ -90,30 +90,9 @@ class Mcqschoosing extends Component {
         placeholder: "e.g. Software E",
         height: "7vh",
       },
+
       {
         id: 4,
-        label: "Test Date",
-        type: "date",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-      },
-      {
-        id: 5,
-        label: "Test can be attemplted any time? ",
-        type: "select",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-        options: ["Yes", "No"],
-      },
-      {
-        id: 6,
-        label: "Test Start  Time ",
-        type: "time",
-        placeholder: "e.g. Software E",
-        height: "7vh",
-      },
-      {
-        id: 7,
         label: "Number of MCQs",
         type: "number",
         placeholder: "e.g. Software E",
@@ -139,6 +118,7 @@ class Mcqschoosing extends Component {
     ],
   };
   addOption = () => {
+    if (this.state.mcqsoptions.length == 4) return;
     const nextId = this.state.mcqsoptions.length + 1;
 
     const newOption = {
@@ -154,6 +134,7 @@ class Mcqschoosing extends Component {
     });
   };
   remOption = () => {
+    if (this.state.mcqsoptions.length == 2) return;
     const newOptions = [...this.state.mcqsoptions];
     newOptions.pop();
     this.setState({
@@ -181,6 +162,18 @@ class Mcqschoosing extends Component {
             // width="52vw"
             color="#FF0000"
           />
+          <div className="correctoptionmcqschoosing">
+            
+            <JobDescSmall
+              id="1"
+              type="type"
+              placeholder="Option 1"
+              label="What is the correct option"
+              height="7vh"
+              options={this.state.mcqsoptions.map((option, index) => `Option ${index + 1}`)}
+              //   change={handleChange}
+            />
+          </div>
         </div>
         <div className="Mcqsoptions">
           <h2 className="testheadset">MCQ Options</h2>{" "}
@@ -290,7 +283,7 @@ class Mcqschoosing extends Component {
         </div>
         <div className="footermcqchoosingpg">
           {/* <h1 className="heading">Footer</h1> */}
-          <Footer/>
+          <Footer />
         </div>
       </div>
     );

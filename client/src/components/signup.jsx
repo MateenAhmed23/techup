@@ -16,15 +16,14 @@ import { useNavigate } from 'react-router-dom';
 
 
 import UserContext from '../context/user';
-
-
+import CandidateContext from '../context/candidate';
 
 function Signup() {
 
   const navigate = useNavigate();
 
   const { isLoading, loginStatus, isLoggedIn } = useContext(UserContext);
-
+  const { isLoggedIn: isCandidateLoggedIn, loginStatus: candidateLoginStatus } = useContext(CandidateContext)
 
   // const [userData,setUserData] = useState(null);
 
@@ -32,11 +31,13 @@ function Signup() {
     // IDHER KIA DAALNA HA MUQAY????
   }
 
-
-
   useEffect(() => {
-
-
+    // if (isCandidateLoggedIn) {
+    //   navigate('/candidate-dashboard');
+    // } else if (candidateLoginStatus()) {
+    //   navigate('/candidate-dashboard');
+    // }
+    // else
     if (isLoggedIn) {
       navigate('/dashboard')
     }
@@ -117,20 +118,20 @@ function Signup() {
     <div className="loginpage">
       {isLoading ? (
         <h1> I am currently loading. HA</h1>
-        ): (
-          <>
+      ) : (
+        <>
           <Navbar onnavclick={handleclick} className="navbar"></Navbar>
-    
-            <div className="LogForm">
-              <SignupForm onSubmit={handleSignup} />
-            </div>
-            <div className="footerloginpg">
-              <Footer/>
-            </div>
-          </>
-      )};
-            
+
+          <div className="LogForm">
+            <SignupForm onSubmit={handleSignup} link='/login' />
           </div>
+          <div className="footerloginpg">
+            <Footer />
+          </div>
+        </>
+      )};
+
+    </div>
   )
 }
 

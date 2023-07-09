@@ -60,12 +60,13 @@
     padding: 10px 10px;
     border-radius: 50px;
     width: 11vw;
-    background-color: #081e2e;
+    background-color: #132f44;
     justify-content: center;
     margin-left: 44vw;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bolder;
     font-size: 3vh;
+    color: blanchedalmond;
 }
 
 .addedquestions {
@@ -96,19 +97,21 @@
     border-radius: 50px;
     width: 8vw;
     height: 7vh;
-    background-color: #081e2e;    justify-content: center;
+    background-color: #132f44;    justify-content: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bolder;
+    color: blanchedalmond;
     font-size: 3vh;
 /* margin-left: 44vw; */}
 .backquest{border-width: 2px;
+    color: blanchedalmond;
     border-style: solid;
     border-color: black;
     padding: 10px 10px;
     border-radius: 50px;
     width: 8vw;
     height: 7vh;
-    background-color: #081e2e;
+    background-color: #132f44;
     justify-content: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bolder;

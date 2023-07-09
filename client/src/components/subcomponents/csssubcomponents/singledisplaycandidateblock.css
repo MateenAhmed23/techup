@@ -1,0 +1,54 @@
+html{
+    /* background-color: rgb(151, 135, 135); */
+}
+.singledispaycolumn{
+    width: 60vw;
+    background-color: rgb(255, 255, 255);
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 4px;
+    padding:10px 10px;
+}
+.left-element{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.compannameapplicant{
+letter-spacing: 3px;
+font-size: 3vh;
+font-family: monospace;
+font-weight: bold;
+color: rgb(73, 71, 71);
+}
+.jobstatusapplicant{
+    letter-spacing: 3px;
+    font-size: 3vh;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgb(73, 71, 71);
+}
+.mainbuttonvewdetapplicant{
+    letter-spacing: 3px;
+    font-size: 3vh;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgb(73, 71, 71);
+    width: fit-content;
+    padding: 10px 10px;
+    background-color: rgb(8, 0, 255);
+    color: white;
+    border-radius: 5px;
+
+
+}
+.slashapplicant{
+font-weight: bolder;
+font-size: 4vh;
+
+
+}
