@@ -17,16 +17,24 @@ function ScreeningQuestions(){
           {
             id: 2,
             label: "Response TYPE",
-            type: "text",
+            type: "type",
             placeholder: "e.g. Software E",
             height: "7vh",
+            options: [
+              "LONG",
+              "SHORT",
+            ],
           },
           {
             id: 2,
             label: "Mandatory",
-            type: "text",
+            type: "type",
             placeholder: "e.g. Software E",
             height: "7vh",
+            options: [
+              "YES",
+              "NO",
+            ],
           },
         ]);
   const [addedquestions, setAddedQuestions] = useState([
@@ -66,6 +74,7 @@ function ScreeningQuestions(){
                       placeholder={jobDesc.placeholder}
                       label={jobDesc.label}
                       height={jobDesc.height}
+                      options={jobDesc.options}
                       //   change={handleChange}
                     />
                   </td>
@@ -88,6 +97,7 @@ function ScreeningQuestions(){
                       id={quest.id}
                       question={quest.question}
                       type={quest.type}
+                      showDetailsButton={false}
                     />
                   </td>
                 </tr>

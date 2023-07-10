@@ -80,16 +80,16 @@ function CompanyDashboard() {
   //   }
   // }
 
-  useEffect(() => {
-    if (isLoggedIn && userInfo.companyId) {
-      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
-      getMembers()
-      getJobs()
-    }
-    else {
-      authentication()
-    }
-  }, [isLoggedIn, userInfo.companyId])
+  // useEffect(() => {
+  //   if (isLoggedIn && userInfo.companyId) {
+  //     // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+  //     getMembers()
+  //     getJobs()
+  //   }
+  //   else {
+  //     authentication()
+  //   }
+  // }, [isLoggedIn, userInfo.companyId])
   // useEffect(() => {
   //   if (isLoggedIn && userInfo.companyId) {
   //     // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
