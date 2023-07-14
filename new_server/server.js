@@ -287,6 +287,31 @@ app.post("/api/remove_client", async (req, res) => {
 });
 
 // {
+//   jobId
+// }
+// {
+//   200: removed
+//   404: not found
+// }
+app.post("/api/remove_job", async (req, res) => {
+  const { jobId } = req.body;
+
+  try {
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    await Job.findByIdAndDelete(jobId);
+
+    return res.status(200).json({ message: "Job deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+// {
 //   email,
 //   password
 // }
@@ -491,6 +516,46 @@ app.get("/api/get_job/:id", async (req, res) => {
     res.status(201).json(job);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_all_applications", async (req, res) => {
+  const candidateId = req.body.candidate;
+
+  // Check if candidateId is provided
+  if (!candidateId) {
+    return res.status(400).json({ error: "Candidate ID is required." });
+  }
+
+  try {
+    // Find applications for the given candidate
+    const applications = await Application.find({
+      candidate: candidateId,
+    }).populate({
+      path: "job",
+      model: Job,
+      select: "title company", // Only fetch the title and company id
+      populate: {
+        path: "company",
+        model: Company,
+        select: "name", // Only fetch the company name
+      },
+    });
+
+    // Transform applications data to desired format
+    const transformedApplications = applications.map((app) => ({
+      _id: app._id,
+      company: app.job.company.name,
+      post: app.job.title,
+      status: app.status,
+    }));
+
+    return res.status(200).json(transformedApplications);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while fetching the applications." });
   }
 });
 

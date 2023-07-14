@@ -14,7 +14,7 @@ const applicationSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["invited", "applied", "interview", "accepted"],
+    enum: ["invited", "applied", "interview", "assessment", "accepted"],
     default: "invited",
   },
 });
