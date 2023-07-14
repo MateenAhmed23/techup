@@ -39,7 +39,7 @@ function Provider({ children }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: candidateId,
+          candidateId: candidateId,
         }),
       });
       const data = await res.json();

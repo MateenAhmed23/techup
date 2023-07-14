@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// we will have to take care of cascading deletions
 const applicationSchema = new mongoose.Schema({
   candidate: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,5 +18,8 @@ const applicationSchema = new mongoose.Schema({
     default: "invited",
   },
 });
+
+// Add unique compound index on candidate and job
+applicationSchema.index({ candidate: 1, job: 1 }, { unique: true });
 
 module.exports = mongoose.model("Application", applicationSchema);

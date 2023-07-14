@@ -4,19 +4,23 @@ const Schema = mongoose.Schema;
 
 // Define the Assessment schema
 const screeningSchema = new Schema({
-  question: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  madatory: {
-    type: String,
-    required: true,
-  },
-  job: {
+  questions: [
+    {
+      question: {
+        type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: true,
+      },
+      required: {
+        type: Boolean,
+        required: true,
+      },
+    },
+  ],
+  jobId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Job",
     required: true,

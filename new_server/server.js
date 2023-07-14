@@ -14,7 +14,7 @@ const Assessment = require("./models/assessment");
 const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
 const Application = require("./models/application");
-const Screening = require("../models/Screening");
+const Screening = require("./models/screening");
 
 const app = express();
 app.use(cors());
@@ -74,25 +74,35 @@ app.post("/api/get_slots", async (req, res) => {
 // {
 //   201 success, question object
 // }
-app.post("/api/create_screening", async (req, res) => {
-  const { question, type, mandatory, jobId } = req.body;
-
-  if (!question || !type || !mandatory || !jobId) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
+app.post("/api/screening", async (req, res) => {
   try {
-    const newQuestion = new Screening({
-      question,
-      type,
-      mandatory,
-      job: jobId,
-    });
+    const { jobId, questions } = req.body;
 
-    const savedQuestion = await newQuestion.save();
-    res.status(200).json(savedQuestion);
-  } catch (err) {
-    res.status(500).json({ message: "An error occurred", error: err });
+    // Check if jobId exists in the table
+    const existingScreening = await Screening.findOne({ jobId });
+
+    if (existingScreening) {
+      // Job exists, replace the array with the new questions
+
+      existingScreening.questions = questions;
+
+      // Save the updated screening data
+      const updatedScreening = await existingScreening.save();
+      res.status(200).json(updatedScreening);
+    } else {
+      // Job doesn't exist, create a new screening entry
+      const newScreening = new Screening({
+        jobId,
+        questions,
+      });
+
+      // Save the new screening data
+      const savedScreening = await newScreening.save();
+      res.status(200).json(savedScreening);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -102,18 +112,23 @@ app.post("/api/create_screening", async (req, res) => {
 // {
 //   status 200, questions ki array
 // }
-router.post("/api/get_screening", async (req, res) => {
-  const { jobId } = req.body;
-
-  if (!jobId) {
-    return res.status(400).json({ message: "Job id is required" });
-  }
-
+app.post("/api/get_screening", async (req, res) => {
   try {
-    const questions = await Screening.find({ job: jobId });
-    res.status(200).json(questions);
-  } catch (err) {
-    res.status(500).json({ message: "An error occurred", error: err });
+    const { jobId } = req.body;
+
+    // Find the screening data for the jobId
+    const screening = await Screening.findOne({ jobId });
+
+    if (screening) {
+      // Screening data found, return the questions array
+      res.status(200).json(screening.questions);
+    } else {
+      // Screening data not found for the jobId
+      res.status(404).json({ message: "Screening data not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -623,6 +638,7 @@ app.post("/api/get_all_clients", async (req, res) => {
 
 app.post("/api/create_application", async (req, res) => {
   try {
+    console.log("inside create_application");
     const { candidateId, jobId } = req.body;
     console.log(req.body);
     const application = new Application({
@@ -636,8 +652,13 @@ app.post("/api/create_application", async (req, res) => {
       .status(200)
       .json({ message: "Application created successfully", application });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    if (error.code === 11000) {
+      // This is a duplicate key error (i.e., the application already exists)
+      res.status(400).json({ message: "Application already exists" });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 });
 
