@@ -1,21 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/screeningquestions.css";
 import QuestionDisplaycCell from "./subcomponents/questiondisplaycell";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import Footer from "./subcomponents/footer";
 
+
+import UserContext from "../context/user";
+
+import { useParams } from 'react-router-dom';
+
+
+import { useNavigate } from "react-router-dom";
+
+
 function ScreeningQuestions(){
+
+  const [name, setName] = useState('')
+  const [type, setType] = useState('LONG')
+  const [required, setRequired] = useState('YES') 
+  const [noQ, setNoQ] = useState(1);
+
+  const { id } = useParams();
+
+  const { isLoading, isLoggedIn, loginStatus, userInfo } =
+    useContext(UserContext);
+
+
+  const navigate = useNavigate();
+
+    async function authentication() {
+      const res = await loginStatus()
+      // console.log('Result from login status', res)
+      if (!res) {
+        alert('You must login to access this page')
+        navigate('/login')
+      }
+    }
+
+
+    useEffect(() => {
+      if (isLoggedIn && userInfo.companyId) {
+        // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      }
+      else {
+        authentication()
+      }
+    }, [isLoggedIn, userInfo.companyId])
+
+
+  const arr = [name, type, required]
+
   const [questioncreation,setQuestionCreation] = useState([
           {
-            id: 1,
-            label: "Name",
+            id: 0,
+            label: "Question",
             type: "text",
-            placeholder: "e.g. Software E",
-            height: "7vh",
+            placeholder: "e.g. Latest Degree",
+            height: "7vh"
           },
           {
-            id: 2,
+            id: 1,
             label: "Response TYPE",
             type: "type",
             placeholder: "e.g. Software E",
@@ -38,22 +83,87 @@ function ScreeningQuestions(){
           },
         ]);
   const [addedquestions, setAddedQuestions] = useState([
-          {
-            id: 1,
-            question: "Where fo you see yourself in 5 years?",
-            type: "Descriptive",
-          },
-          {
-            id: 1,
-            question: "Where fo you see yourself in 5 years?",
-            type: "Descriptive",
-          },
-          {
-            id: 1,
-            question: "Where fo you see yourself in 5 years?",
-            type: "Descriptive",
-          },
-        ])
+        ]) 
+        
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pageSize = 3;
+  const totalItems = addedquestions.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedItems = addedquestions.slice(startIndex, endIndex);
+
+
+  const goToNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+
+  function handleChange(changeFor, value) {
+    // console.log('I AM FREAKING HEREEEE')
+    // console.log(changeFor,value)
+    switch (changeFor) {
+      case 'Question':
+        // console.log('ssssss')
+        setName(value);
+        break;
+      case 'Response TYPE':
+        setType(value);
+        break;
+      case 'Mandatory':
+        setRequired(value);
+      default:
+        break;
+
+    }
+    // console.log(name, type, required)
+  }
+
+  function handleSaveQuestion(){
+    console.log(name, type, required)
+    const aaa = [...addedquestions,{
+      id: noQ,
+      question: name,
+      type:type,
+      required: required
+    }]
+    console.log(aaa)
+    setNoQ(noQ+1)
+    setAddedQuestions(aaa)
+  }
+
+  function removeQuestion(id){
+    const updatedItems = addedquestions.filter(question => question.id !== id);
+    // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
+    setAddedQuestions(updatedItems);
+    console.log(id)
+  }
+
+  function handleSubmit(){
+    console.log(id)
+    console.log(addedquestions)
+
+    let arr;
+
+    arr = addedquestions.map(obj => {
+      let newObj = { ...obj };  // Create a copy of the object.
+      delete newObj.id;  // Remove the id field.
+      return newObj;
+    });
+
+    let obb = {
+      jobId: id,
+      questions: arr
+    }
+
+    console.log(obb)
+  }
   return(
       <div className="screening">
         <div>
@@ -75,7 +185,8 @@ function ScreeningQuestions(){
                       label={jobDesc.label}
                       height={jobDesc.height}
                       options={jobDesc.options}
-                      //   change={handleChange}
+                      change={handleChange}
+                      value = {arr[jobDesc.id]}
                     />
                   </td>
                 </tr>
@@ -84,13 +195,13 @@ function ScreeningQuestions(){
           </table>
         </div>
         <div className="savequestion">
-          <button className="saveques">Save Question</button>
+          <button className="saveques" onClick={() => handleSaveQuestion()}>Save Question</button>
         </div>
         <div className="addedquestions">
           {" "}
           <table>
             <tbody>
-              {addedquestions.map((quest) => (
+              {paginatedItems.map((quest) => (
                 <tr key={quest.id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycCell
@@ -98,6 +209,7 @@ function ScreeningQuestions(){
                       question={quest.question}
                       type={quest.type}
                       showDetailsButton={false}
+                      remove={()=>removeQuestion(quest.id)}
                     />
                   </td>
                 </tr>
@@ -106,8 +218,11 @@ function ScreeningQuestions(){
           </table>
         </div>
         <div className="contolsques">
-          <button className="backquest">Back</button>
-          <button className="nextquest">Next</button>
+          <button className="backquest" onClick={()=>goToPreviousPage()}>Back</button>
+          <button className="backquest" onClick={() => handleSubmit()}>Submit</button>
+          <button className="nextquest" onClick={()=>goToNextPage()}>Next</button>
+        </div>
+        <div>
         </div>
         <div className="footerscreeningpg">
           {/* <h1 className="heading">Foote</h1> */}

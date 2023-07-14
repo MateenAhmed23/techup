@@ -9,11 +9,16 @@ import Footer from "./subcomponents/footer";
 
 import { useParams } from 'react-router-dom';
 
+import { useNavigate } from "react-router-dom";
+
 
 function JobInfo() {
 
   const option1 = 'Dashboard'
   const option2 = 'Edit this Job'
+
+  const navigate = useNavigate();
+
 
   // const [jobId, setJobId] = useState(1)
 
@@ -70,6 +75,13 @@ function JobInfo() {
 
   }
 
+  function openScreening(){
+    console.log('OPENING SCREENING')
+
+    var str = '/screeningquestions/'+ id
+    navigate(str)
+  }
+
   useEffect(() => {
     getJobInfo()
   }, [])
@@ -112,7 +124,7 @@ function JobInfo() {
           </div>
         </div>
       </div>
-      <div className="jobnoti">
+      <div className="jobnoti" onClick={()=>openScreening()}>
         <div className="notibar">
           <div className="notinum">3</div>
           <h5 className="tex">Screening</h5>
