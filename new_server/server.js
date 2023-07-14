@@ -14,6 +14,7 @@ const Assessment = require("./models/assessment");
 const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
 const Application = require("./models/application");
+const Screening = require("../models/Screening");
 
 const app = express();
 app.use(cors());
@@ -65,6 +66,54 @@ app.post("/api/get_slots", async (req, res) => {
     res.json(slots);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+// {
+// question, type, mandatory, jobId
+// }
+// {
+//   201 success, question object
+// }
+app.post("/api/create_screening", async (req, res) => {
+  const { question, type, mandatory, jobId } = req.body;
+
+  if (!question || !type || !mandatory || !jobId) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const newQuestion = new Screening({
+      question,
+      type,
+      mandatory,
+      job: jobId,
+    });
+
+    const savedQuestion = await newQuestion.save();
+    res.status(200).json(savedQuestion);
+  } catch (err) {
+    res.status(500).json({ message: "An error occurred", error: err });
+  }
+});
+
+// {
+//   jobId
+// }
+// {
+//   status 200, questions ki array
+// }
+router.post("/api/get_screening", async (req, res) => {
+  const { jobId } = req.body;
+
+  if (!jobId) {
+    return res.status(400).json({ message: "Job id is required" });
+  }
+
+  try {
+    const questions = await Screening.find({ job: jobId });
+    res.status(200).json(questions);
+  } catch (err) {
+    res.status(500).json({ message: "An error occurred", error: err });
   }
 });
 
