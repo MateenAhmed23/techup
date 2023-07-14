@@ -71,39 +71,39 @@ function CompanyDashboard() {
     setDisplayType(displayType);
   }
 
-  // async function authentication() {
-  //   const res = await loginStatus()
-  //   // console.log('Result from login status', res)
-  //   if (!res) {
-  //     alert('You must login to access this page')
-  //     navigate('/login')
-  //   }
-  // }
+  async function authentication() {
+    const res = await loginStatus()
+    // console.log('Result from login status', res)
+    if (!res) {
+      alert('You must login to access this page')
+      navigate('/login')
+    }
+  }
 
-  // useEffect(() => {
-  //   if (isLoggedIn && userInfo.companyId) {
-  //     // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
-  //     getMembers()
-  //     getJobs()
-  //   }
-  //   else {
-  //     authentication()
-  //   }
-  // }, [isLoggedIn, userInfo.companyId])
-  // useEffect(() => {
-  //   if (isLoggedIn && userInfo.companyId) {
-  //     // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
-  //     getMembers()
-  //     getJobs()
-  //     // setLoading(false)
-  //   }
-  //   else {
-  //     authentication()
-  //     // console.log('Going to get jobs and members')
-  //     // console.log(userInfo.companyId)
+  useEffect(() => {
+    if (isLoggedIn && userInfo.companyId) {
+      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      getMembers()
+      getJobs()
+    }
+    else {
+      authentication()
+    }
+  }, [isLoggedIn, userInfo.companyId])
+  useEffect(() => {
+    if (isLoggedIn && userInfo.companyId) {
+      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      getMembers()
+      getJobs()
+      // setLoading(false)
+    }
+    else {
+      authentication()
+      // console.log('Going to get jobs and members')
+      // console.log(userInfo.companyId)
 
-  //   }
-  // }, [isLoggedIn, userInfo.companyId])
+    }
+  }, [isLoggedIn, userInfo.companyId])
 
   async function getJobs() {
     const res = await fetch("http://127.0.0.1:5000/api/get_all_jobs", {
@@ -173,11 +173,11 @@ function CompanyDashboard() {
             Add Member
           </button>
         </Link>}
-        <Link to="/createnewjob">
+        {/* <Link to="/createnewjob">
           <button className="createNewjob">
             {displayType === "jobs" ? "Create new Job" : "Create new Member"}
           </button>
-        </Link>
+        </Link> */}
       </div>
       <div className="jobs">
         {" "}
