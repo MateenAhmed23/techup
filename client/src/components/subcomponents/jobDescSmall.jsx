@@ -9,7 +9,7 @@ function JobDescSmall(props) {
   };
 
   function handleChange(e) {
-    props.onChange(e);
+    props.change(e.target.name,e.target.value);
   }
 
   if (props.options) {
@@ -25,6 +25,7 @@ function JobDescSmall(props) {
             className="field__input"
             style={inputStyle}
             onChange={handleChange}
+            name={props.label}
             value={props.value || ""}  // add this line
           >
             {props.options.map((option, index) => <option key={index}>{option}</option>)}
@@ -52,6 +53,7 @@ function JobDescSmall(props) {
             placeholder={props.placeholder}
             style={inputStyle}
             onChange={handleChange}
+            name={props.label}
             value={props.value || ""}  // add this line
           />
           <span className="field__label-wrap" aria-hidden="true">
