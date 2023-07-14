@@ -46,7 +46,7 @@ class QuestionDisplaycell extends Component {
         <a href="#">&nbsp;&nbsp;</a>
 
         <a
-          onClick={() => this.props.onnavclick("Delete")}
+          onClick={() => this.props.remove(this.props.type)}
           className="viewdetails"
           href="#"
         >
