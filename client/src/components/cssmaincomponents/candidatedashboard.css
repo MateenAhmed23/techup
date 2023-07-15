@@ -1,0 +1,7 @@
+.myjobs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  background-color: rgb(223, 217, 217);
+}

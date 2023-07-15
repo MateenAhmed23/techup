@@ -90,20 +90,6 @@ function CompanyDashboard() {
       authentication()
     }
   }, [isLoggedIn, userInfo.companyId])
-  useEffect(() => {
-    if (isLoggedIn && userInfo.companyId) {
-      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
-      getMembers()
-      getJobs()
-      // setLoading(false)
-    }
-    else {
-      authentication()
-      // console.log('Going to get jobs and members')
-      // console.log(userInfo.companyId)
-
-    }
-  }, [isLoggedIn, userInfo.companyId])
 
   async function getJobs() {
     const res = await fetch("http://127.0.0.1:5000/api/get_all_jobs", {
@@ -124,7 +110,6 @@ function CompanyDashboard() {
 
     } else {
       setJobs(data.jobs)
-
     }
   }
 
@@ -179,6 +164,7 @@ function CompanyDashboard() {
           </button>
         </Link> */}
       </div>
+
       <div className="jobs">
         {" "}
         <table>
@@ -211,8 +197,8 @@ function CompanyDashboard() {
           </tbody>
         </table>
       </div>
-      <div className="footerDASHBOARDpg">
 
+      <div className="footerDASHBOARDpg">
         <Footer></Footer>
       </div>
     </div>
