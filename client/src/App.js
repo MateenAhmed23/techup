@@ -32,6 +32,7 @@ import { Provider as CandidateProvider } from "./context/candidate"; // adjust p
 import AppliedJobs from "./components/appliedjobscandidate";
 import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
 import AnswerScreeningCandidate from "./components/answerscreeningcandidate";
+import ViewJob from "./components/viewJob";
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
   {
     path: "/edit-job",
     element: <EditJob />,
+  },
+  {
+    path: "/viewJob",
+    element: <ViewJob />,
   },
 ]);
 

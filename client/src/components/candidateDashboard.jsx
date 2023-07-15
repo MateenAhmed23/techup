@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CandidateContext from "../context/candidate"; // replace with the actual path to your CandidateContext
 import { useNavigate } from 'react-router-dom';
 import CandidateJobDisplaycell from "./subcomponents/candidatejobdisplaycell";
+import CandidateNav from "./subcomponents/candidateNav";
 
 function CandidateDashboard() {
     const navigate = useNavigate();
@@ -38,12 +39,11 @@ function CandidateDashboard() {
 
         const data = await res.json();
 
-        // console.log(data);
-
         if (res.status == 200) {
-            console.log(data);
+            console.log("applications", data);
             setJobs(data);
         } else {
+            console.log("error", data);
         }
     }
 
@@ -71,7 +71,9 @@ function CandidateDashboard() {
 
     return (
         <div className="dashboardcompany">
-            <button onClick={signoutCandidate}>Sign Out</button>
+            <div>
+                <CandidateNav className="navbar" />
+            </div>
 
             <div className="myjobs">
                 {" "}
@@ -83,7 +85,7 @@ function CandidateDashboard() {
                                     <CandidateJobDisplaycell
                                         id={job._id}
                                         company={job.company}
-                                        post={job.post}
+                                        job={job.job}
                                         status={job.status}
                                         action={mapStatusToAction(job.status)}
                                     />
