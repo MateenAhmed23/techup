@@ -104,7 +104,7 @@ function CompanyDashboard() {
 
     const data = await res.json();
 
-    console.log(data)
+    console.log("got jobs", data);
 
     if (res.status == 400) {
 
@@ -151,17 +151,17 @@ function CompanyDashboard() {
         </h1>
         <SearchBar className="bar23" />
         {displayType === "jobs" ? <Link to="/createnewjob">
-        {userInfo.userRole === 'superuser' && 
-          <button className="createNewjob">
-          Create new Job
-          </button>
-        }
+          {userInfo.userRole === 'superuser' &&
+            <button className="createNewjob">
+              Create new Job
+            </button>
+          }
         </Link> : <Link to="/addmember">
-        {userInfo.userRole === 'superuser' && 
-          <button className="createNewjob">
-          Add Member
-          </button>
-        }
+          {userInfo.userRole === 'superuser' &&
+            <button className="createNewjob">
+              Add Member
+            </button>
+          }
         </Link>}
       </div>
 
@@ -174,10 +174,11 @@ function CompanyDashboard() {
                 <tr key={job._id}>
                   <td className="job__desc">
                     <JobDisplaycell
-                      id={job._id}
-                      title={job.title}
-                      type={job.type}
-                      status={job.status}
+                      job={job}
+                      // id={job._id}
+                      // title={job.title}
+                      // type={job.type}
+                      // status={job.status}
                       showRemove={userInfo.userRole === 'superuser' ? true : false}
                     />
                   </td>

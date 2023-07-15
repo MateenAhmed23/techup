@@ -492,7 +492,46 @@ app.post("/api/create_job", async (req, res) => {
       company: companyId,
     });
 
-    res.status(201).json({ jobId: job._id });
+    res.status(200).json({ jobId: job._id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/api/edit_job", async (req, res) => {
+  // console.log(req.body);
+  try {
+    const {
+      title,
+      department,
+      type,
+      stack,
+      location,
+      perks,
+      description,
+      yearsOfExperience,
+      jobId,
+    } = req.body;
+
+    // Find the job and update it
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    job.title = title || job.title;
+    job.department = department || job.department;
+    job.type = type || job.type;
+    job.stack = stack || job.stack;
+    job.location = location || job.location;
+    job.perks = perks || job.perks;
+    job.description = description || job.description;
+    job.yearsOfExperience = yearsOfExperience || job.yearsOfExperience;
+
+    await job.save();
+
+    res.status(200).json({ message: "Job updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -519,7 +558,7 @@ app.get("/api/get_job/:id", async (req, res) => {
   }
 });
 
-app.post("/api/get_all_applications", async (req, res) => {
+app.post("/api/get_candidate_applications", async (req, res) => {
   const candidateId = req.body.candidate;
 
   // Check if candidateId is provided
@@ -560,6 +599,50 @@ app.post("/api/get_all_applications", async (req, res) => {
 });
 
 // {
+//   jobId
+// }{
+//   status: 200
+//   [
+//     _id,
+//     name,
+//     status
+//   ]
+// }
+app.post("/api/get_job_applicants", async (req, res) => {
+  const jobId = req.body.job;
+
+  // Check if jobId is provided
+  if (!jobId) {
+    return res.status(400).json({ error: "Job ID is required." });
+  }
+
+  try {
+    // Find applications for the given job
+    const applications = await Application.find({
+      job: jobId,
+    }).populate({
+      path: "candidate",
+      model: Candidate,
+      select: "name", // Only fetch the candidate name
+    });
+
+    // Transform applications data to desired format
+    const transformedApplications = applications.map((app) => ({
+      _id: app.candidate._id,
+      name: app.candidate.name,
+      status: app.status,
+    }));
+
+    return res.status(200).json(transformedApplications);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while fetching the applications." });
+  }
+});
+
+// {
 //   companyId;
 // clientId;
 // }
@@ -577,9 +660,7 @@ app.post("/api/get_all_jobs", async (req, res) => {
       return res.status(400).json({ message: "Company ID is required" });
     }
 
-    const jobs = await Job.find({ company: companyId }).select(
-      "title type status _id"
-    );
+    const jobs = await Job.find({ company: companyId });
 
     res.status(201).json({
       message: "Jobs fetched successfully",
