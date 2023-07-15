@@ -15,7 +15,7 @@ const screeningSchema = new Schema({
         required: true,
       },
       required: {
-        type: Boolean,
+        type: String,
         required: true,
       },
     },
