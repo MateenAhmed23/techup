@@ -560,7 +560,7 @@ app.get("/api/get_job/:id", async (req, res) => {
 
 app.post("/api/get_candidate_applications", async (req, res) => {
   const candidateId = req.body.candidate;
-
+  console.log("inside get apps");
   // Check if candidateId is provided
   if (!candidateId) {
     return res.status(400).json({ error: "Candidate ID is required." });
@@ -573,7 +573,7 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     }).populate({
       path: "job",
       model: Job,
-      select: "title company", // Only fetch the title and company id
+      // Removed the select clause to fetch the entire job document
       populate: {
         path: "company",
         model: Company,
@@ -585,10 +585,11 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     const transformedApplications = applications.map((app) => ({
       _id: app._id,
       company: app.job.company.name,
-      post: app.job.title,
+      job: app.job, // Include the whole job object
       status: app.status,
     }));
 
+    console.log(transformedApplications);
     return res.status(200).json(transformedApplications);
   } catch (error) {
     console.error(error);

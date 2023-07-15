@@ -8,7 +8,7 @@ import UserContext from '../context/user';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function EditJob() {
+function ViewJob() {
     const { isLoading, loginStatus, isLoggedIn, userInfo } = useContext(UserContext);
 
     const loc = useLocation();
@@ -85,15 +85,6 @@ function EditJob() {
         },
     ]
 
-    const [title, setTitle] = useState(job.title)
-    const [department, setDepartment] = useState(job.department)
-    const [location, setLocation] = useState(job.location)
-    const [jobType, setType] = useState(job.type)
-    const [stack, setStack] = useState(job.stack)
-    const [experience, setExperience] = useState(job.yearsOfExperience)
-    const [desc, setDesc] = useState(job.description)
-    const [perks, setPerks] = useState(job.perks)
-
     const jobDescriptionssmall = jobDescriptions.slice(0, 6);
     const jobDescriptionslarge = jobDescriptions.slice(6, 11);
 
@@ -109,75 +100,11 @@ function EditJob() {
         }
     }, [])
 
-
-
-    async function submitHandler() {
-        const response = await fetch("http://127.0.0.1:5000/api/edit_job", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                title,
-                department,
-                type: jobType,
-                stack,
-                description: desc,
-                yearsOfExperience: experience,
-                jobId: job._id,
-                location: location,
-                perks: perks
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.status == 200) {
-            navigate('/dashboard')
-            alert('Job Edited Successfully');
-        } else {
-            console.log(response.message);
-        }
-    }
-
-    function handleChange(changeFor, value) {
-        console.log('I AM FREAKING HEREEEE')
-        switch (changeFor) {
-            case 'Job Title':
-                setTitle(value)
-                break;
-            case 'Job Location':
-                setLocation(value)
-                break;
-            case 'Type':
-                setType(value)
-                console.log(value)
-                break;
-            case 'Stack':
-                setStack(value)
-                break;
-            case 'Experience':
-                setExperience(value)
-                break;
-            case 'General Job Description':
-                setDesc(value)
-                break;
-            case 'Perks':
-                setPerks(value)
-                break;
-            case 'Department':
-                setDepartment(value)
-                break;
-            default:
-                break;
-        }
-    }
-
     return (
         <div className="newjobpage">
             <CompNav className="navbar" />
             <div className="mainhead">
-                <h1 className="h1h">Create New Job </h1>
+                <h1 className="h1h">View Job </h1>
             </div>
             <div className="details">
                 <table>
@@ -192,19 +119,7 @@ function EditJob() {
                                         label={jobDesc.label}
                                         height={jobDesc.height}
                                         options={jobDesc.options}
-                                        change={handleChange}
-                                        value={
-                                            jobDesc.label === 'Job Title' ? title :
-                                                jobDesc.label === 'Department' ? department :
-                                                    jobDesc.label === 'Job Location' ? location :
-                                                        jobDesc.label === 'Type' ? jobType :
-                                                            jobDesc.label === 'Stack' ? stack :
-                                                                jobDesc.label === 'Experience' ? experience :
-                                                                    jobDesc.label === 'General Job Description' ? desc :
-                                                                        jobDesc.label === 'Perks' ? perks :
-                                                                            ''
-                                        }
-                                        onChange={(event) => handleChange(jobDesc.label, event.target.value)}
+                                        value={jobDesc.value}
                                     />
                                 </td>
                             </tr>
@@ -224,19 +139,7 @@ function EditJob() {
                                         placeholder={jobDesc.placeholder}
                                         label={jobDesc.label}
                                         height={jobDesc.height}
-                                        change={handleChange}
-                                        value={
-                                            jobDesc.label === 'Job Title' ? title :
-                                                jobDesc.label === 'Department' ? department :
-                                                    jobDesc.label === 'Job Location' ? location :
-                                                        jobDesc.label === 'Type' ? jobType :
-                                                            jobDesc.label === 'Stack' ? stack :
-                                                                jobDesc.label === 'Experience' ? experience :
-                                                                    jobDesc.label === 'General Job Description' ? desc :
-                                                                        jobDesc.label === 'Perks' ? perks :
-                                                                            ''
-                                        }
-                                        onChange={(event) => handleChange(jobDesc.label, event.target.value)}
+                                        value={jobDesc.value}
                                     />
                                 </td>
                             </tr>
@@ -245,14 +148,13 @@ function EditJob() {
                 </table>
             </div>
             <div className="buttonjobnew">
-                <button className="createjobnew" onClick={() => submitHandler()}>Edit</button>
+                <button className="createjobnew" onClick={() => { navigate("/candidate-dashboard") }}>Back</button>
             </div>
             <div className="footerjob1">
                 <h1 className="heading">Footer</h1>
-
             </div>
         </div>
     )
 }
 
-export default EditJob;
+export default ViewJob;
