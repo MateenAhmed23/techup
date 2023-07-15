@@ -17,8 +17,6 @@ import Footer from"./subcomponents/footer"
 import UserContext from "../context/user";
 
 
-
-
 const Landingpage = () => {
   const [state, setState] = useState({
     serviceIndex: 0,

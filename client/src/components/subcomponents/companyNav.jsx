@@ -42,7 +42,7 @@ function CompNav() {
 
   useEffect(() => {
     getCompanyName();
-  }, [companyName])
+  }, [userInfo.companyId])
 
   return (
     <nav>
