@@ -34,8 +34,8 @@ function JobInfo() {
   const applicants = [
     { id: 1, name: "Muqadim", rate: "40", email: "muqadimorg@gmail.com" },
     { id: 2, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 2, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 2, name: "Ahmad", rate: "50", email: "haris@gmail.com" }
+    { id: 3, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
+    { id: 4, name: "Ahmad", rate: "50", email: "haris@gmail.com" }
   ]
 
   function handleSidebarClick() {
@@ -44,7 +44,7 @@ function JobInfo() {
 
   async function getJobInfo() {
     // get_job/:id
-    console.log('Inside getJob')
+    console.log(id)
     try {
       const response = await fetch(`http://127.0.0.1:5000/api/get_job/${id}`, {
         method: "GET",
