@@ -31,6 +31,8 @@ import { Provider as CandidateProvider } from "./context/candidate"; // adjust p
 // import ResultsScreen from "./components/resultsscreen";
 import AppliedJobs from "./components/appliedjobscandidate";
 import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
+import AnswerScreeningCandidate from "./components/answerscreeningcandidate";
+
 
 const router = createBrowserRouter([
   {
@@ -109,6 +111,9 @@ const router = createBrowserRouter([
     path: "/SingleDisplaycol",
     element: <SingleDisplaycol />,
   },
+  {
+    path: "/screeningcandidate",
+    element: <AnswerScreeningCandidate />,
   {
     path: "/edit-job",
     element: <EditJob />,

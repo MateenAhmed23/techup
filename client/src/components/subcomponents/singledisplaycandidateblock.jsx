@@ -8,7 +8,7 @@ class SingleDisplaycol extends Component {
       <div className="singledispaycolumn">
         <div className="left-element">
           <h1 className="compannameapplicant">{this.props.compname}fafs</h1>
-          <p className="slashapplicant">-</p>
+          <p className="slashapplicant">-   </p>
           <h2 className="jobstatusapplicant">{this.props.status}afsq</h2>
         </div>
         <button className="mainbuttonvewdetapplicant right-element">{this.props.name}hello this is </button>
