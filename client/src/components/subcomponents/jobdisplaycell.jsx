@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function JobDisplaycell({ job, showRemove }) {
 
-  const { id, title, type, status } = job;
+  const { _id, title, type, status } = job;
   const navigate = useNavigate();
 
   function editClicked() {
@@ -14,7 +14,7 @@ function JobDisplaycell({ job, showRemove }) {
   }
 
   function detailsClicked() {
-    var str = '/jobinfo/' + id
+    var str = '/jobinfo/' + _id
     navigate(str)
   }
 

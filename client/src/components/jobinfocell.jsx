@@ -75,10 +75,18 @@ function JobInfo() {
 
   }
 
-  function openScreening(){
+  function copyToClipboard() {
+    navigator.clipboard.writeText('localhost:3000/joburl/' + id)
+      .then(() => {
+        // Success!
+        alert('Text copied to clipboard');
+      })
+  };
+
+  function openScreening() {
     console.log('OPENING SCREENING')
 
-    var str = '/screeningquestions/'+ id
+    var str = '/screeningquestions/' + id
     navigate(str)
   }
 
@@ -102,7 +110,7 @@ function JobInfo() {
       <div className="searchbarjob">
         <h1 className="head">{title}</h1>
         <SearchBar className="bar23" />
-        <button className="url">Get Job Url</button>
+        <button onClick={copyToClipboard} className="url">Get Job Url</button>
       </div>
       <div className="jobdesc">
         {/* <h1 className="jobtitle">{title}</h1> */}
@@ -124,7 +132,7 @@ function JobInfo() {
           </div>
         </div>
       </div>
-      <div className="jobnoti" onClick={()=>openScreening()}>
+      <div className="jobnoti" onClick={() => openScreening()}>
         <div className="notibar">
           <div className="notinum">3</div>
           <h5 className="tex">Screening</h5>
