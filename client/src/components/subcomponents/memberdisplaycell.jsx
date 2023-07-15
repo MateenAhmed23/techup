@@ -17,9 +17,6 @@ function Memberdisplaycell({name,rank,showRemove}){
             </a>
           </li>
         </ul>
-        <a  className="editt">
-        View Details
-        </a>
         <a href="#">&nbsp;&nbsp;</a>
 
         {showRemove && 
