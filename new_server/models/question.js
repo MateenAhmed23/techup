@@ -22,7 +22,6 @@ const questionSchema = new Schema({
   },
   difficulty: {
     type: String,
-    enum: ["easy", "medium", "hard"],
     required: true,
   },
   template: {

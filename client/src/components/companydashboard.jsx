@@ -151,17 +151,17 @@ function CompanyDashboard() {
         </h1>
         <SearchBar className="bar23" />
         {displayType === "jobs" ? <Link to="/createnewjob">
-        {userInfo.userRole === 'superuser' && 
-          <button className="createNewjob">
-          Create new Job
-          </button>
-        }
+          {userInfo.userRole === 'superuser' &&
+            <button className="createNewjob">
+              Create new Job
+            </button>
+          }
         </Link> : <Link to="/addmember">
-        {userInfo.userRole === 'superuser' && 
-          <button className="createNewjob">
-          Add Member
-          </button>
-        }
+          {userInfo.userRole === 'superuser' &&
+            <button className="createNewjob">
+              Add Member
+            </button>
+          }
         </Link>}
       </div>
 
