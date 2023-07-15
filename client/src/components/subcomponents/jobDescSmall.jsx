@@ -9,7 +9,7 @@ function JobDescSmall(props) {
   };
 
   function handleChange(e) {
-    props.change(e.target.name,e.target.value);
+    props.change(e.target.name, e.target.value);
   }
 
   if (props.options) {
@@ -52,7 +52,7 @@ function JobDescSmall(props) {
             className="field__input"
             placeholder={props.placeholder}
             style={inputStyle}
-            onChange={handleChange}
+            onChange={props.onChange}
             name={props.label}
             value={props.value || ""}  // add this line
           />
