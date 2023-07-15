@@ -4,39 +4,45 @@ import "./csssubcomponents/jobdisplaycell.css"
 
 import { useNavigate } from "react-router-dom";
 
-function JobDisplaycell({id,title,type,status, showRemove}){
+function JobDisplaycell({ job, showRemove }) {
 
+  const { id, title, type, status } = job;
   const navigate = useNavigate();
 
-  function detailsClicked(){
-    var str = '/jobinfo/'+id
+  function editClicked() {
+    navigate('/edit-job', { state: { job } });
+  }
+
+  function detailsClicked() {
+    var str = '/jobinfo/' + id
     navigate(str)
   }
-  return(
+
+  return (
     <div className='cell'>
-          <ul>
-            <li>
-              {/* <p className="commonitems active">{this.props.title} </p> */}
-              <a  className="commonitems active">
-              {title}
-              </a>
-            </li>
-            <li>
-              <a  className="commonitems">
-              {type}
-              </a>
-            </li>
-         
-            
-          </ul>
-          <a onClick={()=>detailsClicked()} className="editt">
-          View Details
+      <ul>
+        <li>
+          {/* <p className="commonitems active">{this.props.title} </p> */}
+          <a className="commonitems active">
+            {title}
           </a>
-          {showRemove && 
-          <a className="viewdetails">
+        </li>
+        <li>
+          <a className="commonitems">
+            {type}
+          </a>
+        </li>
+
+
+      </ul>
+      <a onClick={() => detailsClicked()} className="editt">
+        View Details
+      </a>
+      {showRemove &&
+        <a onClick={() => editClicked()} className="viewdetails">
           Edit
-          </a>
-          }
+        </a>
+      }
     </div>
   )
 }
@@ -59,8 +65,8 @@ function JobDisplaycell({id,title,type,status, showRemove}){
 //               {this.props.Dateposted}
 //               </a>
 //             </li>
-         
-            
+
+
 //           </ul>
 //           <a onClick={() => this.props.onnavclick("contractus")} className="editt" href="#">
 //           View Details
@@ -73,5 +79,5 @@ function JobDisplaycell({id,title,type,status, showRemove}){
 //             );
 //     }
 // }
- 
+
 export default JobDisplaycell;

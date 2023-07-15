@@ -26,7 +26,7 @@ function CandidateDashboard() {
     }, [isLoggedIn, candidateInfo.candidateId])
 
     async function getMyJobs() {
-        const res = await fetch("http://127.0.0.1:5000/api/get_all_applications", {
+        const res = await fetch("http://127.0.0.1:5000/api/get_candidate_applications", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

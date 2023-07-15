@@ -104,7 +104,7 @@ function CompanyDashboard() {
 
     const data = await res.json();
 
-    console.log(data)
+    console.log("got jobs", data);
 
     if (res.status == 400) {
 
@@ -174,10 +174,11 @@ function CompanyDashboard() {
                 <tr key={job._id}>
                   <td className="job__desc">
                     <JobDisplaycell
-                      id={job._id}
-                      title={job.title}
-                      type={job.type}
-                      status={job.status}
+                      job={job}
+                      // id={job._id}
+                      // title={job.title}
+                      // type={job.type}
+                      // status={job.status}
                       showRemove={userInfo.userRole === 'superuser' ? true : false}
                     />
                   </td>

@@ -109,6 +109,7 @@ function CreateNewJob() {
 
 
   const [title, setTitle] = useState('')
+  const [department, setDepartment] = useState('')
   const [location, setLocation] = useState('')
   const [jobType, setType] = useState('Full Time')
   const [stack, setStack] = useState('')
@@ -116,19 +117,13 @@ function CreateNewJob() {
   const [desc, setDesc] = useState('')
   const [perks, setPerks] = useState('')
   // const [duties, setDuties] = useState('')
-  const [department, setDepartment] = useState('')
-
-
 
   const jobDescriptionssmall = jobDescriptions.slice(0, 6);
   const jobDescriptionslarge = jobDescriptions.slice(6, 11);
 
   // console.log(jobDescriptionssmall)
 
-
   useEffect(() => {
-
-
     if (loginStatus()) {
 
     }
@@ -203,7 +198,6 @@ function CreateNewJob() {
         break;
       default:
         break;
-
     }
   }
 
@@ -226,7 +220,18 @@ function CreateNewJob() {
                     label={jobDesc.label}
                     height={jobDesc.height}
                     options={jobDesc.options}
-                    change={handleChange}
+                    value={
+                      jobDesc.label === 'Job Title' ? title :
+                        jobDesc.label === 'Department' ? department :
+                          jobDesc.label === 'Job Location' ? location :
+                            jobDesc.label === 'Type' ? jobType :
+                              jobDesc.label === 'Stack' ? stack :
+                                jobDesc.label === 'Experience' ? experience :
+                                  jobDesc.label === 'General Job Description' ? desc :
+                                    jobDesc.label === 'Perks' ? perks :
+                                      ''
+                    }
+                    onChange={(event) => handleChange(jobDesc.label, event.target.value)}
                   />
                 </td>
               </tr>
@@ -246,7 +251,18 @@ function CreateNewJob() {
                     placeholder={jobDesc.placeholder}
                     label={jobDesc.label}
                     height={jobDesc.height}
-                    change={handleChange}
+                    value={
+                      jobDesc.label === 'Job Title' ? title :
+                        jobDesc.label === 'Department' ? department :
+                          jobDesc.label === 'Job Location' ? location :
+                            jobDesc.label === 'Type' ? jobType :
+                              jobDesc.label === 'Stack' ? stack :
+                                jobDesc.label === 'Experience' ? experience :
+                                  jobDesc.label === 'General Job Description' ? desc :
+                                    jobDesc.label === 'Perks' ? perks :
+                                      ''
+                    }
+                    onChange={(event) => handleChange(jobDesc.label, event.target.value)}
                   />
                 </td>
               </tr>
