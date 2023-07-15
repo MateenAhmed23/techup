@@ -33,7 +33,6 @@ import AppliedJobs from "./components/appliedjobscandidate";
 import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
 import AnswerScreeningCandidate from "./components/answerscreeningcandidate";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -114,6 +113,7 @@ const router = createBrowserRouter([
   {
     path: "/screeningcandidate",
     element: <AnswerScreeningCandidate />,
+  },
   {
     path: "/edit-job",
     element: <EditJob />,
