@@ -4,7 +4,7 @@ import "./csssubcomponents/jobdisplaycell.css"
 
 import { useNavigate } from "react-router-dom";
 
-function JobDisplaycell({id,title,type,status}){
+function JobDisplaycell({id,title,type,status, showRemove}){
 
   const navigate = useNavigate();
 
@@ -32,10 +32,11 @@ function JobDisplaycell({id,title,type,status}){
           <a onClick={()=>detailsClicked()} className="editt">
           View Details
           </a>
-
+          {showRemove && 
           <a className="viewdetails">
-            Edit
+          Edit
           </a>
+          }
     </div>
   )
 }

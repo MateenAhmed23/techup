@@ -2,7 +2,7 @@ import React from 'react';
 import "./csssubcomponents/jobdisplaycell.css"
 
 
-function Memberdisplaycell({name,rank}){
+function Memberdisplaycell({name,rank,showRemove}){
   return(
     <div className='cell'>
         <ul>
@@ -22,9 +22,12 @@ function Memberdisplaycell({name,rank}){
         </a>
         <a href="#">&nbsp;&nbsp;</a>
 
-        <a className="viewdetails">
+        {showRemove && 
+          <a className="viewdetails">
           Remove
-        </a>
+          </a>
+        }
+        
       </div>
   )
 }
