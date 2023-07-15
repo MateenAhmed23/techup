@@ -142,10 +142,11 @@ function ScreeningQuestions(){
     const updatedItems = addedquestions.filter(question => question.id !== id);
     // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
     setAddedQuestions(updatedItems);
-    console.log(id)
+    // console.log(id)
   }
 
-  function handleSubmit(){
+  async function handleSubmit(){
+
     console.log(id)
     console.log(addedquestions)
 
@@ -162,7 +163,25 @@ function ScreeningQuestions(){
       questions: arr
     }
 
-    console.log(obb)
+    const response = await fetch("http://127.0.0.1:5000/api/screening", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jobId: id,
+        questions: arr
+      }),
+    });
+
+    console.log(response)
+
+    // const data = await response.json();
+
+    if (response.status === 201){
+      alert('Member added successfully')
+      navigate('/jobinfo'+id);
+    }
   }
   return(
       <div className="screening">
