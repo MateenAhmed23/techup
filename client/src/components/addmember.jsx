@@ -48,23 +48,26 @@ function Addmember(){
   const [confirmPassword,setConfirmPassword] = useState('')
   const [position, setPosition] = useState('')
   
+  const arr = [name, email, position, password,confirmPassword]
+
+
   const memberCreation = [
       {
-        id: 1,
+        id: 0,
         label: "Name",
         type: "text",
         placeholder: "e.g. Software E",
         height: "7vh",
       },
       {
-        id: 2,
+        id: 1,
         label: "Email",
         type: "text",
         placeholder: "e.g. Software E",
         height: "7vh",
       },
       {
-        id: 5,
+        id: 2,
         label: "Position at Software House",
         type: "text",
         placeholder: "e.g. Software E",
@@ -119,7 +122,7 @@ async function submitHandler(){
 
 
 function handleChange(changeFor, value){
-  // console.log('I AM FREAKING HEREEEE')
+  console.log(changeFor,value)
   switch (changeFor){
     case 'Name':
       setName(value)
@@ -133,7 +136,7 @@ function handleChange(changeFor, value){
     case 'Confirm Password':
       setConfirmPassword(value)
       break;
-    case 'Posiiton at Software House':
+    case 'Position at Software House':
       setPosition(value)
       break;
     default:
@@ -163,6 +166,7 @@ function handleChange(changeFor, value){
                       label={jobDesc.label}
                       height={jobDesc.height}
                       change={handleChange}
+                      value = {arr[jobDesc.id]}
                     />
                   </td>
                 </tr>

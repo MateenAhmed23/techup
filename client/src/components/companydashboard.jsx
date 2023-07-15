@@ -115,6 +115,7 @@ function CompanyDashboard() {
 
 
   async function getMembers() {
+    console.log(userInfo, 'userInfo')
     // console.log('Company ID', userInfo.companyId)
     const res = await fetch('http://127.0.0.1:5000/api/get_all_clients', {
       method: 'POST',
@@ -150,19 +151,18 @@ function CompanyDashboard() {
         </h1>
         <SearchBar className="bar23" />
         {displayType === "jobs" ? <Link to="/createnewjob">
+        {userInfo.userRole === 'superuser' && 
           <button className="createNewjob">
-            Create new Job
+          Create new Job
           </button>
+        }
         </Link> : <Link to="/addmember">
+        {userInfo.userRole === 'superuser' && 
           <button className="createNewjob">
-            Add Member
+          Add Member
           </button>
+        }
         </Link>}
-        {/* <Link to="/createnewjob">
-          <button className="createNewjob">
-            {displayType === "jobs" ? "Create new Job" : "Create new Member"}
-          </button>
-        </Link> */}
       </div>
 
       <div className="jobs">
@@ -178,6 +178,7 @@ function CompanyDashboard() {
                       title={job.title}
                       type={job.type}
                       status={job.status}
+                      showRemove={userInfo.userRole === 'superuser' ? true : false}
                     />
                   </td>
                 </tr>
@@ -190,6 +191,7 @@ function CompanyDashboard() {
                       id={member._id}
                       name={member.name}
                       rank={member.role}
+                      showRemove={userInfo.userRole === 'superuser' ? true : false}
                     />
                   </td>
                 </tr>
