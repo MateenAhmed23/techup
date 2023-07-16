@@ -204,7 +204,6 @@ function EditJob() {
                                                                         jobDesc.label === 'Perks' ? perks :
                                                                             ''
                                         }
-                                        onChange={(event) => handleChange(jobDesc.label, event.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -236,7 +235,6 @@ function EditJob() {
                                                                         jobDesc.label === 'Perks' ? perks :
                                                                             ''
                                         }
-                                        onChange={(event) => handleChange(jobDesc.label, event.target.value)}
                                     />
                                 </td>
                             </tr>
