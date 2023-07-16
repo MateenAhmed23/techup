@@ -1,7 +1,7 @@
 :root {
     --primary-color: #5a5c5e;
     --secondary-color: #868686;
-    --light-color: #ffffff;
+    --light-color: #000000;
     --dark-color: #b0a6a6;
     --navbar-color: #000000;
   }
@@ -29,6 +29,7 @@
     z-index: 100;
     font-size: 18px;
     height: 100px;
+    color: white;
   }
   
   .navbar .brand {
