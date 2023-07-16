@@ -9,7 +9,11 @@ function JobDescSmall(props) {
   };
 
   function handleChange(e) {
-    props.change(e.target.name, e.target.value);
+    if (props.screening) {
+      props.change(e, props.id);
+    } else {
+      props.change(e.target.name, e.target.value);
+    }
   }
 
   const Label = () => {

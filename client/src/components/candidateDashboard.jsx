@@ -54,8 +54,8 @@ function CandidateDashboard() {
         navigate('/');
     }
 
-    function apply(jobId) {
-        navigate('/screeningcandidate', { state: { jobId } });
+    function apply(jobId, appId) {
+        navigate('/screeningcandidate', { state: { jobId, appId } });
     }
 
     const mapStatusToFunction = (status) => {
@@ -102,7 +102,8 @@ function CandidateDashboard() {
                             <tr key={job._id}>
                                 <td className="job__desc">
                                     <CandidateJobDisplaycell
-                                        id={job._id}
+                                        jobId={job.job._id}
+                                        appId={job._id}
                                         company={job.company}
                                         job={job.job}
                                         status={job.status}
