@@ -9,8 +9,20 @@ function JobDescSmall(props) {
   };
 
   function handleChange(e) {
-    props.change(e.target.name,e.target.value);
+    props.change(e.target.name, e.target.value);
   }
+
+  const Label = () => {
+    const label = props.label;
+    const isMandatory = label.endsWith('*');
+
+    if (isMandatory) {
+      const question = label.slice(0, -1);
+      return <><span>{question}</span><span style={{color: 'red'}}>*</span></>;
+    }
+
+    return <span>{label}</span>;
+  };
 
   if (props.options) {
     // if options are present, render a select field
@@ -18,7 +30,7 @@ function JobDescSmall(props) {
       <div className="field" style={{ width: props.width ? props.width : "45vw" }}>
         <div className="field field_v1">
           <label className="ha-screen-reader" htmlFor={props.id}>
-            {props.label}
+            <Label />
           </label>
           <select
             id={props.id}
@@ -31,7 +43,7 @@ function JobDescSmall(props) {
             {props.options.map((option, index) => <option key={index}>{option}</option>)}
           </select>
           <span className="field__label-wrap" aria-hidden="true">
-            <span className="field__label">{props.label}</span>
+            <span className="field__label"><Label /></span>
           </span>
         </div>
       </div>
@@ -40,11 +52,9 @@ function JobDescSmall(props) {
     // if options are not present, render a regular input field
     return (
       <div className="field" style={{ width: props.width ? props.width : "45vw" }}>
-
-
         <div className="field field_v1">
           <label className="ha-screen-reader" htmlFor={props.id}>
-            {props.label}
+            <Label />
           </label>
           <input
             id={props.id}
@@ -52,12 +62,12 @@ function JobDescSmall(props) {
             className="field__input"
             placeholder={props.placeholder}
             style={inputStyle}
-            onChange={handleChange}
+            onChange={props.onChange}
             name={props.label}
             value={props.value || ""}  // add this line
           />
           <span className="field__label-wrap" aria-hidden="true">
-            <span className="field__label">{props.label}</span>
+            <span className="field__label"><Label /></span>
           </span>
         </div>
       </div>

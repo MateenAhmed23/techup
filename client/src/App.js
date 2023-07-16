@@ -20,6 +20,7 @@ import Mcqschoosing from "./components/mcqschoosing";
 import CandidateProfile from "./components/candidateprofile";
 import CandidateSignup from "./components/candidateSignup";
 import JobUrl from "./components/jobUrl";
+import EditJob from "./components/editJob";
 // import inte from "./components/interviewScheduling";
 import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
@@ -30,6 +31,8 @@ import { Provider as CandidateProvider } from "./context/candidate"; // adjust p
 // import ResultsScreen from "./components/resultsscreen";
 import AppliedJobs from "./components/appliedjobscandidate";
 import SingleDisplaycol from "./components/subcomponents/singledisplaycandidateblock";
+import AnswerScreeningCandidate from "./components/answerscreeningcandidate";
+import ViewJob from "./components/viewJob";
 
 const router = createBrowserRouter([
   {
@@ -107,6 +110,18 @@ const router = createBrowserRouter([
   {
     path: "/SingleDisplaycol",
     element: <SingleDisplaycol />,
+  },
+  {
+    path: "/screeningcandidate",
+    element: <AnswerScreeningCandidate />,
+  },
+  {
+    path: "/edit-job",
+    element: <EditJob />,
+  },
+  {
+    path: "/viewJob",
+    element: <ViewJob />,
   },
 ]);
 
