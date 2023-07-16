@@ -18,7 +18,7 @@ function JobDescSmall(props) {
 
     if (isMandatory) {
       const question = label.slice(0, -1);
-      return <><span>{question}</span><span style={{color: 'red'}}>*</span></>;
+      return <><span>{question}</span><span style={{ color: 'red' }}>*</span></>;
     }
 
     return <span>{label}</span>;
@@ -62,7 +62,7 @@ function JobDescSmall(props) {
             className="field__input"
             placeholder={props.placeholder}
             style={inputStyle}
-            onChange={props.onChange}
+            onChange={handleChange}
             name={props.label}
             value={props.value || ""}  // add this line
           />
