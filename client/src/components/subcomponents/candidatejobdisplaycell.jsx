@@ -3,13 +3,12 @@ import "./csssubcomponents/jobdisplaycell.css"
 
 import { useNavigate } from "react-router-dom";
 
-function CandidateJobDisplaycell({ id, company, post, status, action }) {
+function CandidateJobDisplaycell({ appId, jobId, company, job, status, action, actionfunction }) {
 
     const navigate = useNavigate();
 
     function detailsClicked() {
-        var str = '/jobinfo/' + id
-        navigate(str)
+        navigate('/viewJob', { state: { job } })
     }
 
     return (
@@ -22,7 +21,7 @@ function CandidateJobDisplaycell({ id, company, post, status, action }) {
                 </li>
                 <li>
                     <a className="commonitems">
-                        {post}
+                        {job.title}
                     </a>
                 </li>
                 {/* <li>
@@ -31,7 +30,12 @@ function CandidateJobDisplaycell({ id, company, post, status, action }) {
                     </a>
                 </li> */}
             </ul>
-            <a onClick={() => { }} className="editt">
+
+            <a onClick={() => detailsClicked()} className="editt">
+                View Details
+            </a>
+
+            <a onClick={() => { actionfunction(jobId, appId) }} className="editt">
                 {action}
             </a>
         </div>

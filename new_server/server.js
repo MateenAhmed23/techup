@@ -115,6 +115,7 @@ app.post("/api/screening", async (req, res) => {
 app.post("/api/get_screening", async (req, res) => {
   try {
     const { jobId } = req.body;
+    console.log("inside get screening", jobId);
 
     // Find the screening data for the jobId
     const screening = await Screening.findOne({ jobId });
@@ -129,6 +130,32 @@ app.post("/api/get_screening", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/api/save_screening", async (req, res) => {
+  const { appId, answers } = req.body;
+  console.log("save screening", appId);
+  try {
+    // Convert answers object to array of objects for mongoose
+    const answersArray = Object.entries(answers).map(
+      ([questionId, answer]) => ({ questionId, answer })
+    );
+
+    const application = await Application.findById(appId);
+
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    application.answers = answersArray;
+
+    await application.save();
+
+    res.status(200).send("Answers saved successfully!");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("There was an error, please try again");
   }
 });
 
@@ -560,7 +587,7 @@ app.get("/api/get_job/:id", async (req, res) => {
 
 app.post("/api/get_candidate_applications", async (req, res) => {
   const candidateId = req.body.candidate;
-
+  console.log("inside get apps");
   // Check if candidateId is provided
   if (!candidateId) {
     return res.status(400).json({ error: "Candidate ID is required." });
@@ -573,7 +600,7 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     }).populate({
       path: "job",
       model: Job,
-      select: "title company", // Only fetch the title and company id
+      // Removed the select clause to fetch the entire job document
       populate: {
         path: "company",
         model: Company,
@@ -585,10 +612,11 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     const transformedApplications = applications.map((app) => ({
       _id: app._id,
       company: app.job.company.name,
-      post: app.job.title,
+      job: app.job, // Include the whole job object
       status: app.status,
     }));
 
+    console.log(transformedApplications);
     return res.status(200).json(transformedApplications);
   } catch (error) {
     console.error(error);
