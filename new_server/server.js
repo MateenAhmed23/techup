@@ -115,6 +115,7 @@ app.post("/api/screening", async (req, res) => {
 app.post("/api/get_screening", async (req, res) => {
   try {
     const { jobId } = req.body;
+    console.log("inside get screening", jobId);
 
     // Find the screening data for the jobId
     const screening = await Screening.findOne({ jobId });
@@ -129,6 +130,32 @@ app.post("/api/get_screening", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/api/save_screening", async (req, res) => {
+  const { appId, answers } = req.body;
+  console.log("save screening", appId);
+  try {
+    // Convert answers object to array of objects for mongoose
+    const answersArray = Object.entries(answers).map(
+      ([questionId, answer]) => ({ questionId, answer })
+    );
+
+    const application = await Application.findById(appId);
+
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    application.answers = answersArray;
+
+    await application.save();
+
+    res.status(200).send("Answers saved successfully!");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("There was an error, please try again");
   }
 });
 

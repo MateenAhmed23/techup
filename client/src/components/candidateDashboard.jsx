@@ -54,6 +54,25 @@ function CandidateDashboard() {
         navigate('/');
     }
 
+    function apply(jobId, appId) {
+        navigate('/screeningcandidate', { state: { jobId, appId } });
+    }
+
+    const mapStatusToFunction = (status) => {
+        switch (status) {
+            case 'invited':
+                return apply;
+            // case 'applied':
+            //     return 'Waiting for response';
+            // case 'assessment':
+            //     return 'Attempt assessment';
+            // case 'interview':
+            //     return 'Book interview slot';
+            default:
+                return '';
+        }
+    };
+
     const mapStatusToAction = (status) => {
         switch (status) {
             case 'invited':
@@ -83,11 +102,13 @@ function CandidateDashboard() {
                             <tr key={job._id}>
                                 <td className="job__desc">
                                     <CandidateJobDisplaycell
-                                        id={job._id}
+                                        jobId={job.job._id}
+                                        appId={job._id}
                                         company={job.company}
                                         job={job.job}
                                         status={job.status}
                                         action={mapStatusToAction(job.status)}
+                                        actionfunction={mapStatusToFunction(job.status)}
                                     />
                                 </td>
                             </tr>

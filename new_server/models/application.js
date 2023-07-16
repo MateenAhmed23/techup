@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const answerSchema = new mongoose.Schema({
+  questionId: {
+    type: String,
+    required: true,
+  },
+  answer: {
+    type: String,
+    required: true,
+  },
+});
+
 const applicationSchema = new mongoose.Schema({
   candidate: {
     type: mongoose.Schema.Types.ObjectId,
@@ -17,6 +28,7 @@ const applicationSchema = new mongoose.Schema({
     enum: ["invited", "applied", "interview", "assessment", "accepted"],
     default: "invited",
   },
+  answers: [answerSchema],
 });
 
 // Add unique compound index on candidate and job
