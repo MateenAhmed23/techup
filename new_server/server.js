@@ -115,6 +115,7 @@ app.post("/api/screening", async (req, res) => {
 app.post("/api/get_screening", async (req, res) => {
   try {
     const { jobId } = req.body;
+    console.log("inside get screening", jobId);
 
     // Find the screening data for the jobId
     const screening = await Screening.findOne({ jobId });

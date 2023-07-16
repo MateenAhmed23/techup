@@ -3,7 +3,7 @@ import "./csssubcomponents/jobdisplaycell.css"
 
 import { useNavigate } from "react-router-dom";
 
-function CandidateJobDisplaycell({ id, company, job, status, action }) {
+function CandidateJobDisplaycell({ id, company, job, status, action, actionfunction }) {
 
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ function CandidateJobDisplaycell({ id, company, job, status, action }) {
                 View Details
             </a>
 
-            <a onClick={() => { }} className="editt">
+            <a onClick={() => { actionfunction(id) }} className="editt">
                 {action}
             </a>
         </div>
