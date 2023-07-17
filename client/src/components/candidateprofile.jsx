@@ -5,19 +5,96 @@ import Muqadim from "./subcomponents/csssubcomponents/AbdulMuqadim.jpg";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import arrow from "./subcomponents/csssubcomponents/arrow.png";
 import Footer from "./subcomponents/footer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function CandidateProfile() {
+  const navigate = useNavigate();
   const loc = useLocation();
   const application = loc.state.app;
   const jobTitle = loc.state.jobTitle;
-  function statusToFunction(status) {
 
+  function decideStatusClass(statusList) {
+    if (statusList.includes(application.status)) {
+      return "processtask current"
+    } else {
+      return "processtask"
+    }
   }
 
-  function statusToAction(status) {
-
+  function viewScreening() {
+    navigate('/viewScreening',
+      {
+        state: {
+          answers: application.answers,
+          job: application.job,
+        }
+      })
   }
+
+  function showAcceptReject() {
+    return ["applied", "attempted-assessment", "interviewed"].includes(application.status)
+  }
+
+  function statusToFunction() {
+    let status = application.status;
+    switch (status) {
+      case 'applied':
+        return viewScreening;
+      default:
+        return '';
+    }
+  }
+
+  function statusToActionText() {
+    let status = application.status;
+    switch (status) {
+      case 'applied':
+        return 'View screening response';
+      case 'pending-assessment':
+        return 'Pending assessment'
+      default:
+        return '';
+    }
+  }
+
+  async function acceptCandidate() {
+    const res = await fetch('http://127.0.0.1:5000/api/accept', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        appId: application._id,
+      })
+    });
+
+    if (res.status === 200) {
+      alert("Candidate moved forward!");
+      navigate('/dashboard');
+    } else {
+      alert("There was an error, please try again");
+    }
+  }
+
+  async function rejectCandidate() {
+    const res = await fetch('http://127.0.0.1:5000/api/reject', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        appId: application._id,
+      })
+    });
+
+    if (res.status === 200) {
+      alert("Candidate removed!");
+      navigate('/dashboard');
+    } else {
+      alert("There was an error, please try again");
+    }
+  }
+
   return (
     <div className="candidateprofilepage">
       {" "}
@@ -70,19 +147,17 @@ function CandidateProfile() {
       </div>
       <div className="rightside">
         <div className="proessList">
-          <p className="pending processtask current">Pending</p>
+          <p className={decideStatusClass(["applied"])}>Sreening</p>
           <img src={arrow} width={35} height={25} className="logoarr" />
-          <p className="reviewed processtask">Reviewed</p>
+          <p className={decideStatusClass(["pending-assessment", "attempted-assessment",])}>Assessment</p>
           <img src={arrow} width={35} height={25} className="logoarr" />
-          <p className="test processtask">Test Task</p>
-          <img src={arrow} width={35} height={25} className="logoarr" />
-          <p className="interview processtask">Interview</p>
-          <img src={arrow} width={35} height={25} className="logoarr" />
-          <p className="hired processtask">Hired</p>
+          <p className={decideStatusClass(["slot-pending", "interview-pending", "interviewed"])}>Interview</p>
+          < img src={arrow} width={35} height={25} className="logoarr" />
+          <p className={decideStatusClass(["accepted"])}>Accepted</p>
         </div>
         <div className="opencvbutdiv">
           <a className="opnecvbut" href={`http://localhost:5000/api/cv/${application.candidate._id}`} target="_blank">Open CV</a>
-          <button className="viewscorebut">Results</button>
+          <button className="actionbut" onClick={statusToFunction()}>{statusToActionText()}</button>
         </div>
         <div className="nameandrole">
           <h1 className="nameprof tognamerol">{application.candidate.name}</h1>
@@ -119,6 +194,15 @@ function CandidateProfile() {
           <p className=" skillsetp">Junior Backend Developer </p>
 
         </div> */}
+        {
+          showAcceptReject() ?
+            <div className="opencvbutdiv">
+              <button className="actionbut" onClick={rejectCandidate}>Reject</button>
+              <button className="actionbut" onClick={acceptCandidate}>Accept</button>
+            </div> :
+            ''
+        }
+
 
       </div>
       <div className="reusltssection">

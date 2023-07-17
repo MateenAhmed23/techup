@@ -138,6 +138,75 @@ app.post("/api/get_screening", async (req, res) => {
   }
 });
 
+// Helper function to determine the next status
+function getNextStatus(currentStatus) {
+  const statusOrder = [
+    "invited",
+    "applied",
+    "pending-assessment",
+    "attempted-assessment",
+    "slot-pending",
+    "interview-pending",
+    "interviewed",
+    "accepted",
+    "rejected",
+  ];
+  const currentIndex = statusOrder.indexOf(currentStatus);
+  return currentIndex < statusOrder.length - 1
+    ? statusOrder[currentIndex + 1]
+    : null;
+}
+
+// Accept (progress to the next status) an application
+app.post("/api/accept/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    const nextStatus = getNextStatus(application.status);
+    if (!nextStatus) {
+      return res.status(400).send("Application cannot be progressed further");
+    }
+
+    application.status = nextStatus;
+    await application.save();
+
+    res.status(200).send(`Application status updated to ${nextStatus}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+// Reject an application
+app.post("api/reject/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    // Check the current status of the application. If it is already 'rejected', no need to update
+    if (application.status === "rejected") {
+      return res.status(200).send("Application is already rejected");
+    }
+
+    application.status = "rejected";
+    await application.save();
+
+    res.status(200).send("Application rejected");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
 app.post("/api/save_screening", async (req, res) => {
   const { appId, answers } = req.body;
   console.log("save screening", appId);
@@ -154,6 +223,7 @@ app.post("/api/save_screening", async (req, res) => {
     }
 
     application.answers = answersArray;
+    application.status = "applied";
 
     await application.save();
 
