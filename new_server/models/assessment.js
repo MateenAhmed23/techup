@@ -4,20 +4,22 @@ const Schema = mongoose.Schema;
 
 // Define the Assessment schema
 const assessmentSchema = new Schema({
-  name: {
-    type: String,
+  jobId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
     required: true,
   },
-  questions: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Question",
-      required: true,
-    },
-  ],
-  company: {
-    type: Schema.Types.ObjectId,
-    ref: "Company",
+  questions: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Question',
+    required: true,
+  }],
+  timeLimit: {
+    type: Number,
+    required: true,
+  },
+  NoOfMCQsToShow: {
+    type: Number,
     required: true,
   },
 });
