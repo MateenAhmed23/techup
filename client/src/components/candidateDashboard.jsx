@@ -58,18 +58,16 @@ function CandidateDashboard() {
         navigate('/screeningcandidate', { state: { jobId, appId } });
     }
 
+    function doNothing(jobId, appId) {
+
+    }
+
     const mapStatusToFunction = (status) => {
         switch (status) {
             case 'invited':
                 return apply;
-            // case 'applied':
-            //     return 'Waiting for response';
-            // case 'assessment':
-            //     return 'Attempt assessment';
-            // case 'interview':
-            //     return 'Book interview slot';
             default:
-                return '';
+                return doNothing;
         }
     };
 
@@ -78,11 +76,7 @@ function CandidateDashboard() {
             case 'invited':
                 return 'Apply';
             case 'applied':
-                return 'Waiting for response';
-            case 'assessment':
-                return 'Attempt assessment';
-            case 'interview':
-                return 'Book interview slot';
+                return 'Applied';
             default:
                 return '';
         }
@@ -90,9 +84,9 @@ function CandidateDashboard() {
 
     return (
         <div className="dashboardcompany">
-            <div>
+            {/* <div>
                 <CandidateNav className="navbar" />
-            </div>
+            </div> */}
 
             <div className="myjobs">
                 {" "}

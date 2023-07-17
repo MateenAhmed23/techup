@@ -28,9 +28,8 @@
   grid-row-end: 3;
   text-decoration: underline;
   letter-spacing: 8px;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-
 }
 
 .headingcomp {
@@ -51,7 +50,6 @@
   grid-row-end: 4;
   /* position: fixed; */
 }
-
 
 a {
   font-weight: bolder;
@@ -91,15 +89,23 @@ a {
   vertical-align: middle;
   box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.4);
 }
-.register:hover,.back1154:hover{
+.register:hover,
+.back1154:hover {
   color: rgb(235, 235, 244);
+}
+
+.bio {
+  height: 150px; /* Adjust the height as needed */
+  resize: vertical;
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 
 .buttondet {
   grid-column-start: 1;
   grid-column-end: 3;
-  grid-row-start: 4;
-  grid-row-end: 5;
+  grid-row-start: 5;
+  grid-row-end: 6;
   display: flex;
   flex-direction: row;
   /* align-content: center; */
@@ -109,8 +115,8 @@ a {
 .footercompdetailspg {
   grid-column-start: 1;
   grid-column-end: 3;
-  grid-row-start: 5;
-  grid-row-end: 6;
+  grid-row-start: 6;
+  grid-row-end: 7;
   /* background: rgba(0, 0, 0, 0.9); */
 }
 @media only screen and (max-width: 600px) {
@@ -119,7 +125,8 @@ a {
     margin-right: 5%;
   }
 
-  .register, .back1154 {
+  .register,
+  .back1154 {
     font-size: 0.8em; /* decrease font size */
     padding: 10px 15px; /* decrease padding */
     height: auto; /* allow the height to adapt to content */
@@ -151,11 +158,12 @@ a {
     margin-right: 10%;
   }
 
-  .register, .back1154 {
+  .register,
+  .back1154 {
     font-size: 0.9em; /* decrease font size */
     padding: 15px 20px; /* adjust padding */
     height: auto; /* allow the height to adapt to content */
-    width: 15vw ;
+    width: 15vw;
     margin-left: 10%;
     box-sizing: border-box; /* make sure padding and border are included in the element's total width and height */
   }
