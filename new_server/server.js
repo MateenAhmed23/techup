@@ -1019,6 +1019,8 @@ app.post("/api/get-user-info", async (req, res) => {
 //   question,
 // }
 
+
+
 app.post("/api/create_question", async (req, res) => {
   try {
     const {
@@ -1056,6 +1058,39 @@ app.post("/api/create_question", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+app.post("/api/create_assessment", async (req, res) => {
+  try {
+    const { jobId, questions,timeLimit,NoOfMCQsToShow } = req.body;
+    console.log(jobId, questions)
+    // Step 1: Store questions in the Question model and get their generated IDs
+    const questionIds = await Promise.all(
+      questions.map(async (question) => {
+        const createdQuestion = await Question.create({
+          jobId: jobId,
+          question: question.question,
+          correctOption: question.correctOption,
+          options: question.options
+        });
+        return createdQuestion._id;
+      })
+    );
+
+    // Step 2: Store assessment in the Assessment model
+    const createdAssessment = await Assessment.create({
+      jobId,
+      questions: questionIds,
+      timeLimit,
+      NoOfMCQsToShow
+    });
+
+    res.status(201).json(createdAssessment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to create assessment' });
   }
 });
 
@@ -1099,31 +1134,31 @@ app.post("/api/get_questions", async (req, res) => {
 //   assessment,
 // }
 
-app.post("/api/create_assessment", async (req, res) => {
-  try {
-    const { name, questionIds, company } = req.body;
+// app.post("/api/create_assessment", async (req, res) => {
+//   try {
+//     const { name, questionIds, company } = req.body;
 
-    if (!name || !questionIds || !company) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+//     if (!name || !questionIds || !company) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
 
-    const assessment = new Assessment({
-      name,
-      questions: questionIds,
-      company,
-    });
+//     const assessment = new Assessment({
+//       name,
+//       questions: questionIds,
+//       company,
+//     });
 
-    await assessment.save();
+//     await assessment.save();
 
-    res.status(201).json({
-      message: "Assessment created successfully",
-      assessment,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+//     res.status(201).json({
+//       message: "Assessment created successfully",
+//       assessment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 app.listen(process.env.PORT, () => {
   console.log("Server started on port " + process.env.PORT);
