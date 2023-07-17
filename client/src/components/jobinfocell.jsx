@@ -28,18 +28,33 @@ function JobInfo() {
   const [experience, setExperience] = useState('')
   const [domain, setDomain] = useState('')
   const [status, setStatus] = useState('')
+  const [applications, setApplications] = useState([])
 
   const { id } = useParams();
 
-  const applicants = [
-    { id: 1, name: "Muqadim", rate: "40", email: "muqadimorg@gmail.com" },
-    { id: 2, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 3, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 4, name: "Ahmad", rate: "50", email: "haris@gmail.com" }
-  ]
-
   function handleSidebarClick() {
 
+  }
+
+  async function getApplications() {
+    const res = await fetch("http://127.0.0.1:5000/api/get_job_applicants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        job: id,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (res.status == 200) {
+      console.log("applications", data);
+      setApplications(data);
+    } else {
+      console.log("error", data);
+    }
   }
 
   async function getJobInfo() {
@@ -70,9 +85,6 @@ function JobInfo() {
     } catch (e) {
 
     }
-
-
-
   }
 
   function copyToClipboard() {
@@ -92,6 +104,7 @@ function JobInfo() {
 
   useEffect(() => {
     getJobInfo()
+    getApplications();
   }, [])
 
   return (
@@ -153,14 +166,18 @@ function JobInfo() {
       <div className="applicants">
         <table>
           <tbody>
-            {applicants.map((applicant) => (
-              <tr key={applicant.id}>
+            {applications.map((application) => (
+              <tr key={application.candidate._id}>
                 <td className="job__desc">
                   <Applicantdisplaycell
-                    id={applicant.id}
-                    name={applicant.name}
-                    rate={applicant.rate}
-                    email={applicant.email}
+                    app={application}
+                    candidateId={application.candidate._id}
+                    name={application.candidate.name}
+                    rate={application.rate}
+                    email={application.candidate.email}
+                    status={application.status}
+                    jobId={application.job}
+                    jobTitle={title}
                   />
                 </td>
               </tr>

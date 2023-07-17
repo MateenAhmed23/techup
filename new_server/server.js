@@ -262,24 +262,35 @@ app.post("/api/company_signup", async (req, res) => {
 
 app.post("/api/candidate_signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const {
+      name,
+      email,
+      password,
+      bio,
+      experience,
+      city,
+      phoneNumber,
+      skills,
+    } = req.body;
+
+    console.log("candidate signup", req.body);
 
     const candidateExists = await Candidate.findOne({ email });
-
     if (candidateExists) {
       return res.status(400).json({ message: "Email already exists" });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const candidate = await Candidate.create({
       name,
       email,
       password: hashedPassword,
+      bio,
+      experience,
+      city,
+      phoneNumber,
+      skills,
     });
-
     const token = generateCandidateToken(candidate);
-
     res.cookie("token", token); // 1 hour
     res.status(201).json({ candidateId: candidate._id, token });
   } catch (error) {
@@ -645,28 +656,21 @@ app.post("/api/get_job_applicants", async (req, res) => {
   }
 
   try {
-    // Find applications for the given job
-    const applications = await Application.find({
-      job: jobId,
-    }).populate({
-      path: "candidate",
-      model: Candidate,
-      select: "name", // Only fetch the candidate name
-    });
+    // Check if the job exists
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
 
-    // Transform applications data to desired format
-    const transformedApplications = applications.map((app) => ({
-      _id: app.candidate._id,
-      name: app.candidate.name,
-      status: app.status,
-    }));
+    // Get all applications for the given job and populate the candidate details
+    const applications = await Application.find({ job: jobId }).populate(
+      "candidate"
+    );
 
-    return res.status(200).json(transformedApplications);
+    res.json(applications);
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while fetching the applications." });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

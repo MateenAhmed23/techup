@@ -21,6 +21,7 @@ import CandidateProfile from "./components/candidateprofile";
 import CandidateSignup from "./components/candidateSignup";
 import JobUrl from "./components/jobUrl";
 import EditJob from "./components/editJob";
+import CandidateDetails from "./components/candidateDetails";
 // import inte from "./components/interviewScheduling";
 import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
@@ -122,6 +123,10 @@ const router = createBrowserRouter([
   {
     path: "/viewJob",
     element: <ViewJob />,
+  },
+  {
+    path: "/candidateDetails",
+    element: <CandidateDetails />,
   },
 ]);
 

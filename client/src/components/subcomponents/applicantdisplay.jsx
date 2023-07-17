@@ -1,41 +1,31 @@
 import React, { Component } from 'react';
 import "./csssubcomponents/jobdisplaycell.css"
+import { useNavigate } from 'react-router-dom';
 
-class   Applicantdisplaycell extends Component {
-    state = {  } 
-    render() { 
-        return ( <div className='cell'>
-        <ul>
-          <li>
-            <a onClick={() => this.props.onnavclick("home")} className="commonitems active" href="#">
-            {this.props.id}
-            </a>
-          </li>
-          <li>
-            <a onClick={() => this.props.onnavclick("services")} className="commonitems" href="#">
-            {this.props.name}
-            </a>
-          </li>
-          <li>
-              <a onClick={() => this.props.onnavclick("aboutus")} className="commonitems" href="#">
-              Application Rate#{this.props.rate}
-              </a>
-            </li>
-            <li>
-              <a onClick={() => this.props.onnavclick("aboutus")} className="commonitems" href="#">
-              {this.props.email}
-              </a>
-            </li>
-        </ul>
+function Applicantdisplaycell({ candidateId, name, rate, email, status, jobId, app, jobTitle }) {
+  const navigate = useNavigate();
 
-        
-        <a href="#">&nbsp;&nbsp;</a>
-
-        <a onClick={() => this.props.onnavclick("signup")} className="viewdetails" href="#">
-        View Profile
+  return (<div className='cell'>
+    <ul>
+      <li>
+        <a className="commonitems">
+          {name}
         </a>
-      </div>    );
-    }
+      </li>
+      <li>
+        <a className="commonitems">
+          {email}
+        </a>
+      </li>
+    </ul>
+
+
+    <a href="#">&nbsp;&nbsp;</a>
+
+    <a className="viewdetails" onClick={() => { navigate('/CandidateProfile', { state: { app, jobTitle } }) }}>
+      View Profile
+    </a>
+  </div >);
 }
- 
+
 export default Applicantdisplaycell;
