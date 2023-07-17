@@ -34,6 +34,10 @@ const candidateSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  cvFilePath: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Candidate", candidateSchema);

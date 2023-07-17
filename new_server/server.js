@@ -15,11 +15,16 @@ const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
 const Application = require("./models/application");
 const Screening = require("./models/screening");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+const upload = multer({ dest: "uploads/" });
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
@@ -260,44 +265,81 @@ app.post("/api/company_signup", async (req, res) => {
   }
 });
 
-app.post("/api/candidate_signup", async (req, res) => {
+// ...
+
+app.get("/api/cv/:id", async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      bio,
-      experience,
-      city,
-      phoneNumber,
-      skills,
-    } = req.body;
-
-    console.log("candidate signup", req.body);
-
-    const candidateExists = await Candidate.findOne({ email });
-    if (candidateExists) {
-      return res.status(400).json({ message: "Email already exists" });
+    const candidate = await Candidate.findById(req.params.id);
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const candidate = await Candidate.create({
-      name,
-      email,
-      password: hashedPassword,
-      bio,
-      experience,
-      city,
-      phoneNumber,
-      skills,
-    });
-    const token = generateCandidateToken(candidate);
-    res.cookie("token", token); // 1 hour
-    res.status(201).json({ candidateId: candidate._id, token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+
+    // Set the Content-Type to application/pdf
+    res.setHeader("Content-Type", "application/pdf");
+
+    // If you want to display the PDF directly in the user's browser, use inline:
+    res.setHeader(
+      "Content-Disposition",
+      "inline; filename=" + path.basename(candidate.cvFilePath)
+    );
+
+    // Now read the file from the filesystem and send it to the client:
+    const file = fs.createReadStream(
+      path.join(__dirname, candidate.cvFilePath)
+    );
+    file.pipe(res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 });
+
+app.post(
+  "/api/candidate_signup",
+  upload.single("cv"),
+  async (req, res, next) => {
+    try {
+      const {
+        name,
+        email,
+        password,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills,
+      } = req.body;
+
+      const cvFilePath = req.file.path;
+
+      console.log("candidate signup", req.body, cvFilePath);
+
+      const candidateExists = await Candidate.findOne({ email });
+      if (candidateExists) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const candidate = await Candidate.create({
+        name,
+        email,
+        password: hashedPassword,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills: skills.split(","),
+        cvFilePath,
+      });
+      const token = generateCandidateToken(candidate);
+      res.cookie("token", token); // 1 hour
+      res.status(201).json({ candidateId: candidate._id, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 // {
 //   clientId

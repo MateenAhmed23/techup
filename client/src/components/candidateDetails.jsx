@@ -26,7 +26,7 @@ function CandidateDetails() {
 
     useEffect(() => {
         if (!location.state) {
-            navigate('/register');
+            navigate('/candidate-signup');
         } else {
             setName(location.state.name);
             setEmail(location.state.email);
@@ -35,21 +35,22 @@ function CandidateDetails() {
     }, []);
 
     async function handleRegister() {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        // Append other candidate information
+        formData.append('bio', bio);
+        formData.append('experience', experience);
+        formData.append('city', city);
+        formData.append('phoneNumber', phoneNumber);
+        formData.append('skills', skills);
+        // Append the CV file
+        formData.append('cv', cvFile);
+
         const response = await fetch("http://127.0.0.1:5000/api/candidate_signup", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name,
-                email,
-                password,
-                bio,
-                experience,
-                city,
-                phoneNumber,
-                skills,
-            }),
+            body: formData,
         });
 
         const data = await response.json();
@@ -67,6 +68,15 @@ function CandidateDetails() {
     useEffect(() => {
         console.log(skills);
     }, [skills]);
+
+
+    const [cvFile, setCVFile] = useState(null);
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        setCVFile(file);
+    };
 
     return (
         <div className="alldetails">
@@ -98,8 +108,8 @@ function CandidateDetails() {
                                 label="Bio"
                                 type="text"
                                 value={bio}
-                                rows={5}
-                                classfield="form-control form-control-lg bio"
+                                rows={2}
+                                classfield="form-control form-control-lg"
                                 onChange={(e) => setBio(e.target.value)}
                                 placeholdr="Write a short paragraph about yourself"
                             />
@@ -128,6 +138,12 @@ function CandidateDetails() {
                         </div>
 
                         <SkillsTag setParentTags={setSkills} label={"Skills"} />
+                        <br />
+                        <div>
+                            <label className={"form-label"}>Upload your CV</label>
+                            <br />
+                            <input type="file" accept=".pdf" onChange={handleFileChange} />
+                        </div>
                     </div>
 
                     <div className="buttondet">
@@ -143,11 +159,12 @@ function CandidateDetails() {
                         </button>
                     </div>
                 </>
-            )}
+            )
+            }
             <div className="footercompdetailspg">
                 <Footer />
             </div>
-        </div>
+        </div >
     );
 }
 

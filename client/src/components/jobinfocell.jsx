@@ -107,6 +107,10 @@ function JobInfo() {
     getApplications();
   }, [])
 
+  useEffect(() => {
+    console.log(applications);
+  }, [applications])
+
   return (
     <div className="jobinfo">
       <div>

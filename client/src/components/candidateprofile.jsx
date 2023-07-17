@@ -11,7 +11,13 @@ function CandidateProfile() {
   const loc = useLocation();
   const application = loc.state.app;
   const jobTitle = loc.state.jobTitle;
+  function statusToFunction(status) {
 
+  }
+
+  function statusToAction(status) {
+
+  }
   return (
     <div className="candidateprofilepage">
       {" "}
@@ -75,7 +81,7 @@ function CandidateProfile() {
           <p className="hired processtask">Hired</p>
         </div>
         <div className="opencvbutdiv">
-          <button className="opnecvbut">Open CV</button>
+          <a className="opnecvbut" href={`http://localhost:5000/api/cv/${application.candidate._id}`} target="_blank">Open CV</a>
           <button className="viewscorebut">Results</button>
         </div>
         <div className="nameandrole">
@@ -85,39 +91,34 @@ function CandidateProfile() {
         </div>
         <div className="descprof">
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat
-            accusantium quaerat dignissimos, esse, saepe nisi atque aliquid
-            assumenda neque vero veritatis nam tenetur error cum quisquam modi
-            omnis delectus est minima numquam illo accusamus ut rerum
-            explicabo! Aliquid, deleniti? Nulla enim sunt accusamus totam?
-            Repudiandae provident voluptatibus a at officiis distinctio quasi
-            culpa dignissimos corporis ex sequi, ea nisi omnis pariatur rem
-            labore necessitatibus officia harum nostrum dicta. Similique,
-            veritatis.
+            {application.candidate.bio}
           </p>
         </div>
 
-        <div className="companydispayinfodiv">
+        {/* <div className="companydispayinfodiv">
           <p className="companywantedinfo">
             Company wanted info to be displayed
           </p>
-        </div>
+        </div> */}
+        <h1 className="cand_info">Experience: {application.candidate.experience} years</h1>
+        <h1 className="cand_info">Location: {application.candidate.city}</h1>
+        <h1 className="cand_info">Phone number: {application.candidate.phoneNumber}</h1>
+
         <h1 className="divhead">Skills</h1>
         <div className="skilssetdiv">
-          <p className=" skillsetp">React</p>
-          <p className=" skillsetp">CSS</p>
-          <p className=" skillsetp"> HTML</p>
-          <p className=" skillsetp">Figma</p>
-          <p className=" skillsetp">Next Js</p>
-
+          {application.candidate.skills.map(
+            (skill) => (
+              <p className=" skillsetp">{skill}</p>
+            )
+          )}
         </div>
-        <h1 className="divhead">Jobs Currently Applied For</h1>
+        {/* <h1 className="divhead">Jobs Currently Applied For</h1>
         <div className="skilssetdiv">
           <p className=" skillsetp">Fornt end developer </p>
           <p className=" skillsetp">UI/UX Designer</p>
           <p className=" skillsetp">Junior Backend Developer </p>
 
-        </div>
+        </div> */}
 
       </div>
       <div className="reusltssection">
