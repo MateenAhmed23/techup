@@ -38,6 +38,36 @@ function ScreeningQuestions(){
       }
     }
 
+    async function loadSavedQuestions(){
+        const response = await fetch("http://127.0.0.1:5000/api/get_screening", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: id
+        }),
+      });
+
+      if (response.status === 200){
+        const data = await response.json();
+        console.log(data)
+        setAddedQuestions(data)
+        setNoQ(data.length)
+      }
+
+      
+
+
+    }
+
+    useEffect(()=>{
+      loadSavedQuestions();
+
+    // const data = await response.json();
+
+    
+    },[])
 
     useEffect(() => {
       if (isLoggedIn && userInfo.companyId) {
@@ -178,9 +208,9 @@ function ScreeningQuestions(){
 
     // const data = await response.json();
 
-    if (response.status === 201){
-      alert('Member added successfully')
-      navigate('/jobinfo'+id);
+    if (response.status === 200){
+      alert('Questions added successfully')
+      navigate('/jobinfo/'+id);
     }
   }
   return(

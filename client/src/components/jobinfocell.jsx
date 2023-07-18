@@ -102,6 +102,11 @@ function JobInfo() {
     navigate(str)
   }
 
+  function openAssessment(){
+    var str = '/assessmentquestions/' + id
+    navigate(str)
+  }
+
   useEffect(() => {
     getJobInfo()
     getApplications();
@@ -149,12 +154,12 @@ function JobInfo() {
           </div>
         </div>
       </div>
-      <div className="jobnoti" onClick={() => openScreening()}>
-        <div className="notibar">
+      <div className="jobnoti" >
+        <div className="notibar" onClick={() => openScreening()}>
           <div className="notinum">3</div>
           <h5 className="tex">Screening</h5>
         </div>
-        <div className="notibar">
+        <div className="notibar" onClick={() => openAssessment()}>
           <div className="notinum">3</div>
           <h5 className="tex">Assesment</h5>
         </div>

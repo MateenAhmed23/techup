@@ -1,16 +1,73 @@
-import React, { useState, Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CompNav from "./subcomponents/companyNav";
 import "./cssmaincomponents/mcqschoosing.css";
 import JobDescSmall from "./subcomponents/jobDescSmall";
 import QuestionDisplaycell from "./subcomponents/questiondisplaycell";
 import Footer from "./subcomponents/footer";
 
+import { useParams } from 'react-router-dom';
+import UserContext from "../context/user";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 
 function Mcqschoosing(){
+
+  const { id } = useParams();
+
+  const { isLoading, isLoggedIn, loginStatus, userInfo } =
+    useContext(UserContext);
+
+    async function loadSavedQuestions(){
+      const response = await fetch("http://127.0.0.1:5000/api/get_assessment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jobId: id
+      }),
+    });
+
+    if (response.status === 200){
+      const data = await response.json();
+      //{
+        //   id: 1,
+        //   question: "Where fo you see yourself in 5 years?",
+        //   type: "Descriptive",
+        // }
+        setAddedquestions(data)
+      console.log(data)
+    }
+  }
+
+  useEffect(()=>{
+    loadSavedQuestions();
+  }, [])
+
+  const navigate = useNavigate();
+
+  async function authentication() {
+      const res = await loginStatus()
+      // console.log('Result from login status', res)
+      if (!res) {
+        alert('You must login to access this page')
+        navigate('/login')
+      }
+    }
+
+
+    useEffect(() => {
+      if (isLoggedIn && userInfo.companyId) {
+        // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+      }
+      else {
+        authentication()
+      }
+    }, [isLoggedIn, userInfo.companyId])
+
 
 
   const [mcqsoptions, setMcqsoptions] = useState([
@@ -145,7 +202,7 @@ function Mcqschoosing(){
 
 
   function handleChange(changeFor, value){
-    console.log(changeFor,value)
+    // console.log(changeFor,value)
     switch(changeFor){
       case 'Question':
         setQuestion(value);
@@ -203,12 +260,15 @@ function Mcqschoosing(){
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          jobId: '647eab1decc6b6710fe92283',
+          jobId: id,
           questions: addedquestions,
           NoOfMCQsToShow: noMcq,
           timeLimit: timeLimit
         }),
       });
+
+      alert('Assessment Questions added')
+      navigate('/jobinfo/'+id)
     }catch(e){
       alert('There was an error submitting questions', e)
     }
@@ -316,7 +376,7 @@ function Mcqschoosing(){
           <table>
             <tbody>
               {testsettings.map((jobDesc) => (
-                <tr key={jobDesc.id}>
+                <tr key={jobDesc._id}>
                   <td className="job-desc-cell">
                     <JobDescSmall
                       id={jobDesc.id}
@@ -345,7 +405,7 @@ function Mcqschoosing(){
           <table>
             <tbody>
             {addedquestions.map((quest) => (
-                <tr key={quest.id}>
+                <tr key={quest._id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycell
                       id={quest.id}
