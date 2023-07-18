@@ -79,7 +79,7 @@ const router = createBrowserRouter([
     element: <Addmember />,
   },
   {
-    path: "/mcqschoosing",
+    path: "/assessmentquestions/:id",
     element: <Mcqschoosing />,
   },
   {
