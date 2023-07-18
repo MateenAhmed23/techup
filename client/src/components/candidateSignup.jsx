@@ -31,26 +31,13 @@ function CandidateSignup() {
             alert("Passwords do not match");
             return;
         } else {
-            const response = await fetch("http://127.0.0.1:5000/api/candidate_signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+            navigate('/candidateDetails', {
+                state: {
                     name,
                     email,
-                    password,
-                }),
-            });
-
-            const data = await response.json();
-            if (data.status === "error") {
-                alert('Could not create account');
-                return;
-            } else {
-                localStorage.setItem('token', data.token);
-                navigate('/candidate-dashboard');
-            }
+                    password
+                }
+            })
         }
     }
 

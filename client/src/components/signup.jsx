@@ -60,59 +60,16 @@ function Signup() {
 
   async function handleSignup(email, password, confirmPassword) {
     if (password !== confirmPassword) {
-      // setError(true);
       alert("Passwords do not match");
-      // setTimeout(() => {
-      //   setErrorMsg("");
-      //   setError(false);
-      // }, 5000);
       return;
     } else {
-      // const response = await fetch("http://127.0.0.1:5000/api/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     username,
-      //     email,
-      //     password,
-      //   }),
-      // });
-
-      // const data = await response.json();
-      // if (data.status === "error"){
-      //   // setError(true);
-      //   alert('Credentials not correct');
-      //   // setTimeout(() => {
-      //   //   setErrorMsg("");
-      //   //   setError(false);
-      //   // }, 5000);
-      //   return;
-      // }else{
-      //   console.log('USER MADE SUCCESSFULLY');
-      //   // console.log(data);
-
-      //   localStorage.setItem('token', data.token);
-
-      //   navigate('/companyDetails')
-
-      //   // Accessing token from local storage
-      //   // const myData = JSON.parse(localStorage.getItem('myData'));
-      //   // console.log('MY USER TOKEN',localStorage.getItem('token'))
-      //   // history.push("/login");
-      // }
-
       navigate('/companyDetails', {
         state: {
           email,
           password
         }
       })
-
-
     }
-    // console.log('Inside Signup Handle Function',username)
   }
   return (
     <div className="loginpage">

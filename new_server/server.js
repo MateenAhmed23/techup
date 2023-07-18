@@ -15,11 +15,16 @@ const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
 const Application = require("./models/application");
 const Screening = require("./models/screening");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+const upload = multer({ dest: "uploads/" });
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
@@ -133,6 +138,75 @@ app.post("/api/get_screening", async (req, res) => {
   }
 });
 
+// Helper function to determine the next status
+function getNextStatus(currentStatus) {
+  const statusOrder = [
+    "invited",
+    "applied",
+    "pending-assessment",
+    "attempted-assessment",
+    "slot-pending",
+    "interview-pending",
+    "interviewed",
+    "accepted",
+    "rejected",
+  ];
+  const currentIndex = statusOrder.indexOf(currentStatus);
+  return currentIndex < statusOrder.length - 1
+    ? statusOrder[currentIndex + 1]
+    : null;
+}
+
+// Accept (progress to the next status) an application
+app.post("/api/accept/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    const nextStatus = getNextStatus(application.status);
+    if (!nextStatus) {
+      return res.status(400).send("Application cannot be progressed further");
+    }
+
+    application.status = nextStatus;
+    await application.save();
+
+    res.status(200).send(`Application status updated to ${nextStatus}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+// Reject an application
+app.post("api/reject/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    // Check the current status of the application. If it is already 'rejected', no need to update
+    if (application.status === "rejected") {
+      return res.status(200).send("Application is already rejected");
+    }
+
+    application.status = "rejected";
+    await application.save();
+
+    res.status(200).send("Application rejected");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
 app.post("/api/save_screening", async (req, res) => {
   const { appId, answers } = req.body;
   console.log("save screening", appId);
@@ -149,6 +223,7 @@ app.post("/api/save_screening", async (req, res) => {
     }
 
     application.answers = answersArray;
+    application.status = "applied";
 
     await application.save();
 
@@ -260,33 +335,81 @@ app.post("/api/company_signup", async (req, res) => {
   }
 });
 
-app.post("/api/candidate_signup", async (req, res) => {
+// ...
+
+app.get("/api/cv/:id", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-
-    const candidateExists = await Candidate.findOne({ email });
-
-    if (candidateExists) {
-      return res.status(400).json({ message: "Email already exists" });
+    const candidate = await Candidate.findById(req.params.id);
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Set the Content-Type to application/pdf
+    res.setHeader("Content-Type", "application/pdf");
 
-    const candidate = await Candidate.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    // If you want to display the PDF directly in the user's browser, use inline:
+    res.setHeader(
+      "Content-Disposition",
+      "inline; filename=" + path.basename(candidate.cvFilePath)
+    );
 
-    const token = generateCandidateToken(candidate);
-
-    res.cookie("token", token); // 1 hour
-    res.status(201).json({ candidateId: candidate._id, token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    // Now read the file from the filesystem and send it to the client:
+    const file = fs.createReadStream(
+      path.join(__dirname, candidate.cvFilePath)
+    );
+    file.pipe(res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 });
+
+app.post(
+  "/api/candidate_signup",
+  upload.single("cv"),
+  async (req, res, next) => {
+    try {
+      const {
+        name,
+        email,
+        password,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills,
+      } = req.body;
+
+      const cvFilePath = req.file.path;
+
+      console.log("candidate signup", req.body, cvFilePath);
+
+      const candidateExists = await Candidate.findOne({ email });
+      if (candidateExists) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const candidate = await Candidate.create({
+        name,
+        email,
+        password: hashedPassword,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills: skills.split(","),
+        cvFilePath,
+      });
+      const token = generateCandidateToken(candidate);
+      res.cookie("token", token); // 1 hour
+      res.status(201).json({ candidateId: candidate._id, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 // {
 //   clientId
@@ -645,28 +768,21 @@ app.post("/api/get_job_applicants", async (req, res) => {
   }
 
   try {
-    // Find applications for the given job
-    const applications = await Application.find({
-      job: jobId,
-    }).populate({
-      path: "candidate",
-      model: Candidate,
-      select: "name", // Only fetch the candidate name
-    });
+    // Check if the job exists
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
 
-    // Transform applications data to desired format
-    const transformedApplications = applications.map((app) => ({
-      _id: app.candidate._id,
-      name: app.candidate.name,
-      status: app.status,
-    }));
+    // Get all applications for the given job and populate the candidate details
+    const applications = await Application.find({ job: jobId }).populate(
+      "candidate"
+    );
 
-    return res.status(200).json(transformedApplications);
+    res.json(applications);
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while fetching the applications." });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

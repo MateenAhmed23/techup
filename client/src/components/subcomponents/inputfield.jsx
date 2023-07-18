@@ -5,7 +5,7 @@ class Inputfield extends Component {
   render() {
     return (
       <div>
-        <label  className={this.props.claslabel} htmlFor={this.props.id}>{this.props.label}</label>
+        <label className={this.props.claslabel} htmlFor={this.props.id}>{this.props.label}</label>
         <input type={this.props.type} value={this.props.value} onChange={this.props.onChange} className={this.props.classfield} placeholder={this.props.placeholdr} />
       </div>
     );
