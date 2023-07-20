@@ -38,6 +38,36 @@ function ScreeningQuestions(){
       }
     }
 
+    async function loadSavedQuestions(){
+        const response = await fetch("http://127.0.0.1:5000/api/get_screening", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: id
+        }),
+      });
+
+      if (response.status === 200){
+        const data = await response.json();
+        console.log(data)
+        setAddedQuestions(data)
+        setNoQ(data.length)
+      }
+
+      
+
+
+    }
+
+    useEffect(()=>{
+      loadSavedQuestions();
+
+    // const data = await response.json();
+
+    
+    },[])
 
     useEffect(() => {
       if (isLoggedIn && userInfo.companyId) {
@@ -139,7 +169,8 @@ function ScreeningQuestions(){
   }
 
   function removeQuestion(id){
-    const updatedItems = addedquestions.filter(question => question.id !== id);
+    console.log(id)
+    const updatedItems = addedquestions.filter(question => question._id !== id);
     // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
     setAddedQuestions(updatedItems);
     // console.log(id)
@@ -178,9 +209,9 @@ function ScreeningQuestions(){
 
     // const data = await response.json();
 
-    if (response.status === 201){
-      alert('Member added successfully')
-      navigate('/jobinfo'+id);
+    if (response.status === 200){
+      alert('Questions added successfully')
+      navigate('/jobinfo/'+id);
     }
   }
   return(
@@ -220,15 +251,16 @@ function ScreeningQuestions(){
           {" "}
           <table>
             <tbody>
-              {paginatedItems.map((quest) => (
+              {paginatedItems.map((quest, index) => (
                 <tr key={quest.id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycCell
-                      id={quest.id}
+                      index={index+1}
+                      id={quest._id}
                       question={quest.question}
                       type={quest.type}
                       showDetailsButton={false}
-                      remove={()=>removeQuestion(quest.id)}
+                      remove={()=>removeQuestion(quest._id)}
                     />
                   </td>
                 </tr>

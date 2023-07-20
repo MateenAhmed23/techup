@@ -14,7 +14,7 @@ class QuestionDisplaycell extends Component {
               className="commonitems active"
               href="#"
             >
-              Requirement#{this.props.id}
+              Question # {this.props.index}
             </a>
             <div className="questoons">{this.props.question}</div>
           </li>
@@ -46,7 +46,7 @@ class QuestionDisplaycell extends Component {
         <a href="#">&nbsp;&nbsp;</a>
 
         <a
-          onClick={() => this.props.remove(this.props.type)}
+          onClick={() => this.props.remove(this.props.id)}
           className="viewdetails"
           href="#"
         >

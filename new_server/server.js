@@ -138,6 +138,28 @@ app.post("/api/get_screening", async (req, res) => {
   }
 });
 
+app.post("/api/get_assessment", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log("inside get screening", jobId);
+
+    // Find the screening data for the jobId
+    const screening = await Assessment.findOne({ jobId });
+
+    if (screening) {
+      // Screening data found, return the questions array
+      const questions = await Question.find({ jobId });
+      res.status(200).json(questions);
+    } else {
+      // Screening data not found for the jobId
+      res.status(404).json({ message: "Screening data not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Helper function to determine the next status
 function getNextStatus(currentStatus) {
   const statusOrder = [
@@ -1066,6 +1088,10 @@ app.post("/api/create_assessment", async (req, res) => {
   try {
     const { jobId, questions,timeLimit,NoOfMCQsToShow } = req.body;
     console.log(jobId, questions)
+
+    const deleteResult = await Question.deleteMany({ jobId });
+
+    const assessmentDelete = await Assessment.deleteMany({ jobId });
     // Step 1: Store questions in the Question model and get their generated IDs
     const questionIds = await Promise.all(
       questions.map(async (question) => {
