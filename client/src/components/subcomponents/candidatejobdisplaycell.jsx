@@ -35,7 +35,7 @@ function CandidateJobDisplaycell({ appId, jobId, company, job, status, action, a
                 View Details
             </a>
 
-            <a onClick={() => { actionfunction(jobId, appId) }} className="editt">
+            <a onClick={() => { actionfunction(jobId, appId, company) }} className="editt">
                 {action}
             </a>
         </div>

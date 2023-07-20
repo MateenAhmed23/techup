@@ -6,14 +6,16 @@ const Schema = mongoose.Schema;
 const assessmentSchema = new Schema({
   jobId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Job',
+    ref: "Job",
     required: true,
   },
-  questions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question',
-    required: true,
-  }],
+  questions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Question",
+      required: true,
+    },
+  ],
   timeLimit: {
     type: Number,
     required: true,

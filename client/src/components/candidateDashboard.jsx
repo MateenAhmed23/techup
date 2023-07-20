@@ -54,18 +54,30 @@ function CandidateDashboard() {
         navigate('/');
     }
 
-    function apply(jobId, appId) {
+    function apply(jobId, appId, company) {
         navigate('/screeningcandidate', { state: { jobId, appId } });
     }
 
-    function doNothing(jobId, appId) {
+    function doNothing(jobId, appId, company) {
 
+    }
+
+    function assessment(jobId, appId, company) {
+        navigate('/assesmentcanddidate', { state: { jobId, appId, company } });
+    }
+
+    function interview_slot(jobId, appId, company) {
+        navigate('/assesmentcanddidate');
     }
 
     const mapStatusToFunction = (status) => {
         switch (status) {
             case 'invited':
                 return apply;
+            case "pending-assessment":
+                return assessment;
+            case "slot-pending":
+                return interview_slot;
             default:
                 return doNothing;
         }
@@ -77,6 +89,12 @@ function CandidateDashboard() {
                 return 'Apply';
             case 'applied':
                 return 'Applied';
+            case "pending-assessment":
+                return 'Attempt Assessment';
+            case "attempted-assessment":
+                return 'Pending assessment results';
+            case "slot-pending":
+                return 'Select interview slot';
             default:
                 return '';
         }

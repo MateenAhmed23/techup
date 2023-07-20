@@ -52,6 +52,10 @@ function CandidateProfile() {
         return 'View screening response';
       case 'pending-assessment':
         return 'Pending assessment'
+      case "attempted-assessment":
+        return 'Assessment done'
+      case "slot-pending":
+        return "Pending interview slot selection"
       default:
         return '';
     }
@@ -214,7 +218,7 @@ function CandidateProfile() {
         </div>
         <div className="mcqsquestionsdiv">
           <h1 className="headresultssections">MCQs Test Score</h1>
-          <h2 className="scoreresults">35/50</h2>
+          <h2 className="scoreresults">{application.marks}/{application.outOf}</h2>
           <button className="butvewrsults">View Results</button>
         </div>
       </div>

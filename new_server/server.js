@@ -179,6 +179,125 @@ function getNextStatus(currentStatus) {
     : null;
 }
 
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function extractLastNumber(str) {
+  const match = str.match(/\d+$/); // This regex matches one or more digits at the end of the string
+  return match ? Number(match[0]) : null;
+}
+
+app.post("/api/submitAssessment", async (req, res) => {
+  try {
+    const { jobId, appId, selectedOptions, noOfQuestions } = req.body;
+
+    // Fetch all the questions using the question IDs
+    let questionIds = Object.keys(selectedOptions);
+    const questions = await Question.find({
+      _id: { $in: questionIds },
+    });
+
+    let marks = 0;
+    let answers = [];
+    for (let question of questions) {
+      const correctOptionIndex = extractLastNumber(question.correctOption) - 1;
+      const correctOptionString = question.options[correctOptionIndex];
+
+      if (selectedOptions[question._id.toString()] == correctOptionString) {
+        marks++;
+      }
+
+      answers.push({
+        questionId: question._id.toString(),
+        answer: correctOptionString,
+      });
+    }
+
+    const application = await Application.findOneAndUpdate(
+      { _id: appId },
+      {
+        $set: {
+          status: "attempted-assessment",
+          marks: marks,
+          outOf: noOfQuestions,
+          mcqAnswers: answers,
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    res
+      .status(200)
+      .json({ message: "Assessment submitted successfully", application });
+
+    // Now you have the questions and you can compare the answers
+    // Do something with the questions ...
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+// Define the endpoint to fetch questions by jobId
+app.post("/api/assessment/", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+
+    // Find the assessment related to the given jobId
+    const assessment = await Assessment.findOne({ jobId: jobId }).populate(
+      "questions"
+    );
+
+    if (!assessment) {
+      return res
+        .status(404)
+        .json({ message: "No assessment found for this job" });
+    }
+
+    const shuffledQuestions = shuffle(assessment.questions).slice(
+      0,
+      assessment.NoOfMCQsToShow
+    );
+    const finalQuestions = shuffledQuestions.map((q) => {
+      // Filter out empty strings from options
+      const filteredOptions = q.options.filter((option) => option !== "");
+
+      return {
+        id: q._id,
+        question: q.question,
+        options: shuffle(filteredOptions),
+      };
+    });
+
+    res.status(200).json({
+      timeLimit: assessment.timeLimit,
+      NoOfMCQsToShow: assessment.NoOfMCQsToShow,
+      questions: finalQuestions,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
 // Accept (progress to the next status) an application
 app.post("/api/accept/", async (req, res) => {
   try {
@@ -1041,8 +1160,6 @@ app.post("/api/get-user-info", async (req, res) => {
 //   question,
 // }
 
-
-
 app.post("/api/create_question", async (req, res) => {
   try {
     const {
@@ -1083,11 +1200,10 @@ app.post("/api/create_question", async (req, res) => {
   }
 });
 
-
 app.post("/api/create_assessment", async (req, res) => {
   try {
-    const { jobId, questions,timeLimit,NoOfMCQsToShow } = req.body;
-    console.log(jobId, questions)
+    const { jobId, questions, timeLimit, NoOfMCQsToShow } = req.body;
+    console.log(jobId, questions);
 
     const deleteResult = await Question.deleteMany({ jobId });
 
@@ -1099,7 +1215,7 @@ app.post("/api/create_assessment", async (req, res) => {
           jobId: jobId,
           question: question.question,
           correctOption: question.correctOption,
-          options: question.options
+          options: question.options,
         });
         return createdQuestion._id;
       })
@@ -1110,13 +1226,13 @@ app.post("/api/create_assessment", async (req, res) => {
       jobId,
       questions: questionIds,
       timeLimit,
-      NoOfMCQsToShow
+      NoOfMCQsToShow,
     });
 
     res.status(201).json(createdAssessment);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to create assessment' });
+    res.status(500).json({ message: "Failed to create assessment" });
   }
 });
 

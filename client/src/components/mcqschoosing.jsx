@@ -13,15 +13,15 @@ import { useNavigate } from "react-router-dom";
 
 
 
-function Mcqschoosing(){
+function Mcqschoosing() {
 
   const { id } = useParams();
 
   const { isLoading, isLoggedIn, loginStatus, userInfo } =
     useContext(UserContext);
 
-    async function loadSavedQuestions(){
-      const response = await fetch("http://127.0.0.1:5000/api/get_assessment", {
+  async function loadSavedQuestions() {
+    const response = await fetch("http://127.0.0.1:5000/api/get_assessment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,42 +31,42 @@ function Mcqschoosing(){
       }),
     });
 
-    if (response.status === 200){
+    if (response.status === 200) {
       const data = await response.json();
       //{
-        //   id: 1,
-        //   question: "Where fo you see yourself in 5 years?",
-        //   type: "Descriptive",
-        // }
-        setAddedquestions(data)
+      //   id: 1,
+      //   question: "Where fo you see yourself in 5 years?",
+      //   type: "Descriptive",
+      // }
+      setAddedquestions(data)
       console.log(data)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     loadSavedQuestions();
   }, [])
 
   const navigate = useNavigate();
 
   async function authentication() {
-      const res = await loginStatus()
-      // console.log('Result from login status', res)
-      if (!res) {
-        alert('You must login to access this page')
-        navigate('/login')
-      }
+    const res = await loginStatus()
+    // console.log('Result from login status', res)
+    if (!res) {
+      alert('You must login to access this page')
+      navigate('/login')
     }
+  }
 
 
-    useEffect(() => {
-      if (isLoggedIn && userInfo.companyId) {
-        // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
-      }
-      else {
-        authentication()
-      }
-    }, [isLoggedIn, userInfo.companyId])
+  useEffect(() => {
+    if (isLoggedIn && userInfo.companyId) {
+      // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
+    }
+    else {
+      authentication()
+    }
+  }, [isLoggedIn, userInfo.companyId])
 
 
 
@@ -156,18 +156,17 @@ function Mcqschoosing(){
   const [option2, setOption2] = useState('')
   const [option3, setOption3] = useState('')
   const [option4, setOption4] = useState('')
-  const [noQ , setNoq] = useState(1)
-  const arr = [option1,option2,option3,option4]
+  const [noQ, setNoq] = useState(1)
+  const arr = [option1, option2, option3, option4]
 
   const [timeLimit, setTimeLimit] = useState(1)
   const [noMcq, setNoMcq] = useState(1)
-  const arr1 = [timeLimit,noMcq]
+  const arr1 = [timeLimit, noMcq]
 
 
-  function addOption(){
+  function addOption() {
     if (mcqsoptions.length == 4) return;
     const nextId = mcqsoptions.length + 1;
-
 
     const newOption = {
       id: nextId,
@@ -176,9 +175,9 @@ function Mcqschoosing(){
       placeholder: "e.g. Software E",
       height: "7vh",
     };
-    setMcqsoptions([...mcqsoptions,newOption])
+    setMcqsoptions([...mcqsoptions, newOption])
   }
-  function remOption(){
+  function remOption() {
     if (mcqsoptions.length == 2) return;
     const newOptions = [...mcqsoptions];
     newOptions.pop();
@@ -186,9 +185,9 @@ function Mcqschoosing(){
   }
 
 
-  function handleChange(changeFor, value){
+  function handleChange(changeFor, value) {
     // console.log(changeFor,value)
-    switch(changeFor){
+    switch (changeFor) {
       case 'Question':
         setQuestion(value);
         break;
@@ -213,21 +212,21 @@ function Mcqschoosing(){
         setTimeLimit(value)
         break;
       case 'Number of MCQs':
-        if(value < 0){
+        if (value < 0) {
           alert('No of MCQs cannot be less than 1')
           break;
         }
-        if(value > addedquestions.length){
+        if (value > addedquestions.length) {
           alert('No of MCQs cannot be more than added questions')
           break;
         }
         setNoMcq(value)
 
     }
-   
+
   }
 
-  function addQuestion(){
+  function addQuestion() {
     const q = {
       id: noQ,
       question: question,
@@ -240,15 +239,14 @@ function Mcqschoosing(){
       ]
     }
     console.log(q)
-    setNoq(noQ+1)
-    setAddedquestions([...addedquestions,q])
+    setNoq(noQ + 1)
+    setAddedquestions([...addedquestions, q])
     console.log(addedquestions)
   }
 
-  async function submitQuestions(){
-
+  async function submitQuestions() {
     console.log('No of MCQs', noMcq)
-    try{
+    try {
       const response = await fetch("http://127.0.0.1:5000/api/create_assessment", {
         method: "POST",
         headers: {
@@ -263,88 +261,88 @@ function Mcqschoosing(){
       });
 
       alert('Assessment Questions added')
-      navigate('/jobinfo/'+id)
-    }catch(e){
+      navigate('/jobinfo/' + id)
+    } catch (e) {
       alert('There was an error submitting questions', e)
     }
   }
 
-  function removeQuestion(id){
+  function removeQuestion(id) {
     console.log(id, 'inside remove Question')
     const updatedItems = addedquestions.filter(question => question._id !== id);
     // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
     setAddedquestions(updatedItems);
   }
-  return(
+  return (
     <div className="mcqschoosingpage">
-        {" "}
-        <div>
-          <CompNav className="navbar" />
-        </div>
-        <div className="headingcustomsquesbx">
-          <h1 className="h1haha1cust">Customs Questions Section</h1>
-        </div>
-        <div className="customquestions">
-          <h2 className="customshead">Question</h2>
+      {" "}
+      <div>
+        <CompNav className="navbar" />
+      </div>
+      <div className="headingcustomsquesbx">
+        <h1 className="h1haha1cust">Customs Questions Section</h1>
+      </div>
+      <div className="customquestions">
+        <h2 className="customshead">Question</h2>
+        <JobDescSmall
+          id="1"
+          type="text"
+          placeholder="Question"
+          label="Question"
+          height="30vh"
+          change={handleChange}
+          value={question}
+        />
+        <div className="correctoptionmcqschoosing">
+
           <JobDescSmall
             id="1"
-            type="text"
-            placeholder="Question"
-            label="Question"
-            height="30vh"
+            type="type"
+            placeholder="Option 1"
+            label="What is the correct option"
+            height="7vh"
+            // hehe={mcqsoptions.map((option,index)=>())}
+            options={mcqsoptions.map((option, index) => `Option ${index + 1}`)}
+            value={correctOption}
             change={handleChange}
-            value = {question}
           />
-          <div className="correctoptionmcqschoosing">
-           
-            <JobDescSmall
-              id="1"
-              type="type"
-              placeholder="Option 1"
-              label="What is the correct option"
-              height="7vh"
-              // hehe={mcqsoptions.map((option,index)=>())}
-              options={mcqsoptions.map((option, index) => `Option ${index + 1}`)}
-              value = {correctOption}
-              change={handleChange}
-            />
-          </div>
         </div>
-        <div className="Mcqsoptions">
-          <h2 className="testheadset">MCQ Options</h2>{" "}
-          <table>
-            <tbody>
-              {mcqsoptions.map((jobDesc) => (
-                <tr key={jobDesc.id}>
-                  <td className="job-desc-cell">
-                    <JobDescSmall
-                      id={jobDesc.id}
-                      type={jobDesc.type}
-                      placeholder={jobDesc.placeholder}
-                      label={jobDesc.label}
-                      height={jobDesc.height}
-                      change={handleChange}
-                      value={arr[jobDesc.id-1]}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="buttonWrapper">
-            <button onClick={addOption} className="addmcqoption">
-              Add Option
-            </button>
-            <button onClick={remOption} className="remmcqoption">
-              Remove Option
-            </button>
-          </div>
+      </div>
+      <div className="Mcqsoptions">
+        <h2 className="testheadset">MCQ Options</h2>{" "}
+        <table>
+          <tbody>
+            {mcqsoptions.map((jobDesc) => (
+              <tr key={jobDesc.id}>
+                <td className="job-desc-cell">
+                  <JobDescSmall
+                    id={jobDesc.id}
+                    type={jobDesc.type}
+                    placeholder={jobDesc.placeholder}
+                    label={jobDesc.label}
+                    height={jobDesc.height}
+                    change={handleChange}
+                    value={arr[jobDesc.id - 1]}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="buttonWrapper">
+          <button onClick={addOption} className="addmcqoption">
+            Add Option
+          </button>
+          <button onClick={remOption} className="remmcqoption">
+            Remove Option
+          </button>
         </div>
-        <div className="addcreatedcustomques">
-          <button className="addquestioncustombutton" onClick={()=>addQuestion()}>Add Question</button>
-          <button className="addquestioncustombutton" onClick={()=>submitQuestions()}>Add Questions</button>
-        </div>
-        {/* <div className="headingTemplatequesbx">
+      </div>
+      <div className="addcreatedcustomques">
+        <button className="addquestioncustombutton" onClick={() => addQuestion()}>Add Question</button>
+        <button className="addquestioncustombutton" onClick={() => submitQuestions()}>Add Questions</button>
+      </div>
+      {/* <div className="headingTemplatequesbx">
           <h1 className="h1haha1cust">Template Questions Section</h1>
         </div>
         <div className="templatequestionsmaindiv">
@@ -371,62 +369,62 @@ function Mcqschoosing(){
         <div className="addcreatedtemplques">
           <button className="addquestiontemplbutton">Add Questions</button>
         </div> */}
-        <div className="headingsettingstest">
-          <h1 className="h1haha1cust">Test Settings Section</h1>
-        </div>
-        <div className="testsettigsmaindiv">
-          <table>
-            <tbody>
-              {testsettings.map((jobDesc) => (
-                <tr key={jobDesc._id}>
-                  <td className="job-desc-cell">
-                    <JobDescSmall
-                      id={jobDesc.id}
-                      type={jobDesc.type}
-                      placeholder={jobDesc.placeholder}
-                      label={jobDesc.label}
-                      height={jobDesc.height}
-                      options={jobDesc.options}
-                      change={handleChange}
-                      value={arr1[jobDesc.id-1]}
-                      // change={handleChange}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="testsettignsbutttonswrap">
-          <button className="testsettignsbutton">Apply Settings</button>
-        </div>
-        <div className="headingaddedquests">
-          <h2 className="h1haha1cust">Added Questions</h2>
-        </div>
-        <div className="addedquestionsdispalychoo">
-          <table>
-            <tbody>
-            {addedquestions.map((quest, index) => (
-                <tr key={quest._id}>
-                  <td className="job-desc-cell">
-                    <QuestionDisplaycell
-                      index={index+1}
-                      id={quest._id}
-                      question={quest.question}
-                      type={quest.correctOption}
-                      remove={removeQuestion}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="footermcqchoosingpg">
-          {/* <h1 className="heading">Footer</h1> */}
-          <Footer />
-        </div>
+      <div className="headingsettingstest">
+        <h1 className="h1haha1cust">Test Settings Section</h1>
       </div>
+      <div className="testsettigsmaindiv">
+        <table>
+          <tbody>
+            {testsettings.map((jobDesc) => (
+              <tr key={jobDesc._id}>
+                <td className="job-desc-cell">
+                  <JobDescSmall
+                    id={jobDesc.id}
+                    type={jobDesc.type}
+                    placeholder={jobDesc.placeholder}
+                    label={jobDesc.label}
+                    height={jobDesc.height}
+                    options={jobDesc.options}
+                    change={handleChange}
+                    value={arr1[jobDesc.id - 1]}
+                  // change={handleChange}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="testsettignsbutttonswrap">
+        <button className="testsettignsbutton">Apply Settings</button>
+      </div>
+      <div className="headingaddedquests">
+        <h2 className="h1haha1cust">Added Questions</h2>
+      </div>
+      <div className="addedquestionsdispalychoo">
+        <table>
+          <tbody>
+            {addedquestions.map((quest, index) => (
+              <tr key={quest._id}>
+                <td className="job-desc-cell">
+                  <QuestionDisplaycell
+                    index={index + 1}
+                    id={quest._id}
+                    question={quest.question}
+                    type={quest.correctOption}
+                    remove={removeQuestion}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="footermcqchoosingpg">
+        {/* <h1 className="heading">Footer</h1> */}
+        <Footer />
+      </div>
+    </div>
   )
 }
 

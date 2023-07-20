@@ -11,6 +11,17 @@ const answerSchema = new mongoose.Schema({
   },
 });
 
+const mcqAnswerSchema = new mongoose.Schema({
+  questionId: {
+    type: String,
+    required: true,
+  },
+  answer: {
+    type: String,
+    required: true,
+  },
+});
+
 const applicationSchema = new mongoose.Schema({
   candidate: {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,6 +32,16 @@ const applicationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Job",
     required: true,
+  },
+  marks: {
+    type: Number,
+    required: true,
+    default: "",
+  },
+  outOf: {
+    type: Number,
+    required: true,
+    default: "",
   },
   status: {
     type: String,
@@ -39,6 +60,7 @@ const applicationSchema = new mongoose.Schema({
     default: "invited",
   },
   answers: [answerSchema],
+  mcqAnswers: [mcqAnswerSchema],
 });
 
 // Add unique compound index on candidate and job
