@@ -1088,6 +1088,10 @@ app.post("/api/create_assessment", async (req, res) => {
   try {
     const { jobId, questions,timeLimit,NoOfMCQsToShow } = req.body;
     console.log(jobId, questions)
+
+    const deleteResult = await Question.deleteMany({ jobId });
+
+    const assessmentDelete = await Assessment.deleteMany({ jobId });
     // Step 1: Store questions in the Question model and get their generated IDs
     const questionIds = await Promise.all(
       questions.map(async (question) => {

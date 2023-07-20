@@ -147,21 +147,6 @@ function Mcqschoosing(){
     },
   ])
   const [addedquestions, setAddedquestions] = useState([
-    // {
-    //   id: 1,
-    //   question: "Where fo you see yourself in 5 years?",
-    //   type: "Descriptive",
-    // },
-    // {
-    //   id: 2,
-    //   question: "Where fo you see yourself in 5 years?",
-    //   type: "Descriptive",
-    // },
-    // {
-    //   id: 3,
-    //   question: "Where fo you see yourself in 5 years?",
-    //   type: "Descriptive",
-    // },
   ])
 
 
@@ -228,6 +213,14 @@ function Mcqschoosing(){
         setTimeLimit(value)
         break;
       case 'Number of MCQs':
+        if(value < 0){
+          alert('No of MCQs cannot be less than 1')
+          break;
+        }
+        if(value > addedquestions.length){
+          alert('No of MCQs cannot be more than added questions')
+          break;
+        }
         setNoMcq(value)
 
     }
@@ -253,6 +246,8 @@ function Mcqschoosing(){
   }
 
   async function submitQuestions(){
+
+    console.log('No of MCQs', noMcq)
     try{
       const response = await fetch("http://127.0.0.1:5000/api/create_assessment", {
         method: "POST",
@@ -272,6 +267,13 @@ function Mcqschoosing(){
     }catch(e){
       alert('There was an error submitting questions', e)
     }
+  }
+
+  function removeQuestion(id){
+    console.log(id, 'inside remove Question')
+    const updatedItems = addedquestions.filter(question => question._id !== id);
+    // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
+    setAddedquestions(updatedItems);
   }
   return(
     <div className="mcqschoosingpage">
@@ -404,13 +406,15 @@ function Mcqschoosing(){
         <div className="addedquestionsdispalychoo">
           <table>
             <tbody>
-            {addedquestions.map((quest) => (
+            {addedquestions.map((quest, index) => (
                 <tr key={quest._id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycell
-                      id={quest.id}
+                      index={index+1}
+                      id={quest._id}
                       question={quest.question}
                       type={quest.correctOption}
+                      remove={removeQuestion}
                     />
                   </td>
                 </tr>

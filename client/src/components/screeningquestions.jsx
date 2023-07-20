@@ -169,7 +169,8 @@ function ScreeningQuestions(){
   }
 
   function removeQuestion(id){
-    const updatedItems = addedquestions.filter(question => question.id !== id);
+    console.log(id)
+    const updatedItems = addedquestions.filter(question => question._id !== id);
     // const updatedItems = addedquestions.filter((_, i) => i !== id-1);
     setAddedQuestions(updatedItems);
     // console.log(id)
@@ -250,15 +251,16 @@ function ScreeningQuestions(){
           {" "}
           <table>
             <tbody>
-              {paginatedItems.map((quest) => (
+              {paginatedItems.map((quest, index) => (
                 <tr key={quest.id}>
                   <td className="job-desc-cell">
                     <QuestionDisplaycCell
-                      id={quest.id}
+                      index={index+1}
+                      id={quest._id}
                       question={quest.question}
                       type={quest.type}
                       showDetailsButton={false}
-                      remove={()=>removeQuestion(quest.id)}
+                      remove={()=>removeQuestion(quest._id)}
                     />
                   </td>
                 </tr>
