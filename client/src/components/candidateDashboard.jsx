@@ -83,7 +83,7 @@ function CandidateDashboard() {
         }
     };
 
-    const mapStatusToAction = (status) => {
+    const mapStatusToAction = (status, slotdate) => {
         switch (status) {
             case 'invited':
                 return 'Apply';
@@ -95,6 +95,9 @@ function CandidateDashboard() {
                 return 'Pending assessment results';
             case "slot-pending":
                 return 'Select interview slot';
+            case "interview-pending":
+                let msg = "Interview on " + slotdate
+                return msg
             default:
                 return '';
         }
@@ -119,7 +122,7 @@ function CandidateDashboard() {
                                         company={job.company}
                                         job={job.job}
                                         status={job.status}
-                                        action={mapStatusToAction(job.status)}
+                                        action={mapStatusToAction(job.status, job.slot.date)}
                                         actionfunction={mapStatusToFunction(job.status)}
                                     />
                                 </td>

@@ -907,16 +907,18 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     // Find applications for the given candidate
     const applications = await Application.find({
       candidate: candidateId,
-    }).populate({
-      path: "job",
-      model: Job,
-      // Removed the select clause to fetch the entire job document
-      populate: {
-        path: "company",
-        model: Company,
-        select: "name", // Only fetch the company name
-      },
-    });
+    })
+      .populate({
+        path: "job",
+        model: Job,
+        // Removed the select clause to fetch the entire job document
+        populate: {
+          path: "company",
+          model: Company,
+          select: "name", // Only fetch the company name
+        },
+      })
+      .populate("slot");
 
     // Transform applications data to desired format
     const transformedApplications = applications.map((app) => ({
@@ -924,6 +926,7 @@ app.post("/api/get_candidate_applications", async (req, res) => {
       company: app.job.company.name,
       job: app.job, // Include the whole job object
       status: app.status,
+      slot: app.slot,
     }));
 
     console.log(transformedApplications);
