@@ -105,9 +105,9 @@ function CandidateDashboard() {
 
     return (
         <div className="dashboardcompany">
-            {/* <div>
+            <div>
                 <CandidateNav className="navbar" />
-            </div> */}
+            </div>
 
             <div className="myjobs">
                 {" "}

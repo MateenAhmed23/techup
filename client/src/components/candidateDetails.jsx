@@ -47,6 +47,7 @@ function CandidateDetails() {
         formData.append('skills', skills);
         // Append the CV file
         formData.append('cv', cvFile);
+        formData.append('profilePic', profilePic);
 
         const response = await fetch("http://127.0.0.1:5000/api/candidate_signup", {
             method: "POST",
@@ -54,14 +55,15 @@ function CandidateDetails() {
         });
 
         const data = await response.json();
-        console.log(data);
+        console.log("abdefg", data);
 
-        if (data.status === 500) {
+        if (response.status === 201) {
+            localStorage.setItem('token', data.token);
+            alert('Created account succesfully');
+            navigate('/candidate-dashboard');
+        } else {
             alert('Could not create account');
             return;
-        } else {
-            localStorage.setItem('token', data.token);
-            navigate('/candidate-dashboard');
         }
     }
 
@@ -76,6 +78,15 @@ function CandidateDetails() {
         const file = event.target.files[0];
         console.log(file);
         setCVFile(file);
+    };
+
+
+    const [profilePic, setProfilePic] = useState(null);
+
+    const handleProfilePicChange = (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        setProfilePic(file);
     };
 
     return (
@@ -143,6 +154,13 @@ function CandidateDetails() {
                             <label className={"form-label"}>Upload your CV</label>
                             <br />
                             <input type="file" accept=".pdf" onChange={handleFileChange} />
+                        </div>
+
+                        <br />
+                        <div>
+                            <label className={"form-label"}>Upload your Profile Picture</label>
+                            <br />
+                            <input type="file" accept="image/*" onChange={handleProfilePicChange} />
                         </div>
                     </div>
 

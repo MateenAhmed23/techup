@@ -14,6 +14,9 @@ function CandidateProfile() {
   const jobTitle = loc.state.jobTitle;
   console.log(application);
 
+  const profilePicPath = application.candidate.profilePicPath.replace(/\\/g, "/");
+  const profilePicUrl = `http://localhost:5000/${profilePicPath}`;
+
   function decideStatusClass(statusList) {
     if (statusList.includes(application.status)) {
       return "processtask current"
@@ -114,9 +117,9 @@ function CandidateProfile() {
         <CompNav className="navbar" />
       </div>
       <div className="leftside">
-        {/* <div className="avatarprofile">
-            <img src={Muqadim}  className="logoCandidate" />
-          </div> */}
+        <div className="avatarprofile">
+          <img src={profilePicUrl} className="logoCandidate" />
+        </div>
         {/* <div className="managerinfo">
             <h2 className="postname">Manger</h2>
             <p className="postholder">Dr Sara Flord</p>
@@ -222,16 +225,18 @@ function CandidateProfile() {
       </div>
       <div className="reusltssection">
         {/* <h1>Results Section</h1> */}
-        <div className="screeningquestionsdiv">
+        {/* <div className="screeningquestionsdiv">
           <h1 className="headresultssections">Screenig Questioms Rating</h1>
           <h2 className="scoreresults">7/10</h2>
           <button className="butvewrsults">View Results</button>
-        </div>
+        </div> */}
+
         <div className="mcqsquestionsdiv">
           <h1 className="headresultssections">MCQs Test Score</h1>
-          <h2 className="scoreresults">{application.marks}/{application.outOf}</h2>
-          <button className="butvewrsults">View Results</button>
+          <h2 className="scoreresults">{application.marks != -1 ? (application.marks + "/" + application.outOf) : '-'}</h2>
+          {/* < button className="butvewrsults">View Results</button> */}
         </div>
+
       </div>
       <div className="footercandidateprofpg">
         {/* <h1 className="heading">Footer</h1> */}

@@ -23,6 +23,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 const upload = multer({ dest: "uploads/" });
 
@@ -280,7 +281,7 @@ app.post("/api/submitAssessment", async (req, res) => {
       { _id: appId },
       {
         $set: {
-          // status: "attempted-assessment",
+          status: "attempted-assessment",
           marks: marks,
           outOf: noOfQuestions,
           mcqAnswers: answers,
@@ -553,7 +554,10 @@ app.get("/api/cv/:id", async (req, res) => {
 
 app.post(
   "/api/candidate_signup",
-  upload.single("cv"),
+  upload.fields([
+    { name: "cv", maxCount: 1 },
+    { name: "profilePic", maxCount: 1 },
+  ]),
   async (req, res, next) => {
     try {
       const {
@@ -567,9 +571,10 @@ app.post(
         skills,
       } = req.body;
 
-      const cvFilePath = req.file.path;
+      const cvFilePath = req.files.cv[0].path;
+      const profilePicPath = req.files.profilePic[0].path;
 
-      console.log("candidate signup", req.body, cvFilePath);
+      console.log("candidate signup", req.body, cvFilePath, profilePicPath);
 
       const candidateExists = await Candidate.findOne({ email });
       if (candidateExists) {
@@ -587,7 +592,9 @@ app.post(
         phoneNumber,
         skills: skills.split(","),
         cvFilePath,
+        profilePicPath, // add this line
       });
+      console.log("candidate", candidate);
       const token = generateCandidateToken(candidate);
       res.cookie("token", token); // 1 hour
       res.status(201).json({ candidateId: candidate._id, token });
