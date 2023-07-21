@@ -27,7 +27,7 @@ const AssesmentCandidate = () => {
             const data = await res.json();
 
             if (res.status === 200) {
-                setTimer(data.timeLimit);
+                setTimer(data.timeLimit * 60);
                 setMcqs(data.questions)
                 setNoOfQuestion(data.NoOfMCQsToShow)
                 console.log("assessment", data);
@@ -53,7 +53,13 @@ const AssesmentCandidate = () => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setTimer(timer => timer - 1);
+            setTimer(timer => {
+                if (timer === 1) {
+                    alert("Time's up!");
+                    handleSubmit();  // If timer is 1 second, call the handleSubmit function.
+                }
+                return timer - 1;
+            });
         }, 1000);
 
         return () => clearInterval(intervalId);
@@ -67,6 +73,24 @@ const AssesmentCandidate = () => {
     }
 
     const handleSubmit = async () => {
+        // Get the current data of assessment
+        const res = await fetch("http://127.0.0.1:5000/api/assessment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                jobId,
+            }),
+        });
+
+        const data = await res.json();
+
+        if (res.status !== 200) {
+            console.log("error", data);
+            return;
+        }
+
         // Here you would make your POST request to your backend
         const response = await fetch("http://127.0.0.1:5000/api/submitAssessment", {
             method: "POST",
@@ -76,15 +100,18 @@ const AssesmentCandidate = () => {
             body: JSON.stringify({
                 jobId,
                 appId,
-                noOfQuestions,
+                noOfQuestions: data.NoOfMCQsToShow,  // Use data.NoOfMCQsToShow here
                 selectedOptions,
             }),
         });
 
-        const data = await response.json();
-        console.log(data);
-        navigate('/candidate-dashboard');
+        const result = await response.json();
+        if (response.status == 200) {
+            alert("Submitted successfully");
+            navigate('/candidate-dashboard');
+        }
     }
+
 
     return (
         <div className='full_screenassesmetncandid'>

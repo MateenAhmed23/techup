@@ -280,7 +280,7 @@ app.post("/api/submitAssessment", async (req, res) => {
       { _id: appId },
       {
         $set: {
-          status: "attempted-assessment",
+          // status: "attempted-assessment",
           marks: marks,
           outOf: noOfQuestions,
           mcqAnswers: answers,
@@ -329,7 +329,7 @@ app.post("/api/assessment/", async (req, res) => {
       return {
         id: q._id,
         question: q.question,
-        options: shuffle(filteredOptions),
+        options: filteredOptions,
       };
     });
 
@@ -965,9 +965,9 @@ app.post("/api/get_job_applicants", async (req, res) => {
     }
 
     // Get all applications for the given job and populate the candidate details
-    const applications = await Application.find({ job: jobId }).populate(
-      "candidate"
-    );
+    const applications = await Application.find({ job: jobId })
+      .populate("candidate")
+      .populate("slot");
 
     res.json(applications);
   } catch (error) {

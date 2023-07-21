@@ -58,6 +58,7 @@ const applicationSchema = new mongoose.Schema({
       "attempted-assessment",
       "slot-pending",
       "interview-pending",
+      "interviewed",
       "accepted",
       "rejected",
     ],

@@ -133,7 +133,7 @@ function Mcqschoosing() {
   const [testsettings, setTestsettings] = useState([
     {
       id: 1,
-      label: "Time Limit",
+      label: "Time Limit (minutes)",
       type: "number",
       placeholder: "e.g. Software E",
       height: "7vh",
@@ -208,7 +208,7 @@ function Mcqschoosing() {
       case 'Option 4':
         setOption4(value)
         break;
-      case 'Time Limit':
+      case 'Time Limit (minutes)':
         setTimeLimit(value)
         break;
       case 'Number of MCQs':
@@ -241,7 +241,14 @@ function Mcqschoosing() {
     console.log(q)
     setNoq(noQ + 1)
     setAddedquestions([...addedquestions, q])
-    console.log(addedquestions)
+    console.log(addedquestions);
+
+    setQuestion('');
+    setCorrectOption('Option 1');
+    setOption1('');
+    setOption2('');
+    setOption3('');
+    setOption4('');
   }
 
   async function submitQuestions() {

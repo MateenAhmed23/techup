@@ -12,6 +12,7 @@ function CandidateProfile() {
   const loc = useLocation();
   const application = loc.state.app;
   const jobTitle = loc.state.jobTitle;
+  console.log(application);
 
   function decideStatusClass(statusList) {
     if (statusList.includes(application.status)) {
@@ -56,6 +57,13 @@ function CandidateProfile() {
         return 'Assessment done'
       case "slot-pending":
         return "Pending interview slot selection"
+      case "interview-pending":
+        let msg = "Interview on " + application.slot.date
+        return msg
+      case "interviewed":
+        return "Interviewed"
+      case "accepted":
+        return "Accepted"
       default:
         return '';
     }
@@ -199,12 +207,15 @@ function CandidateProfile() {
 
         </div> */}
         {
-          showAcceptReject() ?
-            <div className="opencvbutdiv">
-              <button className="actionbut" onClick={rejectCandidate}>Reject</button>
-              <button className="actionbut" onClick={acceptCandidate}>Accept</button>
-            </div> :
-            ''
+          application.status === "interview-pending" ?
+            <button className="actionbut" onClick={acceptCandidate}>Done Interview</button>
+            :
+            showAcceptReject() ?
+              <div className="opencvbutdiv">
+                <button className="actionbut" onClick={rejectCandidate}>Reject</button>
+                <button className="actionbut" onClick={acceptCandidate}>Accept</button>
+              </div> :
+              ''
         }
 
 
