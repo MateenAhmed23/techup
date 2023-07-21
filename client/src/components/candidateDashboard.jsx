@@ -67,7 +67,7 @@ function CandidateDashboard() {
     }
 
     function interview_slot(jobId, appId, company) {
-        navigate('/assesmentcanddidate');
+        navigate('/candidate_slot', { state: { jobId, appId, company } });
     }
 
     const mapStatusToFunction = (status) => {

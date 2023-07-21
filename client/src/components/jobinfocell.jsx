@@ -102,7 +102,11 @@ function JobInfo() {
     navigate(str)
   }
 
-  function openAssessment(){
+  function openInterview() {
+    navigate('/interviewScheduling', { state: { jobId: id } })
+  }
+
+  function openAssessment() {
     var str = '/assessmentquestions/' + id
     navigate(str)
   }
@@ -163,7 +167,7 @@ function JobInfo() {
           <div className="notinum">3</div>
           <h5 className="tex">Assesment</h5>
         </div>
-        <div className="notibar">
+        <div className="notibar" onClick={() => openInterview()}>
           <div className="notinum">!</div>
           <h5 className="tex">Interviews</h5>
         </div>

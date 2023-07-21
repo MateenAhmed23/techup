@@ -66,6 +66,24 @@ button:hover {
   background-color: #113356;
 }
 
+.selected_slot {
+  background-color: greenyellow;
+}
+
+.booked_slot {
+  background-color: #333;
+  color: white;
+}
+
+.slots-container-candidate {
+  background-color: #c7bfbf;
+  border-radius: 6px;
+  padding: 20px;
+  height: 500px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
+}
+
 .slots-container {
   background-color: #c7bfbf;
   border-radius: 6px;

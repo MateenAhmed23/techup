@@ -63,12 +63,58 @@ function generateCandidateToken(candidate) {
   return jwt.sign(payload, process.env.JWT_SECRET_CANDIDATE, options);
 }
 
-app.post("/api/get_slots", async (req, res) => {
+app.post("/api/book_candidate_slot", async (req, res) => {
   try {
-    const { clientId } = req.body;
-    const slots = await Slot.find({ clientId });
+    const { appId, slotId } = req.body;
+
+    const slot = await Slot.findByIdAndUpdate(
+      slotId,
+      { booked: true },
+      { new: true }
+    );
+
+    if (!slot) {
+      throw new Error("Slot not found");
+    }
+
+    const application = await Application.findByIdAndUpdate(
+      appId,
+      {
+        slot: slotId,
+        status: "interview-pending",
+      },
+      { new: true }
+    );
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    res.status(200).json({ slot, application });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_candidate_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const slots = await Slot.find({ jobId, booked: false });
 
     res.json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+    const slots = await Slot.find({ jobId });
+    console.log(slots);
+    res.status(200).json(slots);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

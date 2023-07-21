@@ -28,6 +28,10 @@ const applicationSchema = new mongoose.Schema({
     ref: "Candidate",
     required: true,
   },
+  slot: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Slot",
+  },
   job: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Job",
@@ -43,6 +47,7 @@ const applicationSchema = new mongoose.Schema({
     required: true,
     default: "",
   },
+
   status: {
     type: String,
     required: true,
@@ -53,7 +58,6 @@ const applicationSchema = new mongoose.Schema({
       "attempted-assessment",
       "slot-pending",
       "interview-pending",
-      "interviewed",
       "accepted",
       "rejected",
     ],

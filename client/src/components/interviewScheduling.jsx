@@ -4,6 +4,7 @@ import JobDescSmall from "./subcomponents/jobDescSmall";
 import CompNav from "./subcomponents/companyNav";
 import Footer from "./subcomponents/footer";
 import UserContext from "../context/user";
+import { useLocation } from "react-router-dom";
 
 const moment = require("moment");
 
@@ -18,7 +19,9 @@ const InterviewScheduler = () => {
     const [selectedEndTime, setSelectedEndTime] = useState("");
     const [selectedDuration, setSelectedDuration] = useState("");
     const [selectedRangeDuration, setSelectedRangeDuration] = useState("");
+    const loc = useLocation()
 
+    const jobId = loc.state.jobId;
     const { isLoading, isLoggedIn, loginStatus, userInfo } = useContext(UserContext);
 
     useEffect(() => {
@@ -40,7 +43,7 @@ const InterviewScheduler = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ clientId: userInfo.userId }) // or replace 'body' with 'params' if you use query parameters
+                    body: JSON.stringify({ jobId: jobId }) // or replace 'body' with 'params' if you use query parameters
                 });
 
                 if (!response.ok) {
@@ -110,10 +113,12 @@ const InterviewScheduler = () => {
     };
 
     const handleDurationChange = (e) => {
+        console.log(e);
         setSelectedDuration(e.target.value);
     };
 
     const handleRangeDurationChange = (e) => {
+        console.log(e);
         setSelectedRangeDuration(e.target.value);
     };
 
@@ -157,7 +162,7 @@ const InterviewScheduler = () => {
 
             setInterviewSlots([...interviewSlots, ...slots]);
 
-            const payload = slots.map(slot => ({ ...slot, clientId: userInfo.userId }));
+            const payload = slots.map(slot => ({ ...slot, jobId: jobId }));
             const res = await fetch("http://127.0.0.1:5000/api/add_slots", {
                 method: "POST",
                 headers: {
@@ -204,7 +209,7 @@ const InterviewScheduler = () => {
 
             setInterviewSlots([...interviewSlots, ...slots]);
 
-            const payload = slots.map(slot => ({ ...slot, clientId: userInfo.userId }));
+            const payload = slots.map(slot => ({ ...slot, jobId: jobId }));
             const res = await fetch("http://127.0.0.1:5000/api/add_slots", {
                 method: "POST",
                 headers: {
@@ -290,7 +295,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedStartDate}
-                            onChange={handleStartDateChange}
+                            interview={true}
+                            change={handleStartDateChange}
                         />
                     </div>
                     <div className="input-container">
@@ -300,8 +306,9 @@ const InterviewScheduler = () => {
                             label="End Date"
                             height="7vh"
                             width="20vw"
+                            interview={true}
                             value={selectedEndDate}
-                            onChange={handleEndDateChange}
+                            change={handleEndDateChange}
                         />
                     </div>
                     <div className="input-container">
@@ -312,7 +319,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedRangeStartTime}
-                            onChange={handleStartRangeTimeChange}
+                            interview={true}
+                            change={handleStartRangeTimeChange}
                         />
                     </div>
                     <div className="input-container">
@@ -323,7 +331,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedRangeEndTime}
-                            onChange={handleEndRangeTimeChange}
+                            interview={true}
+                            change={handleEndRangeTimeChange}
                         />
                     </div>
                     <div className="input-container">
@@ -334,7 +343,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedRangeDuration}
-                            onChange={handleRangeDurationChange}
+                            interview={true}
+                            change={handleRangeDurationChange}
                         />
                     </div>
                     <button onClick={handleAddRangeSlot}>Add</button>
@@ -348,8 +358,9 @@ const InterviewScheduler = () => {
                             label="Date"
                             height="7vh"
                             width="20vw"
+                            interview={true}
                             value={selectedSingleDate}
-                            onChange={handleSingleDateChange}
+                            change={handleSingleDateChange}
                         />
                     </div>
                     <div className="input-container">
@@ -360,7 +371,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedStartTime}
-                            onChange={handleStartTimeChange}
+                            interview={true}
+                            change={handleStartTimeChange}
                         />
                     </div>
                     <div className="input-container">
@@ -371,7 +383,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedEndTime}
-                            onChange={handleEndTimeChange}
+                            interview={true}
+                            change={handleEndTimeChange}
                         />
                     </div>
                     <div className="input-container">
@@ -382,7 +395,8 @@ const InterviewScheduler = () => {
                             height="7vh"
                             width="20vw"
                             value={selectedDuration}
-                            onChange={handleDurationChange}
+                            interview={true}
+                            change={handleDurationChange}
                         />
                     </div>
                     <button onClick={handleAddSingleSlot}>Add</button>
@@ -396,8 +410,8 @@ const InterviewScheduler = () => {
                     <ul>
                         {interviewSlots.map((slot, index) => (
                             <li key={index}>
-                                <div>
-                                    {/* {moment(slot.date).format("DD MMMM, YYYY")} ||| {slot.startTime} - {slot.endTime}, */}
+                                <div className={slot.booked ? "booked_slot" : ""}>
+                                    {moment(slot.date).format("DD MMMM, YYYY")} ||| {slot.startTime} - {slot.endTime},
                                 </div>
                             </li>
                         ))}
