@@ -976,7 +976,38 @@ app.post("/api/get_job_applicants", async (req, res) => {
       .populate("candidate")
       .populate("slot");
 
-    res.json(applications);
+    const statusCounts = {};
+
+    const statusAggregations = {
+      assessment: ["pending-assessment", "attempted-assessment"],
+      interview: ["slot-pending", "interview-pending", "interviewed"],
+    };
+
+    // Function to return the aggregated status if exists or the original status
+    const getAggregatedStatus = (status) => {
+      for (let aggStatus in statusAggregations) {
+        if (statusAggregations[aggStatus].includes(status)) {
+          return aggStatus;
+        }
+      }
+      return status;
+    };
+
+    // Populate statusCounts with status and its count
+    applications.forEach((application) => {
+      // Get the status, aggregated if necessary
+      const status = getAggregatedStatus(application.status);
+
+      // Check if the key already exists in the object
+      if (!statusCounts.hasOwnProperty(status)) {
+        statusCounts[status] = 0;
+      }
+
+      // Increment count for this status
+      statusCounts[status]++;
+    });
+
+    res.json({ applications, statusCounts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

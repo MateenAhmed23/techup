@@ -12,9 +12,16 @@ function Applicantdisplaycell({ candidateId, name, rate, email, status, jobId, a
           {name}
         </a>
       </li>
+      ||
       <li>
         <a className="commonitems">
           {email}
+        </a>
+      </li>
+      ||
+      <li>
+        <a className="commonitems">
+          {status}
         </a>
       </li>
     </ul>
