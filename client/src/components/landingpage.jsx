@@ -104,6 +104,7 @@ const Landingpage = () => {
   };
 
   const handleClick = (option) => {
+    console.log(option)
     let element = null;
     switch (option) {
       case "home":
@@ -191,7 +192,7 @@ const Landingpage = () => {
                 recruitment process and helps attract top talent.
               </p>
             </div>
-            <div className="service">
+            <div className="service" id="service">
               <img src={sleek} width={70} height={70} className="iconuniqlandpg" />
               <p className="headinguniqlandpg">Sleek minimal tracking </p>
               <p className="descuniqlandpg">

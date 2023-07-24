@@ -132,9 +132,31 @@ function CompanyDashboard() {
     if (res.status == 400) {
 
     } else {
+      // console.log(data.clients)
       setMembers(data.clients)
 
     }
+  }
+
+  async function removeMember(id) {
+    const res = await fetch('http://127.0.0.1:5000/api/remove_client', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        clientId: id
+      })
+    });
+
+    if (res.status == 200) {
+      alert('Member deleted successfully');
+    } else {
+      // console.log(data.clients)
+      alert('Error while deleting member');
+
+    }
+
   }
 
   return (
@@ -193,6 +215,7 @@ function CompanyDashboard() {
                       name={member.name}
                       rank={member.role}
                       showRemove={userInfo.userRole === 'superuser' ? true : false}
+                      
                     />
                   </td>
                 </tr>
