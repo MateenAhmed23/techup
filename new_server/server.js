@@ -1154,6 +1154,24 @@ app.post("/api/get_all_clients", async (req, res) => {
   }
 });
 
+
+app.post('/api/remove_client',async (req, res) => {
+  try{
+    const { clientId } = req.body;
+
+    Client.deleteOne({ _id: clientId }, (err) => {
+      if (err) {
+        console.error('Error deleting document:', err);
+      } else {
+        res.status(200).json({
+          message: "Client removed successfully"
+        });
+      }
+    });
+  }catch(e){
+    console.log('Error while deleting client', e)
+  }
+});
 app.post("/api/create_application", async (req, res) => {
   try {
     console.log("inside create_application");

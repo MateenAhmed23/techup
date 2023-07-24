@@ -2,7 +2,28 @@ import React from 'react';
 import "./csssubcomponents/jobdisplaycell.css"
 
 
-function Memberdisplaycell({name,rank,showRemove}){
+function Memberdisplaycell({id,name,rank,showRemove}){
+
+  async function removeMember(id) {
+    const res = await fetch('http://127.0.0.1:5000/api/remove_client', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        clientId: id
+      })
+    });
+
+    if (res.status == 200) {
+      alert('Member deleted successfully');
+    } else {
+      // console.log(data.clients)
+      alert('Error while deleting member');
+
+    }
+
+  }
   return(
     <div className='cell'>
         <ul>
@@ -20,7 +41,7 @@ function Memberdisplaycell({name,rank,showRemove}){
         <a href="#">&nbsp;&nbsp;</a>
 
         {showRemove && 
-          <a className="viewdetails">
+          <a className="viewdetails" onClick={()=>removeMember(id)}>
           Remove
           </a>
         }
