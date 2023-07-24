@@ -9,8 +9,11 @@ function JobDescSmall(props) {
   };
 
   function handleChange(e) {
+    // console.log(e.target.name, e.target.value)
     if (props.screening) {
       props.change(e, props.id);
+    } else if (props.interview) {
+      props.change(e)
     } else {
       props.change(e.target.name, e.target.value);
     }

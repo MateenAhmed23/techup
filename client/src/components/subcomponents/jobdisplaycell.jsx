@@ -14,6 +14,7 @@ function JobDisplaycell({ job, showRemove }) {
   }
 
   function detailsClicked() {
+    // console.log("details", job)
     var str = '/jobinfo/' + _id
     navigate(str)
   }

@@ -28,18 +28,57 @@ function JobInfo() {
   const [experience, setExperience] = useState('')
   const [domain, setDomain] = useState('')
   const [status, setStatus] = useState('')
+  const [applications, setApplications] = useState([])
 
   const { id } = useParams();
-
-  const applicants = [
-    { id: 1, name: "Muqadim", rate: "40", email: "muqadimorg@gmail.com" },
-    { id: 2, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 3, name: "Ahmad", rate: "50", email: "haris@gmail.com" },
-    { id: 4, name: "Ahmad", rate: "50", email: "haris@gmail.com" }
-  ]
+  const [statusCounts, setStatusCounts] = useState({})
 
   function handleSidebarClick() {
 
+  }
+
+  async function getApplications() {
+    const res = await fetch("http://127.0.0.1:5000/api/get_job_applicants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        job: id,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (res.status == 200) {
+      console.log("applications", data);
+
+      const statusOrder = [
+        "invited",
+        "applied",
+        "pending-assessment",
+        "attempted-assessment",
+        "slot-pending",
+        "interview-pending",
+        "interviewed",
+        "accepted",
+        "rejected",
+      ];
+
+      data.applications = data.applications.filter(application => {
+        return application.status !== "invited" && application.status !== "rejected";
+      });
+
+      // Then sort the filtered applications
+      data.applications.sort((a, b) => {
+        return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+      });
+
+      setApplications(data.applications);
+      setStatusCounts(data.statusCounts);
+    } else {
+      console.log("error", data);
+    }
   }
 
   async function getJobInfo() {
@@ -70,9 +109,6 @@ function JobInfo() {
     } catch (e) {
 
     }
-
-
-
   }
 
   function copyToClipboard() {
@@ -90,9 +126,23 @@ function JobInfo() {
     navigate(str)
   }
 
+  function openInterview() {
+    navigate('/interviewScheduling', { state: { jobId: id } })
+  }
+
+  function openAssessment() {
+    var str = '/assessmentquestions/' + id
+    navigate(str)
+  }
+
   useEffect(() => {
     getJobInfo()
+    getApplications();
   }, [])
+
+  useEffect(() => {
+    console.log(applications);
+  }, [applications])
 
   return (
     <div className="jobinfo">
@@ -132,35 +182,39 @@ function JobInfo() {
           </div>
         </div>
       </div>
-      <div className="jobnoti" onClick={() => openScreening()}>
-        <div className="notibar">
-          <div className="notinum">3</div>
+      <div className="jobnoti" >
+        <div className="notibar" onClick={() => openScreening()}>
+          <div className="notinum">{statusCounts.applied ? statusCounts.applied : 0}</div>
           <h5 className="tex">Screening</h5>
         </div>
-        <div className="notibar">
-          <div className="notinum">3</div>
+        <div className="notibar" onClick={() => openAssessment()}>
+          <div className="notinum">{statusCounts.assessment ? statusCounts.assessment : 0}</div>
           <h5 className="tex">Assesment</h5>
         </div>
-        <div className="notibar">
-          <div className="notinum">!</div>
+        <div className="notibar" onClick={() => openInterview()}>
+          <div className="notinum">{statusCounts.interview ? statusCounts.interview : 0}</div>
           <h5 className="tex">Interviews</h5>
         </div>
         <div className="notibar">
-          <div className="notinum">10</div>
+          <div className="notinum">{statusCounts.accepted ? statusCounts.accepted : 0}</div>
           <h5 className="tex">Accepted</h5>
         </div>
       </div>
       <div className="applicants">
         <table>
           <tbody>
-            {applicants.map((applicant) => (
-              <tr key={applicant.id}>
+            {applications.map((application) => (
+              <tr key={application.candidate._id}>
                 <td className="job__desc">
                   <Applicantdisplaycell
-                    id={applicant.id}
-                    name={applicant.name}
-                    rate={applicant.rate}
-                    email={applicant.email}
+                    app={application}
+                    candidateId={application.candidate._id}
+                    name={application.candidate.name}
+                    rate={application.rate}
+                    email={application.candidate.email}
+                    status={application.status}
+                    jobId={application.job}
+                    jobTitle={title}
                   />
                 </td>
               </tr>

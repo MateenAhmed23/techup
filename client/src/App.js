@@ -21,12 +21,14 @@ import CandidateProfile from "./components/candidateprofile";
 import CandidateSignup from "./components/candidateSignup";
 import JobUrl from "./components/jobUrl";
 import EditJob from "./components/editJob";
+import CandidateDetails from "./components/candidateDetails";
+import ViewScreening from "./components/viewScreening";
 // import inte from "./components/interviewScheduling";
 import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
 import { Provider as CandidateProvider } from "./context/candidate"; // adjust path according to your folder structure
 import AssesmentCandidate from "./components/assesmentcanddidate";
-
+import SelectInterviewSlot from "./components/selectInterviewSlot";
 // import InterviewScheduler from"./components/interviewScheduling"
 // import Footer from "./components/subcomponents/footer";
 // import ResultsScreen from "./components/resultsscreen";
@@ -77,7 +79,7 @@ const router = createBrowserRouter([
     element: <Addmember />,
   },
   {
-    path: "/mcqschoosing",
+    path: "/assessmentquestions/:id",
     element: <Mcqschoosing />,
   },
   {
@@ -125,8 +127,20 @@ const router = createBrowserRouter([
     element: <ViewJob />,
   },
   {
+    path: "/candidateDetails",
+    element: <CandidateDetails />,
+  },
+  {
+    path: "/viewScreening",
+    element: <ViewScreening />,
+  },
+  {
     path: "/assesmentcanddidate",
     element: <AssesmentCandidate />,
+  },
+  {
+    path: "/candidate_slot",
+    element: <SelectInterviewSlot />,
   },
 ]);
 

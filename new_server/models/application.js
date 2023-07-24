@@ -11,24 +11,61 @@ const answerSchema = new mongoose.Schema({
   },
 });
 
+const mcqAnswerSchema = new mongoose.Schema({
+  questionId: {
+    type: String,
+    required: true,
+  },
+  answer: {
+    type: String,
+    required: true,
+  },
+});
+
 const applicationSchema = new mongoose.Schema({
   candidate: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Candidate",
     required: true,
   },
+  slot: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Slot",
+  },
   job: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Job",
     required: true,
   },
+  marks: {
+    type: Number,
+    required: true,
+    default: -1,
+  },
+  outOf: {
+    type: Number,
+    required: true,
+    default: "",
+  },
+
   status: {
     type: String,
     required: true,
-    enum: ["invited", "applied", "interview", "assessment", "accepted"],
+    enum: [
+      "invited",
+      "applied",
+      "pending-assessment",
+      "attempted-assessment",
+      "slot-pending",
+      "interview-pending",
+      "interviewed",
+      "accepted",
+      "rejected",
+    ],
     default: "invited",
   },
   answers: [answerSchema],
+  mcqAnswers: [mcqAnswerSchema],
 });
 
 // Add unique compound index on candidate and job

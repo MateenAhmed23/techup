@@ -54,35 +54,50 @@ function CandidateDashboard() {
         navigate('/');
     }
 
-    function apply(jobId, appId) {
+    function apply(jobId, appId, company) {
         navigate('/screeningcandidate', { state: { jobId, appId } });
+    }
+
+    function doNothing(jobId, appId, company) {
+
+    }
+
+    function assessment(jobId, appId, company) {
+        navigate('/assesmentcanddidate', { state: { jobId, appId, company } });
+    }
+
+    function interview_slot(jobId, appId, company) {
+        navigate('/candidate_slot', { state: { jobId, appId, company } });
     }
 
     const mapStatusToFunction = (status) => {
         switch (status) {
             case 'invited':
                 return apply;
-            // case 'applied':
-            //     return 'Waiting for response';
-            // case 'assessment':
-            //     return 'Attempt assessment';
-            // case 'interview':
-            //     return 'Book interview slot';
+            case "pending-assessment":
+                return assessment;
+            case "slot-pending":
+                return interview_slot;
             default:
-                return '';
+                return doNothing;
         }
     };
 
-    const mapStatusToAction = (status) => {
+    const mapStatusToAction = (status, slotdate) => {
         switch (status) {
             case 'invited':
                 return 'Apply';
             case 'applied':
-                return 'Waiting for response';
-            case 'assessment':
-                return 'Attempt assessment';
-            case 'interview':
-                return 'Book interview slot';
+                return 'Applied';
+            case "pending-assessment":
+                return 'Attempt Assessment';
+            case "attempted-assessment":
+                return 'Pending assessment results';
+            case "slot-pending":
+                return 'Select interview slot';
+            case "interview-pending":
+                let msg = "Interview on " + slotdate
+                return msg
             default:
                 return '';
         }
@@ -107,7 +122,7 @@ function CandidateDashboard() {
                                         company={job.company}
                                         job={job.job}
                                         status={job.status}
-                                        action={mapStatusToAction(job.status)}
+                                        action={mapStatusToAction(job.status, job.slot.date)}
                                         actionfunction={mapStatusToFunction(job.status)}
                                     />
                                 </td>

@@ -15,11 +15,17 @@ const Candidate = require("./models/candidate");
 const Slot = require("./models/slot");
 const Application = require("./models/application");
 const Screening = require("./models/screening");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
+
+const upload = multer({ dest: "uploads/" });
 
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGO_URI);
@@ -58,12 +64,58 @@ function generateCandidateToken(candidate) {
   return jwt.sign(payload, process.env.JWT_SECRET_CANDIDATE, options);
 }
 
-app.post("/api/get_slots", async (req, res) => {
+app.post("/api/book_candidate_slot", async (req, res) => {
   try {
-    const { clientId } = req.body;
-    const slots = await Slot.find({ clientId });
+    const { appId, slotId } = req.body;
+
+    const slot = await Slot.findByIdAndUpdate(
+      slotId,
+      { booked: true },
+      { new: true }
+    );
+
+    if (!slot) {
+      throw new Error("Slot not found");
+    }
+
+    const application = await Application.findByIdAndUpdate(
+      appId,
+      {
+        slot: slotId,
+        status: "interview-pending",
+      },
+      { new: true }
+    );
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    res.status(200).json({ slot, application });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_candidate_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const slots = await Slot.find({ jobId, booked: false });
 
     res.json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+    const slots = await Slot.find({ jobId });
+    console.log(slots);
+    res.status(200).json(slots);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -133,6 +185,216 @@ app.post("/api/get_screening", async (req, res) => {
   }
 });
 
+app.post("/api/get_assessment", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log("inside get screening", jobId);
+
+    // Find the screening data for the jobId
+    const screening = await Assessment.findOne({ jobId });
+
+    if (screening) {
+      // Screening data found, return the questions array
+      const questions = await Question.find({ jobId });
+      res.status(200).json(questions);
+    } else {
+      // Screening data not found for the jobId
+      res.status(404).json({ message: "Screening data not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Helper function to determine the next status
+function getNextStatus(currentStatus) {
+  const statusOrder = [
+    "invited",
+    "applied",
+    "pending-assessment",
+    "attempted-assessment",
+    "slot-pending",
+    "interview-pending",
+    "interviewed",
+    "accepted",
+    "rejected",
+  ];
+  const currentIndex = statusOrder.indexOf(currentStatus);
+  return currentIndex < statusOrder.length - 1
+    ? statusOrder[currentIndex + 1]
+    : null;
+}
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function extractLastNumber(str) {
+  const match = str.match(/\d+$/); // This regex matches one or more digits at the end of the string
+  return match ? Number(match[0]) : null;
+}
+
+app.post("/api/submitAssessment", async (req, res) => {
+  try {
+    const { jobId, appId, selectedOptions, noOfQuestions } = req.body;
+
+    // Fetch all the questions using the question IDs
+    let questionIds = Object.keys(selectedOptions);
+    const questions = await Question.find({
+      _id: { $in: questionIds },
+    });
+
+    let marks = 0;
+    let answers = [];
+    for (let question of questions) {
+      const correctOptionIndex = extractLastNumber(question.correctOption) - 1;
+      const correctOptionString = question.options[correctOptionIndex];
+
+      if (selectedOptions[question._id.toString()] == correctOptionString) {
+        marks++;
+      }
+
+      answers.push({
+        questionId: question._id.toString(),
+        answer: correctOptionString,
+      });
+    }
+
+    const application = await Application.findOneAndUpdate(
+      { _id: appId },
+      {
+        $set: {
+          status: "attempted-assessment",
+          marks: marks,
+          outOf: noOfQuestions,
+          mcqAnswers: answers,
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    res
+      .status(200)
+      .json({ message: "Assessment submitted successfully", application });
+
+    // Now you have the questions and you can compare the answers
+    // Do something with the questions ...
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+// Define the endpoint to fetch questions by jobId
+app.post("/api/assessment/", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+
+    // Find the assessment related to the given jobId
+    const assessment = await Assessment.findOne({ jobId: jobId }).populate(
+      "questions"
+    );
+
+    if (!assessment) {
+      return res
+        .status(404)
+        .json({ message: "No assessment found for this job" });
+    }
+
+    const shuffledQuestions = shuffle(assessment.questions).slice(
+      0,
+      assessment.NoOfMCQsToShow
+    );
+    const finalQuestions = shuffledQuestions.map((q) => {
+      // Filter out empty strings from options
+      const filteredOptions = q.options.filter((option) => option !== "");
+
+      return {
+        id: q._id,
+        question: q.question,
+        options: filteredOptions,
+      };
+    });
+
+    res.status(200).json({
+      timeLimit: assessment.timeLimit,
+      NoOfMCQsToShow: assessment.NoOfMCQsToShow,
+      questions: finalQuestions,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+// Accept (progress to the next status) an application
+app.post("/api/accept/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    const nextStatus = getNextStatus(application.status);
+    if (!nextStatus) {
+      return res.status(400).send("Application cannot be progressed further");
+    }
+
+    application.status = nextStatus;
+    await application.save();
+
+    res.status(200).send(`Application status updated to ${nextStatus}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+// Reject an application
+app.post("api/reject/", async (req, res) => {
+  try {
+    const { appId } = req.body;
+
+    const application = await Application.findById(appId);
+    if (!application) {
+      return res.status(404).send("Application not found");
+    }
+
+    // Check the current status of the application. If it is already 'rejected', no need to update
+    if (application.status === "rejected") {
+      return res.status(200).send("Application is already rejected");
+    }
+
+    application.status = "rejected";
+    await application.save();
+
+    res.status(200).send("Application rejected");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
 app.post("/api/save_screening", async (req, res) => {
   const { appId, answers } = req.body;
   console.log("save screening", appId);
@@ -149,6 +411,7 @@ app.post("/api/save_screening", async (req, res) => {
     }
 
     application.answers = answersArray;
+    application.status = "applied";
 
     await application.save();
 
@@ -260,33 +523,87 @@ app.post("/api/company_signup", async (req, res) => {
   }
 });
 
-app.post("/api/candidate_signup", async (req, res) => {
+// ...
+
+app.get("/api/cv/:id", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-
-    const candidateExists = await Candidate.findOne({ email });
-
-    if (candidateExists) {
-      return res.status(400).json({ message: "Email already exists" });
+    const candidate = await Candidate.findById(req.params.id);
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Set the Content-Type to application/pdf
+    res.setHeader("Content-Type", "application/pdf");
 
-    const candidate = await Candidate.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    // If you want to display the PDF directly in the user's browser, use inline:
+    res.setHeader(
+      "Content-Disposition",
+      "inline; filename=" + path.basename(candidate.cvFilePath)
+    );
 
-    const token = generateCandidateToken(candidate);
-
-    res.cookie("token", token); // 1 hour
-    res.status(201).json({ candidateId: candidate._id, token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    // Now read the file from the filesystem and send it to the client:
+    const file = fs.createReadStream(
+      path.join(__dirname, candidate.cvFilePath)
+    );
+    file.pipe(res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 });
+
+app.post(
+  "/api/candidate_signup",
+  upload.fields([
+    { name: "cv", maxCount: 1 },
+    { name: "profilePic", maxCount: 1 },
+  ]),
+  async (req, res, next) => {
+    try {
+      const {
+        name,
+        email,
+        password,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills,
+      } = req.body;
+
+      const cvFilePath = req.files.cv[0].path;
+      const profilePicPath = req.files.profilePic[0].path;
+
+      console.log("candidate signup", req.body, cvFilePath, profilePicPath);
+
+      const candidateExists = await Candidate.findOne({ email });
+      if (candidateExists) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const candidate = await Candidate.create({
+        name,
+        email,
+        password: hashedPassword,
+        bio,
+        experience,
+        city,
+        phoneNumber,
+        skills: skills.split(","),
+        cvFilePath,
+        profilePicPath, // add this line
+      });
+      console.log("candidate", candidate);
+      const token = generateCandidateToken(candidate);
+      res.cookie("token", token); // 1 hour
+      res.status(201).json({ candidateId: candidate._id, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 // {
 //   clientId
@@ -597,16 +914,18 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     // Find applications for the given candidate
     const applications = await Application.find({
       candidate: candidateId,
-    }).populate({
-      path: "job",
-      model: Job,
-      // Removed the select clause to fetch the entire job document
-      populate: {
-        path: "company",
-        model: Company,
-        select: "name", // Only fetch the company name
-      },
-    });
+    })
+      .populate({
+        path: "job",
+        model: Job,
+        // Removed the select clause to fetch the entire job document
+        populate: {
+          path: "company",
+          model: Company,
+          select: "name", // Only fetch the company name
+        },
+      })
+      .populate("slot");
 
     // Transform applications data to desired format
     const transformedApplications = applications.map((app) => ({
@@ -614,6 +933,7 @@ app.post("/api/get_candidate_applications", async (req, res) => {
       company: app.job.company.name,
       job: app.job, // Include the whole job object
       status: app.status,
+      slot: app.slot,
     }));
 
     console.log(transformedApplications);
@@ -645,28 +965,52 @@ app.post("/api/get_job_applicants", async (req, res) => {
   }
 
   try {
-    // Find applications for the given job
-    const applications = await Application.find({
-      job: jobId,
-    }).populate({
-      path: "candidate",
-      model: Candidate,
-      select: "name", // Only fetch the candidate name
+    // Check if the job exists
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Get all applications for the given job and populate the candidate details
+    const applications = await Application.find({ job: jobId })
+      .populate("candidate")
+      .populate("slot");
+
+    const statusCounts = {};
+
+    const statusAggregations = {
+      assessment: ["pending-assessment", "attempted-assessment"],
+      interview: ["slot-pending", "interview-pending", "interviewed"],
+    };
+
+    // Function to return the aggregated status if exists or the original status
+    const getAggregatedStatus = (status) => {
+      for (let aggStatus in statusAggregations) {
+        if (statusAggregations[aggStatus].includes(status)) {
+          return aggStatus;
+        }
+      }
+      return status;
+    };
+
+    // Populate statusCounts with status and its count
+    applications.forEach((application) => {
+      // Get the status, aggregated if necessary
+      const status = getAggregatedStatus(application.status);
+
+      // Check if the key already exists in the object
+      if (!statusCounts.hasOwnProperty(status)) {
+        statusCounts[status] = 0;
+      }
+
+      // Increment count for this status
+      statusCounts[status]++;
     });
 
-    // Transform applications data to desired format
-    const transformedApplications = applications.map((app) => ({
-      _id: app.candidate._id,
-      name: app.candidate.name,
-      status: app.status,
-    }));
-
-    return res.status(200).json(transformedApplications);
+    res.json({ applications, statusCounts });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while fetching the applications." });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -810,6 +1154,24 @@ app.post("/api/get_all_clients", async (req, res) => {
   }
 });
 
+
+app.post('/api/remove_client',async (req, res) => {
+  try{
+    const { clientId } = req.body;
+
+    Client.deleteOne({ _id: clientId }, (err) => {
+      if (err) {
+        console.error('Error deleting document:', err);
+      } else {
+        res.status(200).json({
+          message: "Client removed successfully"
+        });
+      }
+    });
+  }catch(e){
+    console.log('Error while deleting client', e)
+  }
+});
 app.post("/api/create_application", async (req, res) => {
   try {
     console.log("inside create_application");
@@ -943,6 +1305,42 @@ app.post("/api/create_question", async (req, res) => {
   }
 });
 
+app.post("/api/create_assessment", async (req, res) => {
+  try {
+    const { jobId, questions, timeLimit, NoOfMCQsToShow } = req.body;
+    console.log(jobId, questions);
+
+    const deleteResult = await Question.deleteMany({ jobId });
+
+    const assessmentDelete = await Assessment.deleteMany({ jobId });
+    // Step 1: Store questions in the Question model and get their generated IDs
+    const questionIds = await Promise.all(
+      questions.map(async (question) => {
+        const createdQuestion = await Question.create({
+          jobId: jobId,
+          question: question.question,
+          correctOption: question.correctOption,
+          options: question.options,
+        });
+        return createdQuestion._id;
+      })
+    );
+
+    // Step 2: Store assessment in the Assessment model
+    const createdAssessment = await Assessment.create({
+      jobId,
+      questions: questionIds,
+      timeLimit,
+      NoOfMCQsToShow,
+    });
+
+    res.status(201).json(createdAssessment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to create assessment" });
+  }
+});
+
 // {
 //   companyId
 // }
@@ -983,31 +1381,31 @@ app.post("/api/get_questions", async (req, res) => {
 //   assessment,
 // }
 
-app.post("/api/create_assessment", async (req, res) => {
-  try {
-    const { name, questionIds, company } = req.body;
+// app.post("/api/create_assessment", async (req, res) => {
+//   try {
+//     const { name, questionIds, company } = req.body;
 
-    if (!name || !questionIds || !company) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+//     if (!name || !questionIds || !company) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
 
-    const assessment = new Assessment({
-      name,
-      questions: questionIds,
-      company,
-    });
+//     const assessment = new Assessment({
+//       name,
+//       questions: questionIds,
+//       company,
+//     });
 
-    await assessment.save();
+//     await assessment.save();
 
-    res.status(201).json({
-      message: "Assessment created successfully",
-      assessment,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+//     res.status(201).json({
+//       message: "Assessment created successfully",
+//       assessment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 app.listen(process.env.PORT, () => {
   console.log("Server started on port " + process.env.PORT);
