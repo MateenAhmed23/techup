@@ -38,6 +38,10 @@ const candidateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profilePicPath: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Candidate", candidateSchema);

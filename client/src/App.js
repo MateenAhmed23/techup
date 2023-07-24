@@ -28,7 +28,7 @@ import InterviewScheduler from "./components/interviewScheduling";
 import Footer from "./components/subcomponents/footer";
 import { Provider as CandidateProvider } from "./context/candidate"; // adjust path according to your folder structure
 import AssesmentCandidate from "./components/assesmentcanddidate";
-
+import SelectInterviewSlot from "./components/selectInterviewSlot";
 // import InterviewScheduler from"./components/interviewScheduling"
 // import Footer from "./components/subcomponents/footer";
 // import ResultsScreen from "./components/resultsscreen";
@@ -137,6 +137,10 @@ const router = createBrowserRouter([
   {
     path: "/assesmentcanddidate",
     element: <AssesmentCandidate />,
+  },
+  {
+    path: "/candidate_slot",
+    element: <SelectInterviewSlot />,
   },
 ]);
 

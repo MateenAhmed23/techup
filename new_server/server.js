@@ -23,6 +23,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 const upload = multer({ dest: "uploads/" });
 
@@ -63,12 +64,58 @@ function generateCandidateToken(candidate) {
   return jwt.sign(payload, process.env.JWT_SECRET_CANDIDATE, options);
 }
 
-app.post("/api/get_slots", async (req, res) => {
+app.post("/api/book_candidate_slot", async (req, res) => {
   try {
-    const { clientId } = req.body;
-    const slots = await Slot.find({ clientId });
+    const { appId, slotId } = req.body;
+
+    const slot = await Slot.findByIdAndUpdate(
+      slotId,
+      { booked: true },
+      { new: true }
+    );
+
+    if (!slot) {
+      throw new Error("Slot not found");
+    }
+
+    const application = await Application.findByIdAndUpdate(
+      appId,
+      {
+        slot: slotId,
+        status: "interview-pending",
+      },
+      { new: true }
+    );
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    res.status(200).json({ slot, application });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_candidate_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const slots = await Slot.find({ jobId, booked: false });
 
     res.json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/get_slots", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+    const slots = await Slot.find({ jobId });
+    console.log(slots);
+    res.status(200).json(slots);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -178,6 +225,125 @@ function getNextStatus(currentStatus) {
     ? statusOrder[currentIndex + 1]
     : null;
 }
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function extractLastNumber(str) {
+  const match = str.match(/\d+$/); // This regex matches one or more digits at the end of the string
+  return match ? Number(match[0]) : null;
+}
+
+app.post("/api/submitAssessment", async (req, res) => {
+  try {
+    const { jobId, appId, selectedOptions, noOfQuestions } = req.body;
+
+    // Fetch all the questions using the question IDs
+    let questionIds = Object.keys(selectedOptions);
+    const questions = await Question.find({
+      _id: { $in: questionIds },
+    });
+
+    let marks = 0;
+    let answers = [];
+    for (let question of questions) {
+      const correctOptionIndex = extractLastNumber(question.correctOption) - 1;
+      const correctOptionString = question.options[correctOptionIndex];
+
+      if (selectedOptions[question._id.toString()] == correctOptionString) {
+        marks++;
+      }
+
+      answers.push({
+        questionId: question._id.toString(),
+        answer: correctOptionString,
+      });
+    }
+
+    const application = await Application.findOneAndUpdate(
+      { _id: appId },
+      {
+        $set: {
+          status: "attempted-assessment",
+          marks: marks,
+          outOf: noOfQuestions,
+          mcqAnswers: answers,
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    res
+      .status(200)
+      .json({ message: "Assessment submitted successfully", application });
+
+    // Now you have the questions and you can compare the answers
+    // Do something with the questions ...
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+// Define the endpoint to fetch questions by jobId
+app.post("/api/assessment/", async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    console.log(jobId);
+
+    // Find the assessment related to the given jobId
+    const assessment = await Assessment.findOne({ jobId: jobId }).populate(
+      "questions"
+    );
+
+    if (!assessment) {
+      return res
+        .status(404)
+        .json({ message: "No assessment found for this job" });
+    }
+
+    const shuffledQuestions = shuffle(assessment.questions).slice(
+      0,
+      assessment.NoOfMCQsToShow
+    );
+    const finalQuestions = shuffledQuestions.map((q) => {
+      // Filter out empty strings from options
+      const filteredOptions = q.options.filter((option) => option !== "");
+
+      return {
+        id: q._id,
+        question: q.question,
+        options: filteredOptions,
+      };
+    });
+
+    res.status(200).json({
+      timeLimit: assessment.timeLimit,
+      NoOfMCQsToShow: assessment.NoOfMCQsToShow,
+      questions: finalQuestions,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 
 // Accept (progress to the next status) an application
 app.post("/api/accept/", async (req, res) => {
@@ -388,7 +554,10 @@ app.get("/api/cv/:id", async (req, res) => {
 
 app.post(
   "/api/candidate_signup",
-  upload.single("cv"),
+  upload.fields([
+    { name: "cv", maxCount: 1 },
+    { name: "profilePic", maxCount: 1 },
+  ]),
   async (req, res, next) => {
     try {
       const {
@@ -402,9 +571,10 @@ app.post(
         skills,
       } = req.body;
 
-      const cvFilePath = req.file.path;
+      const cvFilePath = req.files.cv[0].path;
+      const profilePicPath = req.files.profilePic[0].path;
 
-      console.log("candidate signup", req.body, cvFilePath);
+      console.log("candidate signup", req.body, cvFilePath, profilePicPath);
 
       const candidateExists = await Candidate.findOne({ email });
       if (candidateExists) {
@@ -422,7 +592,9 @@ app.post(
         phoneNumber,
         skills: skills.split(","),
         cvFilePath,
+        profilePicPath, // add this line
       });
+      console.log("candidate", candidate);
       const token = generateCandidateToken(candidate);
       res.cookie("token", token); // 1 hour
       res.status(201).json({ candidateId: candidate._id, token });
@@ -742,16 +914,18 @@ app.post("/api/get_candidate_applications", async (req, res) => {
     // Find applications for the given candidate
     const applications = await Application.find({
       candidate: candidateId,
-    }).populate({
-      path: "job",
-      model: Job,
-      // Removed the select clause to fetch the entire job document
-      populate: {
-        path: "company",
-        model: Company,
-        select: "name", // Only fetch the company name
-      },
-    });
+    })
+      .populate({
+        path: "job",
+        model: Job,
+        // Removed the select clause to fetch the entire job document
+        populate: {
+          path: "company",
+          model: Company,
+          select: "name", // Only fetch the company name
+        },
+      })
+      .populate("slot");
 
     // Transform applications data to desired format
     const transformedApplications = applications.map((app) => ({
@@ -759,6 +933,7 @@ app.post("/api/get_candidate_applications", async (req, res) => {
       company: app.job.company.name,
       job: app.job, // Include the whole job object
       status: app.status,
+      slot: app.slot,
     }));
 
     console.log(transformedApplications);
@@ -797,11 +972,42 @@ app.post("/api/get_job_applicants", async (req, res) => {
     }
 
     // Get all applications for the given job and populate the candidate details
-    const applications = await Application.find({ job: jobId }).populate(
-      "candidate"
-    );
+    const applications = await Application.find({ job: jobId })
+      .populate("candidate")
+      .populate("slot");
 
-    res.json(applications);
+    const statusCounts = {};
+
+    const statusAggregations = {
+      assessment: ["pending-assessment", "attempted-assessment"],
+      interview: ["slot-pending", "interview-pending", "interviewed"],
+    };
+
+    // Function to return the aggregated status if exists or the original status
+    const getAggregatedStatus = (status) => {
+      for (let aggStatus in statusAggregations) {
+        if (statusAggregations[aggStatus].includes(status)) {
+          return aggStatus;
+        }
+      }
+      return status;
+    };
+
+    // Populate statusCounts with status and its count
+    applications.forEach((application) => {
+      // Get the status, aggregated if necessary
+      const status = getAggregatedStatus(application.status);
+
+      // Check if the key already exists in the object
+      if (!statusCounts.hasOwnProperty(status)) {
+        statusCounts[status] = 0;
+      }
+
+      // Increment count for this status
+      statusCounts[status]++;
+    });
+
+    res.json({ applications, statusCounts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -1041,8 +1247,6 @@ app.post("/api/get-user-info", async (req, res) => {
 //   question,
 // }
 
-
-
 app.post("/api/create_question", async (req, res) => {
   try {
     const {
@@ -1083,11 +1287,10 @@ app.post("/api/create_question", async (req, res) => {
   }
 });
 
-
 app.post("/api/create_assessment", async (req, res) => {
   try {
-    const { jobId, questions,timeLimit,NoOfMCQsToShow } = req.body;
-    console.log(jobId, questions)
+    const { jobId, questions, timeLimit, NoOfMCQsToShow } = req.body;
+    console.log(jobId, questions);
 
     const deleteResult = await Question.deleteMany({ jobId });
 
@@ -1099,7 +1302,7 @@ app.post("/api/create_assessment", async (req, res) => {
           jobId: jobId,
           question: question.question,
           correctOption: question.correctOption,
-          options: question.options
+          options: question.options,
         });
         return createdQuestion._id;
       })
@@ -1110,13 +1313,13 @@ app.post("/api/create_assessment", async (req, res) => {
       jobId,
       questions: questionIds,
       timeLimit,
-      NoOfMCQsToShow
+      NoOfMCQsToShow,
     });
 
     res.status(201).json(createdAssessment);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to create assessment' });
+    res.status(500).json({ message: "Failed to create assessment" });
   }
 });
 

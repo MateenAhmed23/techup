@@ -12,6 +12,10 @@ function CandidateProfile() {
   const loc = useLocation();
   const application = loc.state.app;
   const jobTitle = loc.state.jobTitle;
+  console.log(application);
+
+  const profilePicPath = application.candidate.profilePicPath.replace(/\\/g, "/");
+  const profilePicUrl = `http://localhost:5000/${profilePicPath}`;
 
   function decideStatusClass(statusList) {
     if (statusList.includes(application.status)) {
@@ -52,6 +56,17 @@ function CandidateProfile() {
         return 'View screening response';
       case 'pending-assessment':
         return 'Pending assessment'
+      case "attempted-assessment":
+        return 'Assessment done'
+      case "slot-pending":
+        return "Pending interview slot selection"
+      case "interview-pending":
+        let msg = "Interview on " + application.slot.date
+        return msg
+      case "interviewed":
+        return "Interviewed"
+      case "accepted":
+        return "Accepted"
       default:
         return '';
     }
@@ -102,9 +117,9 @@ function CandidateProfile() {
         <CompNav className="navbar" />
       </div>
       <div className="leftside">
-        {/* <div className="avatarprofile">
-            <img src={Muqadim}  className="logoCandidate" />
-          </div> */}
+        <div className="avatarprofile">
+          <img src={profilePicUrl} className="logoCandidate" />
+        </div>
         {/* <div className="managerinfo">
             <h2 className="postname">Manger</h2>
             <p className="postholder">Dr Sara Flord</p>
@@ -195,28 +210,33 @@ function CandidateProfile() {
 
         </div> */}
         {
-          showAcceptReject() ?
-            <div className="opencvbutdiv">
-              <button className="actionbut" onClick={rejectCandidate}>Reject</button>
-              <button className="actionbut" onClick={acceptCandidate}>Accept</button>
-            </div> :
-            ''
+          application.status === "interview-pending" ?
+            <button className="actionbut" onClick={acceptCandidate}>Done Interview</button>
+            :
+            showAcceptReject() ?
+              <div className="opencvbutdiv">
+                <button className="actionbut" onClick={rejectCandidate}>Reject</button>
+                <button className="actionbut" onClick={acceptCandidate}>Accept</button>
+              </div> :
+              ''
         }
 
 
       </div>
       <div className="reusltssection">
         {/* <h1>Results Section</h1> */}
-        <div className="screeningquestionsdiv">
+        {/* <div className="screeningquestionsdiv">
           <h1 className="headresultssections">Screenig Questioms Rating</h1>
           <h2 className="scoreresults">7/10</h2>
           <button className="butvewrsults">View Results</button>
-        </div>
+        </div> */}
+
         <div className="mcqsquestionsdiv">
           <h1 className="headresultssections">MCQs Test Score</h1>
-          <h2 className="scoreresults">35/50</h2>
-          <button className="butvewrsults">View Results</button>
+          <h2 className="scoreresults">{application.marks != -1 ? (application.marks + "/" + application.outOf) : '-'}</h2>
+          {/* < button className="butvewrsults">View Results</button> */}
         </div>
+
       </div>
       <div className="footercandidateprofpg">
         {/* <h1 className="heading">Footer</h1> */}

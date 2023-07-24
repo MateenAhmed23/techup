@@ -31,6 +31,7 @@ function JobInfo() {
   const [applications, setApplications] = useState([])
 
   const { id } = useParams();
+  const [statusCounts, setStatusCounts] = useState({})
 
   function handleSidebarClick() {
 
@@ -51,7 +52,30 @@ function JobInfo() {
 
     if (res.status == 200) {
       console.log("applications", data);
-      setApplications(data);
+
+      const statusOrder = [
+        "invited",
+        "applied",
+        "pending-assessment",
+        "attempted-assessment",
+        "slot-pending",
+        "interview-pending",
+        "interviewed",
+        "accepted",
+        "rejected",
+      ];
+
+      data.applications = data.applications.filter(application => {
+        return application.status !== "invited" && application.status !== "rejected";
+      });
+
+      // Then sort the filtered applications
+      data.applications.sort((a, b) => {
+        return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+      });
+
+      setApplications(data.applications);
+      setStatusCounts(data.statusCounts);
     } else {
       console.log("error", data);
     }
@@ -102,7 +126,11 @@ function JobInfo() {
     navigate(str)
   }
 
-  function openAssessment(){
+  function openInterview() {
+    navigate('/interviewScheduling', { state: { jobId: id } })
+  }
+
+  function openAssessment() {
     var str = '/assessmentquestions/' + id
     navigate(str)
   }
@@ -156,19 +184,19 @@ function JobInfo() {
       </div>
       <div className="jobnoti" >
         <div className="notibar" onClick={() => openScreening()}>
-          <div className="notinum">3</div>
+          <div className="notinum">{statusCounts.applied ? statusCounts.applied : 0}</div>
           <h5 className="tex">Screening</h5>
         </div>
         <div className="notibar" onClick={() => openAssessment()}>
-          <div className="notinum">3</div>
+          <div className="notinum">{statusCounts.assessment ? statusCounts.assessment : 0}</div>
           <h5 className="tex">Assesment</h5>
         </div>
-        <div className="notibar">
-          <div className="notinum">!</div>
+        <div className="notibar" onClick={() => openInterview()}>
+          <div className="notinum">{statusCounts.interview ? statusCounts.interview : 0}</div>
           <h5 className="tex">Interviews</h5>
         </div>
         <div className="notibar">
-          <div className="notinum">10</div>
+          <div className="notinum">{statusCounts.accepted ? statusCounts.accepted : 0}</div>
           <h5 className="tex">Accepted</h5>
         </div>
       </div>
