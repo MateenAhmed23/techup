@@ -10,7 +10,7 @@ html {
     background-color: rgb(223, 217, 217);
     display: grid;
     grid-template-columns: 38vw 51vw;
-    grid-template-rows: 6% 3% 350px 5% 5% 200px 3% 2% 500px 400px;
+    grid-template-rows: 6% 3% 350px 5% 5% 200px 3% 2% 500px 5% 400px;
     grid-gap: 1%;
     column-gap: 10%;
 
@@ -142,6 +142,20 @@ margin-top: 0.4vh;
     color: antiquewhite;
 }
 
+.addquestioncustombutton1122{ margin-left: 1vw;
+    border-style: solid;
+    border-color: black;
+    padding: 3px 3px;
+    border-radius: 50px;
+    width: 15vw;
+    height: 8vh;
+    background-color: #305876;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: 3vh;
+    color: antiquewhite;}
+
 .testheadset {
     margin-left: 15vw;
     /* background-color: r */
@@ -202,14 +216,23 @@ margin-top: 0.4vh;
     /* background-color: blueviolet; */
     /* background-color: rgb(169, 155, 155); */
     margin-left: 5vw;
+    overflow-y: scroll;
 }
 
-
-
-.footermcqchoosingpg {
+.addallcreatedcustomques {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 10;
     grid-row-end: 11;
+    display: flex;
+    justify-content: center;
+
+}
+
+.footermcqchoosingpg {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 11;
+    grid-row-end: 12;
     /* background: rgba(0, 0, 0, 0.9); */
 }

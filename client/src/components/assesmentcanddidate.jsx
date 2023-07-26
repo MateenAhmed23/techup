@@ -54,10 +54,10 @@ const AssesmentCandidate = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTimer(timer => {
-                if (timer === 1) {
-                    alert("Time's up!");
-                    handleSubmit();  // If timer is 1 second, call the handleSubmit function.
-                }
+                // if (timer === 1) {
+                //     alert("Time's up!");
+                //     handleSubmit();  // If timer is 1 second, call the handleSubmit function.
+                // }
                 return timer - 1;
             });
         }, 1000);
@@ -137,9 +137,9 @@ const AssesmentCandidate = () => {
                         </div>
                     </div>
                 ))}
-
-                <button onClick={handleSubmit}>Submit</button>
-
+<div className='submitcandass'>
+                <button className='subcandass' onClick={handleSubmit}>Submit</button>
+</div>
                 <div className='footercandass'>
                     <Footer />
                 </div>

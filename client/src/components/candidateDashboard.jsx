@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import CandidateContext from "../context/candidate"; // replace with the actual path to your CandidateContext
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CandidateJobDisplaycell from "./subcomponents/candidatejobdisplaycell";
 import CandidateNav from "./subcomponents/candidateNav";
+import Footer from "./subcomponents/footer";
+import "./cssmaincomponents/companydashboard.css";
 
 function CandidateDashboard() {
     const navigate = useNavigate();
+    const loc = useLocation();
     const { isLoggedIn, candidateInfo, signOutCandidate, loginStatus } = useContext(CandidateContext);
 
     async function authentication() {
@@ -24,7 +27,7 @@ function CandidateDashboard() {
         else {
             authentication()
         }
-    }, [isLoggedIn, candidateInfo.candidateId])
+    }, [isLoggedIn, candidateInfo.candidateId, loc.pathname])
 
     async function getMyJobs() {
         const res = await fetch("http://127.0.0.1:5000/api/get_candidate_applications", {
@@ -83,7 +86,7 @@ function CandidateDashboard() {
         }
     };
 
-    const mapStatusToAction = (status, slotdate) => {
+    const mapStatusToAction = (status, slot) => {
         switch (status) {
             case 'invited':
                 return 'Apply';
@@ -96,8 +99,10 @@ function CandidateDashboard() {
             case "slot-pending":
                 return 'Select interview slot';
             case "interview-pending":
-                let msg = "Interview on " + slotdate
+                let msg = "Interview on " + slot.date
                 return msg
+            case "accepted":
+                return 'Accepted'
             default:
                 return '';
         }
@@ -109,7 +114,7 @@ function CandidateDashboard() {
                 <CandidateNav className="navbar" />
             </div>
 
-            <div className="myjobs">
+            <div className="jobscand">
                 {" "}
                 <table>
                     <tbody>
@@ -122,7 +127,7 @@ function CandidateDashboard() {
                                         company={job.company}
                                         job={job.job}
                                         status={job.status}
-                                        action={mapStatusToAction(job.status, job.slot.date)}
+                                        action={mapStatusToAction(job.status, job.slot)}
                                         actionfunction={mapStatusToFunction(job.status)}
                                     />
                                 </td>
@@ -132,6 +137,10 @@ function CandidateDashboard() {
                 </table>
             </div>
 
+
+            <div className="footerDASHBOARDpg">
+                <Footer></Footer>
+            </div>
         </div>
     );
 }

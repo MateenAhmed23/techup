@@ -163,6 +163,11 @@ function ScreeningQuestions(){
       type:type,
       required: required
     }]
+
+    setName('')
+    setType('LONG')
+    setRequired('YES') 
+
     console.log(aaa)
     setNoQ(noQ+1)
     setAddedQuestions(aaa)
@@ -220,7 +225,7 @@ function ScreeningQuestions(){
           <CompNav className="navbar" />
         </div>
         <div className="headingscr">
-          <h1>Screening Questions Section</h1>
+          <h1>Add Screening Questions</h1>
         </div>
         <div className="questinsfields">
           <table>
@@ -271,7 +276,6 @@ function ScreeningQuestions(){
         <div className="contolsques">
           <button className="backquest" onClick={()=>goToPreviousPage()}>Back</button>
           <button className="backquest" onClick={() => handleSubmit()}>Submit</button>
-          <button className="nextquest" onClick={()=>goToNextPage()}>Next</button>
         </div>
         <div>
         </div>

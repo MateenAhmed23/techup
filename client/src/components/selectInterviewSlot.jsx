@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import "./cssmaincomponents/interviewScheduling.css"
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import CandidateNav from "./subcomponents/candidateNav";
+import Footer from "./subcomponents/footer";
 
 const moment = require("moment");
 
@@ -69,6 +71,8 @@ const SelectInterviewSlot = () => {
 
     return (
         <div className="interview-scheduler">
+            <CandidateNav className="navinterview" />
+
             <div className="slots-container-candidate">
                 <h2>Interview Slots</h2>
                 {interviewSlots.length === 0 ? (
@@ -94,6 +98,11 @@ const SelectInterviewSlot = () => {
                     <button onClick={handleSubmit}>Select Slot</button>
                     : ""
             }
+
+            <div className="footercompinterv">
+                {" "}
+                <Footer className="footer" />
+            </div>
         </div>
     )
 }

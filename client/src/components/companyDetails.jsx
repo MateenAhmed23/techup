@@ -51,25 +51,29 @@ function CompanyDetails() {
 
   async function handleRegister() {
     console.log('Lets register the company here')
+
     const companyAddress = address
     const companyWebsite = website
     const companyPhoneNumber = number
+    
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    // Append other candidate information
+    formData.append('companyName', companyName);
+    formData.append('companyAddress', companyAddress);
+    formData.append('companyWebsite', companyWebsite);
+    formData.append('companyPhoneNumber', companyPhoneNumber);
+    formData.append('profilePic', profilePic);
+    
     const response = await fetch("http://127.0.0.1:5000/api/company_signup", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        companyName,
-        companyAddress,
-        companyWebsite,
-        companyPhoneNumber,
-      }),
+      body: formData
     });
+
     const data = await response.json()
     console.log(data);
+
     if (response.status == 201) {
       console.log('USER CREATED SUCCESSFULLY');
       localStorage.setItem("token", data.token);
@@ -80,6 +84,14 @@ function CompanyDetails() {
       return;
     }
   }
+
+  const [profilePic, setProfilePic] = useState(null);
+
+    const handleProfilePicChange = (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        setProfilePic(file);
+    };
 
   return (
     <div className="alldetails">
@@ -147,7 +159,17 @@ function CompanyDetails() {
                   placeholdr=""
                 />
               </div>
+
+              <br />
+              <div>
+                  <label className={"form-label"}>Upload your Profile Picture</label>
+                  <br />
+                  <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+              </div>
             </div>
+
+            
+
             <div className="buttondet">
               <a
                 onClick={() => this.props.onnavclick("contractus")}

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "./subcomponents/footer";
 import SkillsTag from "./subcomponents/skills";
 import BioInputfield from "./subcomponents/bioInput";
+import JobDescSmall from "./subcomponents/jobDescSmall";
 
 function CandidateDetails() {
     const [bio, setBio] = useState("");
@@ -90,7 +91,7 @@ function CandidateDetails() {
     };
 
     return (
-        <div className="alldetails">
+        <div className="alldetailscand">
             {!isLoggedIn ? (
                 <>
                     <h1>You cannot access this page without logging in</h1>
@@ -101,9 +102,20 @@ function CandidateDetails() {
                     <Navbar className="navbar" />
                     <h1 className="maninhead">Candidate Details</h1>
 
-                    <div className="col1">
+                    <div className="col1cand">
                         <div className="form-outline mb-4">
-                            <Inputfield
+
+                        <JobDescSmall
+                                placeholder="Years of experience"
+                                type="number"
+                                label="Experience"
+                                height="7vh"
+                                value={experience}
+                                interview={true}
+                                change={(e) => setExperience(e.target.value)}
+                            />
+
+                            {/* <Inputfield
                                 claslabel="form-label"
                                 label="Experience"
                                 type="number"
@@ -111,10 +123,21 @@ function CandidateDetails() {
                                 classfield="form-control form-control-lg"
                                 onChange={(e) => setExperience(e.target.value)}
                                 placeholdr="Years of experience"
-                            />
+                            /> */}
                         </div>
                         <div className="form-outline mb-4">
-                            <BioInputfield
+
+                        <JobDescSmall
+                                placeholder="Write a short paragraph about yourself"
+                                type="text"
+                                label="Bio"
+                                height="7vh"
+                                value={bio}
+                                interview={true}
+                                change={(e) => setBio(e.target.value)}
+                            />
+
+                            {/* <BioInputfield
                                 claslabel="form-label"
                                 label="Bio"
                                 type="text"
@@ -123,10 +146,21 @@ function CandidateDetails() {
                                 classfield="form-control form-control-lg"
                                 onChange={(e) => setBio(e.target.value)}
                                 placeholdr="Write a short paragraph about yourself"
-                            />
+                            /> */}
                         </div>
                         <div className="form-outline mb-4">
-                            <Inputfield
+
+                        <JobDescSmall
+                                placeholder="Enter your location"
+                                type="text"
+                                label="City"
+                                height="7vh"
+                                value={city}
+                                interview={true}
+                                change={(e) => setCity(e.target.value)}
+                            />
+
+                            {/* <Inputfield
                                 claslabel="form-label"
                                 label="City"
                                 type="text"
@@ -134,9 +168,19 @@ function CandidateDetails() {
                                 classfield="form-control form-control-lg"
                                 onChange={(e) => setCity(e.target.value)}
                                 placeholdr="Enter your location"
-                            />
+                            /> */}
                         </div>
                         <div className="form-outline mb-4">
+                            <JobDescSmall
+                                placeholder="Enter your phone number"
+                                type="tel"
+                                label="Phone Number"
+                                height="7vh"
+                                value={phoneNumber}
+                                interview={true}
+                                change={(e) => setPhoneNumber(e.target.value)}
+                            />
+{/* 
                             <Inputfield
                                 claslabel="form-label"
                                 label="Phone Number"
@@ -145,7 +189,7 @@ function CandidateDetails() {
                                 classfield="form-control form-control-lg"
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 placeholdr="Enter your phone number"
-                            />
+                            /> */}
                         </div>
 
                         <SkillsTag setParentTags={setSkills} label={"Skills"} />
@@ -170,17 +214,17 @@ function CandidateDetails() {
                             className="back1154"
                             href="#"
                         >
-                            &nbsp; &nbsp;Back  &nbsp; &nbsp;
+                            Back 
                         </a>
-                        <button className="register" onClick={() => handleRegister()}>
+                        <button className="register1154" onClick={() => handleRegister()}>
                             Register
                         </button>
                     </div>
                 </>
             )
             }
-            <div className="footercompdetailspg">
-                <Footer />
+           <div className="footerDASHBOARDpg">
+                {/* <Footer></Footer> */}
             </div>
         </div >
     );

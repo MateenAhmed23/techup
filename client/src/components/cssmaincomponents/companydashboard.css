@@ -74,10 +74,21 @@
       grid-row-end: 4;
       background-color: rgb(223, 217, 217);
       margin-left: 3vw;
-      ;
-
     }
-
+    
+    .jobscand {
+      margin-top: 0px;
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 4;
+      /* background-color: rgb(203, 32, 32); */
+      /* margin-left: 14vw; */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
     .footerDASHBOARDpg {
       grid-column-start: 1;
       grid-column-end: 3;

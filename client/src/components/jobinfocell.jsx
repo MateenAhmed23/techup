@@ -152,19 +152,17 @@ function JobInfo() {
       <div className="Sidebar">
         <Sidebar
           className="sidebarjob"
-          option1={option1}
-          option2={option2}
-          setActiveTab={handleSidebarClick}
+          jobClick={()=>navigate("/dashboard")} membersClick={()=>navigate("/dashboard")}
         />
       </div>
       <div className="searchbarjob">
         <h1 className="head">{title}</h1>
-        <SearchBar className="bar23" />
+        {/* <SearchBar className="bar23" /> */}
         <button onClick={copyToClipboard} className="url">Get Job Url</button>
       </div>
       <div className="jobdesc">
         {/* <h1 className="jobtitle">{title}</h1> */}
-        <p className="jobinfodis  ">
+        <p className="jobinfodis">
           {desc}
         </p>
         <div className="otherinfo">
