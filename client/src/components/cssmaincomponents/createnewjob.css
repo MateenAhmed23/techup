@@ -45,7 +45,7 @@
   background-color: rgb(223, 217, 217);
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 12% 10% 400px 60px 500px;
+  grid-template-rows: 14% 15% 400px 170px 400px;
   grid-gap: 0%;
 }
 
@@ -125,5 +125,4 @@
   grid-column-end: 3;
   grid-row-start: 5;
   grid-row-end: 6;
-  background: rgba(0, 0, 0, 0.9);
 }

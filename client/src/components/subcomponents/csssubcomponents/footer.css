@@ -1,7 +1,8 @@
-.footer {
-    background-color: rgb(0, 0, 0);
+
+.footermainsub {
     /* background-color: rgb(0, 0, 0); */
-    padding: 100px 0;  /* increase padding to increase height */
+    background-color: rgb(0, 0, 0);
+    padding: 100px 0 0 0;  /* increase padding to increase height */
 }
 
 .footer-logo {

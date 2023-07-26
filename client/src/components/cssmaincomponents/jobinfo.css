@@ -6,7 +6,7 @@
     background-color: rgb(223, 217, 217);
     display: grid;
     grid-template-columns: 26% 74%;
-    grid-template-rows: 4% 9% 150px 200px 550px auto;
+    grid-template-rows: 4.5% 9% 150px 200px 385px ;
     grid-gap: 0%;
     overflow-x: hidden;
     overflow-y: hidden;

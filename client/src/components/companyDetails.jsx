@@ -154,9 +154,9 @@ function CompanyDetails() {
                 className="back1154"
                 href="#"
               >
-                &nbsp; &nbsp;Back  &nbsp; &nbsp;
+                Back
               </a>
-              <button className="register" onClick={() => handleRegister()}>Register</button>
+              <button className="register1154" onClick={() => handleRegister()}>Register</button>
             </div>
 
             <div className="footercompdetailspg">

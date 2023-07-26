@@ -111,7 +111,7 @@ function LoginForm({ onSubmit, link }) {
                         style={{ color: "#393f81" }}
                       >
                         Don't have an account?{" "}
-                        <button onClick={() => redirectToSignup()} style={{ color: "#393f81" }}>
+                        <button c onClick={() => redirectToSignup()} style={{ backgroundColor: "#393f81" }}>
                           Register here
                         </button>
                       </p>

@@ -144,7 +144,7 @@ function SignupForm({ onSubmit, link }) {
                         style={{ color: "#393f81" }}
                       >
                         Already Have an Account?{" "}
-                        <button onClick={() => redirectToLogin()} style={{ color: "#393f81" }}>
+                        <button onClick={() => redirectToLogin()} style={{ backgroundColor: "#393f81" }}>
                           Login
                         </button>
                       </p>

@@ -275,7 +275,7 @@ function CreateNewJob() {
         <button className="createjobnew" onClick={() => submitHandler()}>Create</button>
       </div>
       <div className="footerjob1">
-        <h1 className="heading">Footer</h1>
+        <Footer></Footer>
 
       </div>
     </div>

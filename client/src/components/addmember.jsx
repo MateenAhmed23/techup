@@ -196,10 +196,7 @@ function Addmember() {
           </tbody>
         </table>
       </div>
-      <div className="contolsques">
-        <button className="backquest">Back</button>
-        <button className="nextquest">Next</button>
-      </div>
+     
       <div className="footerscreeningpg">
         {/* <h1 className="heading">Footer</h1> */}
         <Footer />
