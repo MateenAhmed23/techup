@@ -95,7 +95,7 @@ function CandidateDashboard() {
             case "pending-assessment":
                 return 'Attempt Assessment';
             case "attempted-assessment":
-                return 'Pending assessment results';
+                return 'Pending  results';
             case "slot-pending":
                 return 'Select interview slot';
             case "interview-pending":
