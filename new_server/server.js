@@ -451,7 +451,11 @@ app.post("/api/add_slots", async (req, res) => {
 //   token
 // }
 
-app.post("/api/company_signup", async (req, res) => {
+app.post("/api/company_signup", 
+  upload.fields([
+    { name: "profilePic", maxCount: 1 },
+  ]),
+  async (req, res) => {
   try {
     const {
       companyName,
@@ -461,6 +465,8 @@ app.post("/api/company_signup", async (req, res) => {
       email,
       password,
     } = req.body;
+
+    const profilePicPath = req.files.profilePic[0].path;
 
     // console.log(
     //   companyName,
@@ -496,6 +502,7 @@ app.post("/api/company_signup", async (req, res) => {
       address: companyAddress,
       website: companyWebsite,
       phoneNumber: companyPhoneNumber,
+      profilePicPath: profilePicPath
     });
 
     // Create a new client (super user)
@@ -1133,18 +1140,21 @@ app.post("/api/create_client", async (req, res) => {
 app.post("/api/get_all_clients", async (req, res) => {
   try {
     const companyId = req.body.companyId;
-    // console.log("Inside Get all clients", companyId);
+    const excludeClientId = req.body.clientId;
 
     if (!companyId) {
-      // console.log("Inside the error smh");
       return res.status(400).json({ message: "Company ID is required" });
     }
 
-    const clients = await Client.find({ company: companyId }).select(
+    let clients = await Client.find({ company: companyId }).select(
       "name role _id"
     );
 
-    res.status(201).json({
+    if (excludeClientId) {
+      clients = clients.filter(client => client._id.toString() !== excludeClientId);
+    }
+
+    res.status(200).json({
       message: "Clients fetched successfully",
       clients,
     });
@@ -1153,6 +1163,7 @@ app.post("/api/get_all_clients", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 
 app.post('/api/remove_client',async (req, res) => {
@@ -1224,22 +1235,19 @@ app.post("/api/get-candidate-info", async (req, res) => {
 //   { companyId, isSuperUser(boolean), email, name }
 // }
 app.post("/api/get-user-info", async (req, res) => {
-  console.log(req.body, "Inside body");
   const userId = req.body.userId;
 
-  // console.log(userId);
-  // console.log("Inside gettingUserInfo", userId);
   try {
-    const client = await Client.findById(userId);
-    let isSuperUser = false;
-    // console.log(client);
-    if (client.role === "superuser") {
-      isSuperUser = true;
+    const client = await Client.findById(userId).populate('company');
+    
+    if (!client) {
+      return res.status(404).json({ message: "User not found" });
     }
-
-    // console.log(client);
-    res.status(201).json({
-      companyId: client.company,
+    
+    res.status(200).json({
+      companyId: client.company._id,
+      companyName: client.company.name,
+      companyProfilePic: client.company.profilePicPath,
       clientRole: client.role,
       email: client.email,
       name: client.name,
@@ -1249,6 +1257,7 @@ app.post("/api/get-user-info", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // {
 //   text (question statement),

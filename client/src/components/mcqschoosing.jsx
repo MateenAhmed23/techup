@@ -347,7 +347,7 @@ function Mcqschoosing() {
       </div>
       <div className="addcreatedcustomques">
         <button className="addquestioncustombutton" onClick={() => addQuestion()}>Add Question</button>
-        <button className="addquestioncustombutton" onClick={() => submitQuestions()}>Add Questions</button>
+       
       </div>
       {/* <div className="headingTemplatequesbx">
           <h1 className="h1haha1cust">Template Questions Section</h1>
@@ -402,9 +402,9 @@ function Mcqschoosing() {
           </tbody>
         </table>
       </div>
-      <div className="testsettignsbutttonswrap">
+      {/* <div className="testsettignsbutttonswrap">
         <button className="testsettignsbutton">Apply Settings</button>
-      </div>
+      </div> */}
       <div className="headingaddedquests">
         <h2 className="h1haha1cust">Added Questions</h2>
       </div>
@@ -426,6 +426,9 @@ function Mcqschoosing() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="addallcreatedcustomques">
+      <button className="addquestioncustombutton1122" onClick={() => submitQuestions()}>Create Assesment</button>
       </div>
       <div className="footermcqchoosingpg">
         {/* <h1 className="heading">Footer</h1> */}

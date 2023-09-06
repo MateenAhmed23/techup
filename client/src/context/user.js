@@ -9,6 +9,9 @@ function Provider({ children }) {
   const [companyId, setCompanyId] = useState("");
   const [userRole, setUserRole] = useState("");
   const [userName, setUserName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+
 
   const verifyToken = async (token) => {
     try {
@@ -53,6 +56,8 @@ function Provider({ children }) {
       setUserEmail(data.email);
       setUserRole(data.clientRole);
       setUserName(data.name);
+      setCompanyName(data.companyName);
+      setProfilePic(data.companyProfilePic)
     } catch (e) {
       setIsLoggedIn(false);
       localStorage.removeItem("token");
@@ -114,6 +119,8 @@ function Provider({ children }) {
     setUserEmail("");
     setCompanyId("");
     setUserRole("");
+    setCompanyName("");
+    setProfilePic("");
     setIsLoading(false);
   };
 
@@ -122,6 +129,8 @@ function Provider({ children }) {
     userId: userId,
     companyId,
     userRole,
+    companyName,
+    profilePic,
     // userRole
   };
 

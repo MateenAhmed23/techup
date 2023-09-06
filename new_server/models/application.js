@@ -39,13 +39,11 @@ const applicationSchema = new mongoose.Schema({
   },
   marks: {
     type: Number,
-    required: true,
     default: -1,
   },
   outOf: {
     type: Number,
-    required: true,
-    default: "",
+    default: -1,
   },
 
   status: {

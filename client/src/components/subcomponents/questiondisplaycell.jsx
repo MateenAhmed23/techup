@@ -5,6 +5,12 @@ class QuestionDisplaycell extends Component {
   state = {};
   render() {
     const { showDetailsButton = true } = this.props; // default value is true if not provided
+    let displayQuestion = this.props.question;
+
+    if (displayQuestion.length > 30) {
+        displayQuestion = displayQuestion.substring(0, 30) + "...";
+    }
+
     return (
       <div className="cell">
         <ul>
@@ -16,7 +22,7 @@ class QuestionDisplaycell extends Component {
             >
               Question # {this.props.index}
             </a>
-            <div className="questoons">{this.props.question}</div>
+            <div className="questoons">{displayQuestion}</div>
           </li>
           <li>
             <a href="#">&nbsp;&nbsp;</a>

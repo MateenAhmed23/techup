@@ -73,6 +73,7 @@
     grid-row-start: 5;
     grid-row-end: 6;
     margin-left: 7%;
+    overflow-y: scroll;
 }
     .addedmembers {
         grid-row-start: 5;

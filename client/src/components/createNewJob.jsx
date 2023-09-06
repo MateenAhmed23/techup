@@ -21,21 +21,21 @@ function CreateNewJob() {
 
   const jobDescriptions = [
     {
-      id: 1,
+      id: 0,
       label: "Job Title",
       type: "text",
       placeholder: "e.g. Software Engineer",
       height: "7vh",
     },
     {
-      id: 2,
+      id: 1,
       label: "Department",
       type: "description",
       placeholder: "e.g. Human Resources",
       height: "7vh",
     },
     {
-      id: 3,
+      id: 2,
       label: "Job Location",
       type: "text",
       placeholder: "e.g. New York",
@@ -52,7 +52,7 @@ function CreateNewJob() {
     // },
 
     {
-      id: 4,
+      id: 3,
       label: "Type",
       type: "select",
       placeholder: "e.g. Full Time",
@@ -69,7 +69,7 @@ function CreateNewJob() {
     // },
 
     {
-      id: 5,
+      id: 4,
       label: "Stack",
       type: "text",
       placeholder: "e.g. MERN",
@@ -83,21 +83,21 @@ function CreateNewJob() {
     //   height: "15vh",
     // },
     {
-      id: 6,
+      id: 5,
       label: "Experience",
       type: "number",
       placeholder: "e.g. 1 yr",
       height: "7vh",
     },
     {
-      id: 7,
+      id: 6,
       label: "General Job Description",
       type: "text",
       placeholder: "e.g. Your responsibility is to create responsive website",
       height: "23vh",
     },
     {
-      id: 8,
+      id: 7,
       label: "Perks",
       type: "text",
       placeholder: "e.g. Work from home",
@@ -116,6 +116,8 @@ function CreateNewJob() {
   const [experience, setExperience] = useState()
   const [desc, setDesc] = useState('')
   const [perks, setPerks] = useState('')
+
+  var arr = [title,department,location,jobType,stack,experience,desc,perks]
   // const [duties, setDuties] = useState('')
 
   const jobDescriptionssmall = jobDescriptions.slice(0, 6);
@@ -169,7 +171,7 @@ function CreateNewJob() {
   }
 
   function handleChange(changeFor, value) {
-    console.log('I AM FREAKING HEREEEE')
+    console.log(changeFor, value)
     switch (changeFor) {
       case 'Job Title':
         setTitle(value)
@@ -220,18 +222,19 @@ function CreateNewJob() {
                     label={jobDesc.label}
                     height={jobDesc.height}
                     options={jobDesc.options}
-                    value={
-                      jobDesc.label === 'Job Title' ? title :
-                        jobDesc.label === 'Department' ? department :
-                          jobDesc.label === 'Job Location' ? location :
-                            jobDesc.label === 'Type' ? jobType :
-                              jobDesc.label === 'Stack' ? stack :
-                                jobDesc.label === 'Experience' ? experience :
-                                  jobDesc.label === 'General Job Description' ? desc :
-                                    jobDesc.label === 'Perks' ? perks :
-                                      ''
-                    }
-                    onChange={(event) => handleChange(jobDesc.label, event.target.value)}
+                    // value={
+                    //   jobDesc.label === 'Job Title' ? title :
+                    //     jobDesc.label === 'Department' ? department :
+                    //       jobDesc.label === 'Job Location' ? location :
+                    //         jobDesc.label === 'Type' ? jobType :
+                    //           jobDesc.label === 'Stack' ? stack :
+                    //             jobDesc.label === 'Experience' ? experience :
+                    //               jobDesc.label === 'General Job Description' ? desc :
+                    //                 jobDesc.label === 'Perks' ? perks :
+                    //                   ''
+                    // }
+                    change ={handleChange}
+                    value={arr[jobDesc.id]}
                   />
                 </td>
               </tr>
@@ -251,18 +254,20 @@ function CreateNewJob() {
                     placeholder={jobDesc.placeholder}
                     label={jobDesc.label}
                     height={jobDesc.height}
-                    value={
-                      jobDesc.label === 'Job Title' ? title :
-                        jobDesc.label === 'Department' ? department :
-                          jobDesc.label === 'Job Location' ? location :
-                            jobDesc.label === 'Type' ? jobType :
-                              jobDesc.label === 'Stack' ? stack :
-                                jobDesc.label === 'Experience' ? experience :
-                                  jobDesc.label === 'General Job Description' ? desc :
-                                    jobDesc.label === 'Perks' ? perks :
-                                      ''
-                    }
-                    onChange={(event) => handleChange(jobDesc.label, event.target.value)}
+                    // value={
+                    //   jobDesc.label === 'Job Title' ? title :
+                    //     jobDesc.label === 'Department' ? department :
+                    //       jobDesc.label === 'Job Location' ? location :
+                    //         jobDesc.label === 'Type' ? jobType :
+                    //           jobDesc.label === 'Stack' ? stack :
+                    //             jobDesc.label === 'Experience' ? experience :
+                    //               jobDesc.label === 'General Job Description' ? desc :
+                    //                 jobDesc.label === 'Perks' ? perks :
+                    //                   ''
+                    // }
+                    // onChange={(event) => handleChange(jobDesc.label, event.target.value)}
+                    change ={handleChange}
+                    value={arr[jobDesc.id]}
                   />
                 </td>
               </tr>
@@ -275,7 +280,7 @@ function CreateNewJob() {
         <button className="createjobnew" onClick={() => submitHandler()}>Create</button>
       </div>
       <div className="footerjob1">
-        <h1 className="heading">Footer</h1>
+        <Footer></Footer>
 
       </div>
     </div>

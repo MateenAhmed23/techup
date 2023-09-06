@@ -1,3 +1,5 @@
+
+
     .dashboardcompany {
       margin-top: 0px;
       padding-top: 0px;
@@ -6,7 +8,7 @@
       background-color: rgb(223, 217, 217);
       display: grid;
       grid-template-columns: 27% 73%;
-      grid-template-rows: 4.5% 10% 180px 778px;
+      grid-template-rows: 4.9% 10% 180px 455px;
       grid-gap: 0%;
       overflow-x: hidden;
     }
@@ -30,7 +32,7 @@
 
     .searchbar {
 
-      grid-column-start: 1;
+      grid-column-start: 2;
       grid-column-end: 3;
       grid-row-start: 2;
       grid-row-end: 3;
@@ -72,10 +74,21 @@
       grid-row-end: 4;
       background-color: rgb(223, 217, 217);
       margin-left: 3vw;
-      ;
-
     }
-
+    
+    .jobscand {
+      margin-top: 0px;
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 4;
+      /* background-color: rgb(203, 32, 32); */
+      /* margin-left: 14vw; */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
     .footerDASHBOARDpg {
       grid-column-start: 1;
       grid-column-end: 3;

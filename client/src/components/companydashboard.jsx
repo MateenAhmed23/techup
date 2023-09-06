@@ -85,11 +85,14 @@ function CompanyDashboard() {
       // console.log('Checking logging status', isLoggedIn, 'and', userInfo.companyId)
       getMembers()
       getJobs()
+      getCompanyInfo()
     }
     else {
       authentication()
     }
   }, [isLoggedIn, userInfo.companyId])
+
+
 
   async function getJobs() {
     const res = await fetch("http://127.0.0.1:5000/api/get_all_jobs", {
@@ -113,6 +116,29 @@ function CompanyDashboard() {
     }
   }
 
+  const [companyName, setCompanyName] = useState('')
+  const [profilePic, setProfilePic] = useState('')
+
+  async function getCompanyInfo(){
+    const res = await fetch('http://127.0.0.1:5000/api/get_company', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: userInfo.companyId
+      })
+    })
+
+    const data = await res.json()
+    if (res.status == 400) {
+
+    } else {
+      // console.log(data.clients)
+      setCompanyName(data.name)
+      setProfilePic(data.profilePicPath)
+    }
+  }
 
   async function getMembers() {
     console.log(userInfo, 'userInfo')
@@ -123,7 +149,8 @@ function CompanyDashboard() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        companyId: userInfo.companyId
+        companyId: userInfo.companyId,
+        clientId: userInfo.userId
       })
     })
 
@@ -134,7 +161,6 @@ function CompanyDashboard() {
     } else {
       // console.log(data.clients)
       setMembers(data.clients)
-
     }
   }
 
@@ -165,7 +191,7 @@ function CompanyDashboard() {
         <CompNav className="navbar" />
       </div>
       <div className="Sidebar">
-        <Sidebar setActiveTab={handleSidebarClick} />
+        <Sidebar jobClick={()=>setDisplayType("jobs")} membersClick={()=>setDisplayType("members")} />
       </div>
       <div className="searchbar">
         <h1 className="head">

@@ -232,7 +232,7 @@ function CandidateProfile() {
         </div> */}
 
         <div className="mcqsquestionsdiv">
-          <h1 className="headresultssections">MCQs Test Score</h1>
+          <h1 className="headresultssections">Assessment Score</h1>
           <h2 className="scoreresults">{application.marks != -1 ? (application.marks + "/" + application.outOf) : '-'}</h2>
           {/* < button className="butvewrsults">View Results</button> */}
         </div>
